@@ -4,3 +4,4 @@ pyswip
 pandas
 scikit-learn
 numpy
+python-constraint
