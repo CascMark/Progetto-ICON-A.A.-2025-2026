@@ -1,0 +1,6 @@
+owlready2
+pgmpy
+pyswip
+pandas
+scikit-learn
+numpy
