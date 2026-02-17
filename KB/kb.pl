@@ -1,5 +1,3 @@
-% --- Base di Conoscenza Green-Root (Dataset Arricchito) ---
-
 data(0, 27.483570765056164, 33.21505269512778, 0.5727577781376618, 4.975875097582007, 1, orchid, generic_viral_infection, mottled, distorted, none, 9).
 data(1, 24.308678494144075, 36.94500536946347, 42.52234632600608, 8.165265628044239, 0, tomato, healthy, green, normal, none, 3).
 data(2, 28.23844269050346, 34.02618938954857, 16.095303239459987, 6.316734017011097, 1, rose, generic_viral_infection, mottled, distorted, none, 0).
