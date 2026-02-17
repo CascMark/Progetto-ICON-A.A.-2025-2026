@@ -42,7 +42,7 @@ class SmartGardenSystem:
         # 2. Caricamento Knowledge Base Prolog (Capitolo 5)
         print(" [2/4] Caricamento Motore Logico (Prolog)...", end=" ")
         try:
-            self.logic_engine = GardenLogic(os.path.join(KB_DIR, 'kb (1).pl'))
+            self.logic_engine = GardenLogic(os.path.join(KB_DIR, 'kb.pl'))
             print("OK.")
         except Exception as e:
             print(f"ERRORE: {e}")
