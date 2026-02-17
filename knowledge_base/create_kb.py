@@ -1,4 +1,24 @@
-% =======================================================
+import os
+
+# --- CONFIGURAZIONE PERCORSI ---
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(BASE_DIR)
+KB_DIR = os.path.join(ROOT_DIR, "knowledge_base")
+
+# Assicuriamoci che la cartella esista
+if not os.path.exists(KB_DIR):
+    os.makedirs(KB_DIR)
+
+OUTPUT_FILE = os.path.join(KB_DIR, "kb.pl")
+
+print(f"--- GENERATORE KNOWLEDGE BASE PROLOG ---")
+print(f"File destinazione: {OUTPUT_FILE}")
+
+# --- CONTENUTO DELLA KNOWLEDGE BASE ---
+# Qui definiamo le regole che Prolog deve conoscere.
+# Usiamo i Nomi Semplici (Basilico, Pomodoro...)
+
+prolog_content = """% =======================================================
 %  KNOWLEDGE BASE PROLOG - SMART GARDEN
 %  Generato automaticamente da src/create_kb.py
 % =======================================================
@@ -37,3 +57,13 @@ diagnosi('Peperone', 'Macchie_Fogliari', 'Virosi').
 
 % Regola generica
 diagnosi(_, _, 'In_Analisi_Approfondita').
+"""
+
+# --- SCRITTURA FILE ---
+try:
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.write(prolog_content)
+    print(" -> [SUCCESSO] File 'kb.pl' creato correttamente!")
+    print("    Ora il sistema Prolog ha le regole aggiornate.")
+except Exception as e:
+    print(f" -> [ERRORE] Impossibile scrivere il file: {e}")
