@@ -2,58 +2,65 @@ import os
 import sys
 import owlready2 as owl
 
-# Importiamo i moduli personalizzati creati in precedenza
-# Assicurati che i file ml_module.py, bayes_module.py, csp_module.py, prolog_module.py siano in src/
+# Importiamo i moduli personalizzati
+# Assicurati che ml_module.py, prolog_module.py, bayes_module.py, csp_module.py siano in src/
 from ml_module import DiseasePredictorML
 from prolog_module import GardenLogic
 from bayes_module import crea_rete_diagnosi
 from csp_module import GardenCSP
 
-# --- CONFIGURAZIONE PERCORSI E AMBIENTE ---
+# --- CONFIGURAZIONE PERCORSI ---
+# Rendiamo il codice portabile su qualsiasi computer (Windows/Mac/Linux)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))       # Cartella src/
-ROOT_DIR = os.path.dirname(BASE_DIR)                        # Cartella principale del progetto
+ROOT_DIR = os.path.dirname(BASE_DIR)                        # Cartella del progetto
 DATA_DIR = os.path.join(ROOT_DIR, 'data')
 KB_DIR = os.path.join(ROOT_DIR, 'knowledge_base')
 
-# --- DIZIONARIO DI TRADUZIONE (BRIDGE CSV <-> ONTOLOGIA) ---
-# Il CSV usa l'inglese (es. Tomato), l'Ontologia usa l'Italiano (es. Pomodoro_San_Marzano)
-# Questo dizionario permette ai due mondi di parlarsi.
-MAPPA_NOMI = {
-    "Tomato": "Pomodoro_San_Marzano",
-    "Pepper": "Peperone",
-    "Potato": "Patata",
-    "Strawberry": "Fragola",
-    "Yellow Leaves": "Foglie_Gialle",
-    "Leaf Spot": "Macchie_Fogliari"
-}
-
 class SmartGardenSystem:
     def __init__(self):
-        print("--- INIZIALIZZAZIONE SISTEMA SMART GARDEN ---")
+        print("\n" + "="*50)
+        print("   AVVIO SISTEMA SMART GARDEN (KBS INTEGRATO)")
+        print("="*50)
         
         # 1. Caricamento Dataset e Training ML (Capitoli 2-3)
+        # Usa il dataset coerente generato dall'Ontologia
         print(" [1/4] Addestramento Modello Machine Learning...", end=" ")
         try:
-            self.ml_engine = DiseasePredictorML(os.path.join(DATA_DIR, 'plant_disease_set.csv'))
+            csv_path = os.path.join(DATA_DIR, 'dataset_integrato.csv')
+            if not os.path.exists(csv_path):
+                raise FileNotFoundError("Esegui prima 'generate_dataset.py' per creare il CSV!")
+            
+            self.ml_engine = DiseasePredictorML(csv_path)
             print("OK.")
         except Exception as e:
-            print(f"ERRORE: {e}")
+            print(f"\n [ERRORE ML] {e}")
+            self.ml_engine = None
 
         # 2. Caricamento Knowledge Base Prolog (Capitolo 5)
         print(" [2/4] Caricamento Motore Logico (Prolog)...", end=" ")
         try:
-            self.logic_engine = GardenLogic(os.path.join(KB_DIR, 'kb.pl'))
+            kb_path = os.path.join(KB_DIR, 'kb.pl')
+            # Fix per Windows: Prolog richiede slash normali '/'
+            kb_path = kb_path.replace('\\', '/')
+            
+            if not os.path.exists(kb_path):
+                # Se non trova kb.pl, prova kb (1).pl come fallback
+                kb_path = os.path.join(KB_DIR, 'kb (1).pl').replace('\\', '/')
+            
+            self.logic_engine = GardenLogic(kb_path)
             print("OK.")
         except Exception as e:
-            print(f"ERRORE: {e}")
+            print(f"\n [ERRORE PROLOG] {e}")
+            self.logic_engine = None
 
         # 3. Caricamento Ontologia OWL (Struttura Dati)
         print(" [3/4] Caricamento Ontologia OWL...", end=" ")
         try:
-            self.onto = owl.get_ontology(os.path.join(KB_DIR, 'Ontologia.owx')).load()
+            onto_path = os.path.join(KB_DIR, 'Ontologia.owx')
+            self.onto = owl.get_ontology(onto_path).load()
             print("OK.")
         except Exception as e:
-            print(f"ERRORE: {e}")
+            print(f"\n [ERRORE ONTOLOGIA] {e}")
             self.onto = None
 
         # 4. Inizializzazione Rete Bayesiana (Capitolo 4)
@@ -62,101 +69,96 @@ class SmartGardenSystem:
             self.bayes_net = crea_rete_diagnosi()
             print("OK.")
         except Exception as e:
-            print(f"ERRORE: {e}")
+            print(f"\n [ERRORE BAYES] {e}")
+            self.bayes_net = None
 
-    def analizza_caso(self, input_pianta_csv, input_sintomo_csv):
+    def analizza_caso(self, nome_pianta, nome_sintomo):
         """
-        Esegue il ciclo completo di ragionamento: ML -> Prolog -> Bayes -> CSP
+        Esegue il ciclo completo: ML -> Prolog -> Bayes -> CSP
         """
         print(f"\n\n{'='*60}")
-        print(f" ANALISI CASO: {input_pianta_csv} con sintomo '{input_sintomo_csv}'")
+        print(f" ANALISI CASO: {nome_pianta} | SINTOMO: {nome_sintomo}")
         print(f"{'='*60}")
 
+        if not self.ml_engine:
+            print("Errore critico: Modello ML non caricato.")
+            return
+
         # --- STEP 1: MACHINE LEARNING (Predizione) ---
-        # Usa i dati storici (CSV) per predire la malattia più probabile
-        malattia_predetta, confidenza = self.ml_engine.predici_malattia(input_pianta_csv, input_sintomo_csv)
+        malattia_predetta, confidenza = self.ml_engine.predici_malattia(nome_pianta, nome_sintomo)
         
-        print(f"\n[MODULO ML] Analisi Statistica:")
-        print(f" -> Malattia Identificata: {malattia_predetta}")
-        print(f" -> Livello di Confidenza: {confidenza*100:.2f}%")
+        print(f"\n[1] MACHINE LEARNING (Classificazione Random Forest)")
+        print(f" -> Diagnosi Statistica: {malattia_predetta}")
+        print(f" -> Confidenza: {confidenza*100:.2f}%")
 
         # --- STEP 2: PROLOG (Logica e Trattamento) ---
-        # Interroga la KB per trovare cure e verificare regole logiche
-        print(f"\n[MODULO PROLOG] Consultazione Knowledge Base:")
-        
-        # Verifica 1: Esiste un trattamento codificato?
-        cure = self.logic_engine.ottieni_trattamento(malattia_predetta)
-        if cure:
-            print(f" -> Trattamento suggerito dalla KB: {cure}")
+        print(f"\n[2] PROLOG (Motore Inferenziale)")
+        if self.logic_engine:
+            # Cerca la cura
+            cure = self.logic_engine.ottieni_trattamento(malattia_predetta)
+            if cure:
+                print(f" -> Trattamento dedotto dalla KB: {cure}")
+            else:
+                print(f" -> Nessuna regola di trattamento trovata per '{malattia_predetta}'")
+            
+            # Verifica consistenza logica
+            conferme = self.logic_engine.verifica_diagnosi_logica(nome_pianta, nome_sintomo)
+            if conferme:
+                print(f" -> Consistenza logica verificata: Regola esistente per {conferme}")
         else:
-            print(f" -> Nessun trattamento specifico trovato nelle regole logiche per '{malattia_predetta}'.")
-
-        # Verifica 2: Regole di diagnosi incrociata
-        conferme = self.logic_engine.verifica_diagnosi_logica(input_pianta_csv, input_sintomo_csv)
-        if conferme:
-            print(f" -> Regola logica attivata: Combinazione compatibile con {conferme}")
+            print(" -> Modulo Prolog non attivo.")
 
         # --- STEP 3: RETE BAYESIANA (Gestione Incertezza) ---
-        # Se il sintomo è generico ("Yellow Leaves"), usiamo la probabilità
-        if "Yellow" in input_sintomo_csv or "Gialle" in input_sintomo_csv:
-            print(f"\n[MODULO BAYES] Diagnosi Probabilistica (Sintomo Ambiguo):")
-            # Calcoliamo la probabilità che sia Carenza di Ferro
-            try:
-                risultato = self.bayes_net.query(variables=['Carenza_Ferro'], evidence={'Foglie_Gialle': 1})
-                prob_ferro = risultato.values[1]
-                print(f" -> Probabilità che sia 'Carenza_Ferro': {prob_ferro*100:.2f}%")
-                
-                risultato_afidi = self.bayes_net.query(variables=['Afidi'], evidence={'Foglie_Gialle': 1})
-                prob_afidi = risultato_afidi.values[1]
-                print(f" -> Probabilità che siano 'Afidi': {prob_afidi*100:.2f}%")
-            except Exception as e:
-                print(f" -> Impossibile eseguire inferenza bayesiana: {e}")
+        # Si attiva solo per sintomi ambigui noti
+        if nome_sintomo in ["Foglie_Gialle", "Macchie_Fogliari"]:
+            print(f"\n[3] RETE BAYESIANA (Diagnosi Probabilistica)")
+            if self.bayes_net:
+                try:
+                    # Esempio: calcoliamo probabilità per Carenza Ferro
+                    res = self.bayes_net.query(variables=['Carenza_Ferro'], evidence={'Foglie_Gialle': 1})
+                    prob = res.values[1]
+                    print(f" -> Probabilità 'Carenza_Ferro' dato il sintomo: {prob*100:.2f}%")
+                except Exception as e:
+                    print(f" -> Errore inferenza: {e}")
+            else:
+                print(" -> Modulo Bayesiano non attivo.")
 
         # --- STEP 4: CSP (Ottimizzazione Spaziale) ---
-        # Cerchiamo di posizionare la pianta nel giardino virtuale rispettando i vincoli
-        print(f"\n[MODULO CSP] Ottimizzazione Spaziale:")
-        
-        # Traduzione nome per l'Ontologia (es. Tomato -> Pomodoro_San_Marzano)
-        nome_ontologia = MAPPA_NOMI.get(input_pianta_csv, input_pianta_csv)
-        
+        print(f"\n[4] CSP (Constraint Satisfaction Problem)")
         if self.onto:
-            # Creiamo una griglia giardino simulata
+            # Definiamo un ambiente virtuale per il test
             ambiente_balcone = {
-                "Vaso_Nord (Ombra)":   {"luce": 4, "umidita": 0.8},
-                "Vaso_Sud (Sole)":     {"luce": 9, "umidita": 0.5},
-                "Fioriera_Est (Mix)":  {"luce": 7, "umidita": 0.7}
+                "Vaso_A (Soleggiato)": {"luce": 9, "umidita": 0.5},
+                "Vaso_B (Ombreggiato)": {"luce": 5, "umidita": 0.8},
+                "Vaso_C (Interno)":    {"luce": 7, "umidita": 0.6}
             }
             
-            print(f" -> Tentativo di posizionamento per: {nome_ontologia}")
+            print(f" -> Ricerca posizione ottimale per: {nome_pianta}")
             try:
-                # Istanziamo il risolutore CSP
-                solver = GardenCSP([nome_ontologia], ambiente_balcone, self.onto)
+                # Grazie al dataset rigenerato, i nomi coincidono! Nessuna mappa necessaria.
+                solver = GardenCSP([nome_pianta], ambiente_balcone, self.onto)
                 soluzione = solver.solve()
                 
                 if soluzione:
-                    pos = soluzione[nome_ontologia]
-                    dati_pos = ambiente_balcone[pos]
-                    print(f" -> SUCCESSO! Posizione ottimale trovata: '{pos}'")
-                    print(f"    (Condizioni: Luce {dati_pos['luce']}h, Umidità {dati_pos['umidita']})")
+                    pos = soluzione[nome_pianta]
+                    condizioni = ambiente_balcone[pos]
+                    print(f" -> SUCCESSO! Posiziona in: '{pos}'")
+                    print(f"    (Dati ambientali: Luce {condizioni['luce']}h, Umidità {condizioni['umidita']})")
                 else:
-                    print(" -> FALLIMENTO: Nessuna posizione soddisfa i vincoli biologici della pianta.")
+                    print(" -> FALLIMENTO: Nessuna posizione disponibile soddisfa i requisiti biologici.")
             except Exception as e:
-                print(f" -> Errore durante il calcolo CSP (probabile nome non trovato in Ontologia): {e}")
+                print(f" -> Errore CSP: {e}")
         else:
-            print(" -> Ontologia non caricata, salto fase CSP.")
+            print(" -> Ontologia non caricata, impossibile eseguire CSP.")
 
-# --- ESECUZIONE PRINCIPALE ---
+# --- ESECUZIONE ---
 if __name__ == "__main__":
-    # Avvia il sistema
     app = SmartGardenSystem()
 
-    # --- SCENARIO DI TEST ---
-    # Simuliamo un utente che ha un Pomodoro con le foglie gialle
-    # Questi nomi devono esistere nel CSV del tuo compagno
-    pianta_input = "Tomato" 
-    sintomo_input = "Yellow Leaves"
+    # TEST FINALE
+    # Usiamo nomi in Italiano, coerenti con l'Ontologia e il nuovo CSV generato
+    # Modifica questi valori per testare casi diversi
+    pianta_test = "Basilico_Genovese"
+    sintomo_test = "Foglie_Gialle"
     
-    app.analizza_caso(pianta_input, sintomo_input)
-
-    # Se vuoi testare un altro caso, scommenta qui sotto:
-    # app.analizza_caso("Pepper", "Leaf Spot")
+    app.analizza_caso(pianta_test, sintomo_test)
