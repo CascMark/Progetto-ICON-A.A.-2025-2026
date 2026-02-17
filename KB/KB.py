@@ -18,7 +18,6 @@ class KB:
         os.makedirs(os.path.dirname(self.percorso_pl), exist_ok=True)
         
         with open(self.percorso_pl, 'w', encoding='utf-8') as f:
-            f.write("% --- Base di Conoscenza Green-Root (Dataset Arricchito) ---\n\n")
             
             for indice, riga in dataset.iterrows():
             
