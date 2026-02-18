@@ -2,15 +2,15 @@ import os
 import sys
 import warnings
 
-# --- CONFIGURAZIONE SISTEMA ---
-# Filtriamo i warning di sistema (es. sklearn version mismatch) per un output pulito
 warnings.filterwarnings("ignore")
 
-# Assicuriamo che Python veda la cartella corrente come package
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
 
-# --- IMPORT MODULI PROGETTO ---
+# Aggiungi la cartella gui al path
+GUI_DIR = os.path.join(os.path.dirname(BASE_DIR), "gui")
+sys.path.insert(0, GUI_DIR)
+
 from garden_ml_engine import GardenMLEngine
 from prolog_module import GardenLogic
 from csp_module import GardenCSP
@@ -81,8 +81,8 @@ class SmartGardenSystem:
                 # Scegliamo Random Forest come diagnosi principale (generalmente più robusto sui dati tabulari)
                 malattia_predetta = malattia_rf
 
-                print(f" -> [Supervisionato] Random Forest: {malattia_rf} (Confidenza: {conf_rf*100:.2f}%)")
-                print(f" -> [Supervisionato] Rete Neurale:  {malattia_nn}")
+                print(f" -> Random Forest: {malattia_rf} (Confidenza: {conf_rf*100:.2f}%)")
+                print(f" -> Rete Neurale:  {malattia_nn}")
                 
                 # Confronto tra modelli (Model Selection logic)
                 if malattia_rf == malattia_nn:
@@ -91,7 +91,7 @@ class SmartGardenSystem:
                     print(f"    (Esito: Discrepanza rilevata. Si consiglia prevalenza al modello RF)")
                 
                 # Risultato Clustering (Non supervisionato)
-                print(f" -> [Non Supervisionato] K-Means:   {cluster}")
+                print(f" -> K-Means:   {cluster}")
                 print("    (La pianta è stata profilata automaticamente in questo cluster climatico)")
             else:
                 print(" -> Errore: Dati insufficienti per una predizione ML.")
@@ -171,8 +171,13 @@ class SmartGardenSystem:
 
 # --- ESECUZIONE TEST ---
 if __name__ == "__main__":
-    # Istanziamo il sistema
     app = SmartGardenSystem()
+    import tkinter as tk
+    from gui import GreenLeafGui 
+
+    root = tk.Tk()
+    gui = GreenLeafGui(root)
+    root.mainloop()
 
     print("\n" + "*"*70)
     print("   TEST FINALE GIARDINO (Complete Pipeline)")
