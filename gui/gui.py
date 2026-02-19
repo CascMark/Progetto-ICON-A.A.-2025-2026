@@ -14,7 +14,6 @@ sys.path.insert(0, ROOT_DIR)
 # --- IMPORT BACKEND ---
 from main import SmartGardenSystem
 
-
 # ══════════════════════════════════════════════════════════════════
 #  COSTANTI DI STILE
 # ══════════════════════════════════════════════════════════════════
@@ -42,21 +41,29 @@ FONT_STATUS  = ("Courier", 9)
 #  CLASSE PRINCIPALE GUI
 # ══════════════════════════════════════════════════════════════════
 class GreenLeafGui:
+    
+    PIANTE  = [
+        "Basilico", "Pomodoro", "Lattuga", "Rosa", "Peperone", 
+        "Fragola", "Zucchina", "Menta"
+    ]
+    SINTOMI = [
+        "Foglie_Gialle", "Macchie_Fogliari", "Foglie_Secche", 
+        "Muffa_Bianca", "Foglie_Arricciate", "Marciume_Apicale", "Ragnatele"
+    ]
 
-    PIANTE  = ["Basilico", "Pomodoro", "Lattuga", "Rosa", "Peperone"]
-    SINTOMI = ["Foglie_Gialle", "Macchie_Fogliari", "Foglie_Secche", "Muffa_Bianca"]
-
+    # AGGIUNTO IL 5° TAB QUI
     TAB_INFO = [
         ("🤖  ML",      "Risultati Machine Learning (Random Forest, Rete Neurale, K-Means)"),
         ("🧠  Prolog",  "Motore Inferenziale — Trattamenti dalla Knowledge Base"),
         ("📊  Bayes",   "Rete Bayesiana — Probabilità delle Cause"),
         ("🌿  CSP",     "Constraint Satisfaction — Posizione Ottimale nel Giardino"),
+        ("📈  Validazione", "Validazione Scientifica — 10-Fold CV e Consensus"),
     ]
 
     def __init__(self, root: tk.Tk):
         self.root = root
         self.root.title("Green Leaf — Giardino Intelligente")
-        self.root.geometry("960x720")
+        self.root.geometry("1050x750") # Leggermente allargata per la tabella grande
         self.root.configure(bg=BG_DARK)
         self.root.resizable(True, True)
 
@@ -69,12 +76,8 @@ class GreenLeafGui:
         self._build_results_section()
         self._build_status_bar()
 
-        # Carica il backend in background
         threading.Thread(target=self._load_system, daemon=True).start()
 
-    # ─────────────────────────────────────────────
-    #  CARICAMENTO BACKEND
-    # ─────────────────────────────────────────────
     def _load_system(self):
         try:
             self.system = SmartGardenSystem()
@@ -83,100 +86,41 @@ class GreenLeafGui:
         except Exception as e:
             self.root.after(0, lambda err=e: self.status_var.set(f"❌  Errore caricamento: {err}"))
 
-    # ─────────────────────────────────────────────
-    #  COSTRUZIONE UI
-    # ─────────────────────────────────────────────
     def _build_header(self):
         header = tk.Frame(self.root, bg=BG_DARK)
         header.pack(fill="x", pady=(30, 0))
 
-        tk.Label(
-            header,
-            text="🌿 Green Leaf",
-            font=FONT_TITLE,
-            bg=BG_DARK,
-            fg=ACCENT_GREEN,
-        ).pack()
-
-        tk.Label(
-            header,
-            text="Sistema AI per la diagnosi e cura del giardino",
-            font=("Georgia", 11, "italic"),
-            bg=BG_DARK,
-            fg=TEXT_MUTED,
-        ).pack(pady=(2, 20))
-
-        # Separatore
+        tk.Label(header, text="🌿 Green Leaf", font=FONT_TITLE, bg=BG_DARK, fg=ACCENT_GREEN).pack()
+        tk.Label(header, text="Sistema AI per la diagnosi e cura del giardino", font=("Georgia", 11, "italic"), bg=BG_DARK, fg=TEXT_MUTED).pack(pady=(2, 20))
         tk.Frame(self.root, bg=ACCENT_GREEN, height=2).pack(fill="x", padx=30)
 
     def _build_input_section(self):
         container = tk.Frame(self.root, bg=BG_PANEL, pady=18, padx=25)
         container.pack(fill="x", padx=30, pady=14)
 
-        # Titolo sezione
-        tk.Label(
-            container,
-            text="INSERISCI I DATI",
-            font=FONT_HEADING,
-            bg=BG_PANEL,
-            fg=ACCENT_LIGHT,
-        ).grid(row=0, column=0, columnspan=5, sticky="w", pady=(0, 10))
+        tk.Label(container, text="INSERISCI I DATI", font=FONT_HEADING, bg=BG_PANEL, fg=ACCENT_LIGHT).grid(row=0, column=0, columnspan=5, sticky="w", pady=(0, 10))
 
-        # --- Pianta ---
-        tk.Label(container, text="Pianta:", font=FONT_LABEL, bg=BG_PANEL, fg="#ffffff").grid(
-            row=1, column=0, sticky="w", padx=(0, 6)
-        )
+        tk.Label(container, text="Pianta:", font=FONT_LABEL, bg=BG_PANEL, fg="#ffffff").grid(row=1, column=0, sticky="w", padx=(0, 6))
         self.pianta_var = tk.StringVar(value=self.PIANTE[0])
         self._styled_combo(container, self.pianta_var, self.PIANTE).grid(row=1, column=1, padx=(0, 20))
 
-        # --- Sintomo ---
-        tk.Label(container, text="Sintomo:", font=FONT_LABEL, bg=BG_PANEL, fg="#ffffff").grid(
-            row=1, column=2, sticky="w", padx=(0, 6)
-        )
+        tk.Label(container, text="Sintomo:", font=FONT_LABEL, bg=BG_PANEL, fg="#ffffff").grid(row=1, column=2, sticky="w", padx=(0, 6))
         self.sintomo_var = tk.StringVar(value=self.SINTOMI[0])
         self._styled_combo(container, self.sintomo_var, self.SINTOMI, width=20).grid(row=1, column=3, padx=(0, 20))
 
-        # --- Bottone ---
         self.btn_analizza = tk.Button(
-            container,
-            text="🔍  Analizza",
-            font=FONT_BTN,
-            bg=BTN_COLOR,
-            fg=TEXT_WHITE,
-            activebackground=BTN_HOVER,
-            activeforeground=TEXT_WHITE,
-            relief="flat",
-            cursor="hand2",
-            padx=14,
-            pady=6,
-            state="disabled",           # abilitato quando il sistema è pronto
-            command=self._run_analysis,
+            container, text="🔍  Analizza", font=FONT_BTN, bg=BTN_COLOR, fg=TEXT_WHITE,
+            activebackground=BTN_HOVER, activeforeground=TEXT_WHITE, relief="flat",
+            cursor="hand2", padx=14, pady=6, state="disabled", command=self._run_analysis,
         )
         self.btn_analizza.grid(row=1, column=4)
 
     def _styled_combo(self, parent, variable, values, width=14):
         style = ttk.Style()
         style.theme_use("clam")
-        style.configure(
-            "Green.TCombobox",
-            fieldbackground=BG_CARD,
-            background=BG_CARD,
-            foreground=TEXT_WHITE,
-            selectbackground=ACCENT_GREEN,
-            selectforeground=BG_DARK,
-            bordercolor=ACCENT_GREEN,
-            arrowcolor=ACCENT_GREEN,
-        )
-        cb = ttk.Combobox(
-            parent,
-            textvariable=variable,
-            values=values,
-            width=width,
-            state="readonly",
-            style="Green.TCombobox",
-            font=FONT_MONO,
-        )
-        return cb
+        style.configure("Green.TCombobox", fieldbackground=BG_CARD, background=BG_CARD, foreground=TEXT_WHITE,
+                        selectbackground=ACCENT_GREEN, selectforeground=BG_DARK, bordercolor=ACCENT_GREEN, arrowcolor=ACCENT_GREEN)
+        return ttk.Combobox(parent, textvariable=variable, values=values, width=width, state="readonly", style="Green.TCombobox", font=FONT_MONO)
 
     def _build_results_section(self):
         container = tk.Frame(self.root, bg=BG_DARK)
@@ -184,18 +128,8 @@ class GreenLeafGui:
 
         style = ttk.Style()
         style.configure("Green.TNotebook", background=BG_DARK, borderwidth=0)
-        style.configure(
-            "Green.TNotebook.Tab",
-            background=BG_PANEL,
-            foreground=TEXT_MUTED,
-            padding=[12, 5],
-            font=FONT_HEADING,
-        )
-        style.map(
-            "Green.TNotebook.Tab",
-            background=[("selected", BG_CARD)],
-            foreground=[("selected", ACCENT_GREEN)],
-        )
+        style.configure("Green.TNotebook.Tab", background=BG_PANEL, foreground=TEXT_MUTED, padding=[12, 5], font=FONT_HEADING)
+        style.map("Green.TNotebook.Tab", background=[("selected", BG_CARD)], foreground=[("selected", ACCENT_GREEN)])
 
         notebook = ttk.Notebook(container, style="Green.TNotebook")
         notebook.pack(fill="both", expand=True)
@@ -204,39 +138,16 @@ class GreenLeafGui:
             frame = tk.Frame(notebook, bg=BG_CARD)
             notebook.add(frame, text=tab_name)
 
-            # Descrizione in cima al tab
-            tk.Label(
-                frame,
-                text=tab_desc,
-                font=("Courier", 9, "italic"),
-                bg=BG_CARD,
-                fg="#c8e8c8",
-                anchor="w",
-            ).pack(fill="x", padx=10, pady=(6, 2))
-
+            tk.Label(frame, text=tab_desc, font=("Courier", 9, "italic"), bg=BG_CARD, fg="#c8e8c8", anchor="w").pack(fill="x", padx=10, pady=(6, 2))
             tk.Frame(frame, bg=ACCENT_GREEN, height=1).pack(fill="x", padx=10)
 
-            # Area testo
-            txt = tk.Text(
-                frame,
-                bg=BG_CARD,
-                fg=TEXT_WHITE,
-                font=FONT_MONO,
-                relief="flat",
-                padx=12,
-                pady=8,
-                state="disabled",
-                wrap="word",
-                insertbackground=ACCENT_GREEN,
-                selectbackground=ACCENT_GREEN,
-                selectforeground=BG_DARK,
-            )
+            txt = tk.Text(frame, bg=BG_CARD, fg=TEXT_WHITE, font=FONT_MONO, relief="flat", padx=12, pady=8,
+                          state="disabled", wrap="word", insertbackground=ACCENT_GREEN, selectbackground=ACCENT_GREEN, selectforeground=BG_DARK)
             scrollbar = ttk.Scrollbar(frame, orient="vertical", command=txt.yview)
             txt.configure(yscrollcommand=scrollbar.set)
             scrollbar.pack(side="right", fill="y")
             txt.pack(fill="both", expand=True, padx=(10, 0), pady=8)
 
-            # Tag colori per evidenziare parti del testo
             txt.tag_configure("header",  foreground="#4ded8f",  font=("Courier", 10, "bold"))
             txt.tag_configure("ok",      foreground="#e8ffe8")
             txt.tag_configure("warn",    foreground="#ffd27f")
@@ -246,26 +157,14 @@ class GreenLeafGui:
 
             self.result_texts[tab_name] = txt
 
-        # Messaggio iniziale in tutti i tab
         for name, txt in self.result_texts.items():
             self._write_to_tab(name, "In attesa di un'analisi…\n", "muted")
 
     def _build_status_bar(self):
         bar = tk.Frame(self.root, bg="#010e01", pady=4)
         bar.pack(fill="x", side="bottom")
-        tk.Label(
-            bar,
-            textvariable=self.status_var,
-            font=FONT_STATUS,
-            bg="#010e01",
-            fg="#c0e0c0",
-            anchor="w",
-            padx=12,
-        ).pack(fill="x")
+        tk.Label(bar, textvariable=self.status_var, font=FONT_STATUS, bg="#010e01", fg="#c0e0c0", anchor="w", padx=12).pack(fill="x")
 
-    # ─────────────────────────────────────────────
-    #  LOGICA ANALISI
-    # ─────────────────────────────────────────────
     def _run_analysis(self):
         if not self.system:
             self.status_var.set("⚠️  Sistema non ancora pronto.")
@@ -274,23 +173,16 @@ class GreenLeafGui:
         self.btn_analizza.config(state="disabled")
         self.status_var.set("⏳  Analisi in corso…")
 
-        # Pulisce tutti i tab
         for name in self.result_texts:
             self._clear_tab(name)
 
         pianta  = self.pianta_var.get()
         sintomo = self.sintomo_var.get()
 
-        threading.Thread(
-            target=self._do_analysis,
-            args=(pianta, sintomo),
-            daemon=True,
-        ).start()
+        threading.Thread(target=self._do_analysis, args=(pianta, sintomo), daemon=True).start()
 
     def _do_analysis(self, pianta: str, sintomo: str):
-        """Esegue l'analisi intercettando stdout e smistando l'output nei tab."""
         try:
-            # Intercettiamo stdout per catturare i print di analizza_caso
             buf = io.StringIO()
             old_stdout = sys.stdout
             sys.stdout = buf
@@ -300,7 +192,6 @@ class GreenLeafGui:
             sys.stdout = old_stdout
             output = buf.getvalue()
 
-            # Smista l'output nei tab corretti
             self.root.after(0, lambda: self._parse_and_display(output, pianta, sintomo))
 
         except Exception as e:
@@ -309,16 +200,13 @@ class GreenLeafGui:
 
         finally:
             self.root.after(0, lambda: self.btn_analizza.config(state="normal"))
-            self.root.after(0, lambda: self.status_var.set(
-                f"✅  Analisi completata per: {pianta} / {sintomo}"
-            ))
+            self.root.after(0, lambda: self.status_var.set(f"✅  Analisi completata per: {pianta} / {sintomo}"))
 
     def _parse_and_display(self, output: str, pianta: str, sintomo: str):
-        """Divide l'output grezzo di analizza_caso() nei 4 tab."""
         lines = output.splitlines()
 
-        # Individua i blocchi per step
-        blocks = {"ml": [], "prolog": [], "bayes": [], "csp": []}
+        # AGGIUNTO "val" AI BLOCCHI
+        blocks = {"ml": [], "prolog": [], "bayes": [], "csp": [], "val": []}
         current = None
 
         for line in lines:
@@ -330,15 +218,20 @@ class GreenLeafGui:
                 current = "bayes"
             elif "[4] CSP" in line:
                 current = "csp"
+            # AGGIUNTO RICONOSCIMENTO DEL 5° STEP
+            elif "[5] VALIDAZIONE" in line:
+                current = "val"
 
             if current:
                 blocks[current].append(line)
 
+        # MAPPING DEI BLOCCHI AI TAB
         tab_map = {
             "ml":     "🤖  ML",
             "prolog": "🧠  Prolog",
             "bayes":  "📊  Bayes",
             "csp":    "🌿  CSP",
+            "val":    "📈  Validazione",
         }
 
         for key, tab_name in tab_map.items():
@@ -348,21 +241,20 @@ class GreenLeafGui:
                 self._format_line(tab_name, line)
 
     def _format_line(self, tab_name: str, line: str):
-        """Applica colori intelligenti alle righe di output."""
         if not line.strip():
             self._write_to_tab(tab_name, "\n")
             return
-
         low = line.lower()
         if "errore" in low or "error" in low or "attenzione" in low:
             tag = "error"
-        elif "successo" in low or "pronto" in low or "concordano" in low:
+        elif "successo" in low or "pronto" in low or "concordano" in low or "unanime" in low:
             tag = "ok"
         elif "discrepanza" in low or "nota" in low or "variazione" in low:
             tag = "warn"
         elif line.strip().startswith("[") or line.strip().startswith("="):
             tag = "header"
-        elif line.strip().startswith("->") or line.strip().startswith("*"):
+        elif line.strip().startswith("->") or line.strip().startswith("*") or "|" in line:
+            # Aggiunto "|" in line per mantenere il colore bianco nella tabella
             tag = "value"
         else:
             tag = "ok"
@@ -384,15 +276,6 @@ class GreenLeafGui:
             txt.delete("1.0", "end")
             txt.config(state="disabled")
 
-    def _show_error(self, message: str):
-        for name in self.result_texts:
-            self._clear_tab(name)
-            self._write_to_tab(name, f"❌ Errore durante l'analisi:\n{message}\n", "error")
-
-
-# ══════════════════════════════════════════════════════════════════
-#  ENTRY POINT
-# ══════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     root = tk.Tk()
     app = GreenLeafGui(root)
