@@ -171,6 +171,41 @@ def plot_confusion_and_roc(X, y, classes):
         filename = f'03_{name.lower()}_eval.png'
         plt.savefig(os.path.join(PLOTS_DIR, filename), bbox_inches='tight')
         plt.close()
+    
+
+def plot_pie_charts(df):
+    """Genera i grafici a torta per Diagnosi Reali e Distribuzione Cluster"""
+    print("Generazione Grafici a Torta (Distribuzione)...")
+    
+    # 1. Calcolo distribuzione etichette reali (Diagnosi)
+    dist_reale = df['Diagnosi_Reale'].value_counts()
+    
+    # 2. Esecuzione K-Means per trovare la distribuzione dei cluster climatici (k=3)
+    scaler = StandardScaler()
+    X_env = scaler.fit_transform(df[['Ore_Luce', 'Umidita_Ottimale', 'Temperatura_Ottimale']])
+    kmeans = KMeans(n_clusters=3, random_state=42)
+    cluster_labels = kmeans.fit_predict(X_env)
+    
+    # Contiamo quanti elementi ci sono in ogni cluster
+    unique, counts = np.unique(cluster_labels, return_counts=True)
+    dist_cluster = dict(zip(unique, counts))
+    
+    # --- Disegno dei grafici ---
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
+    
+    # Torta 1: Etichette Reali
+    ax1.pie(dist_reale.values, labels=dist_reale.index, autopct='%1.1f%%', 
+            startangle=140, colors=sns.color_palette("Set2", len(dist_reale)))
+    ax1.set_title("Distribuzione delle Patologie Reali\n(Dal Dataset Ontologico)")
+    
+    # Torta 2: Cluster K-Means
+    labels_cluster = [f"Profilo Climatico {k}" for k in dist_cluster.keys()]
+    ax2.pie(dist_cluster.values(), labels=labels_cluster, autopct='%1.1f%%', 
+            startangle=140, colors=sns.color_palette("pastel"))
+    ax2.set_title("Distribuzione dei Cluster Ambientali\n(K-Means con k=3)")
+    
+    plt.savefig(os.path.join(PLOTS_DIR, '04_pie_charts_distribution.png'), bbox_inches='tight')
+    plt.close()
 
 if __name__ == "__main__":
     print("--- AVVIO GENERATORE DI GRAFICI PER DOCUMENTAZIONE ---")
@@ -179,5 +214,6 @@ if __name__ == "__main__":
     plot_kmeans_evaluation(df)
     plot_learning_curves(X, y)
     plot_confusion_and_roc(X, y, classes)
+    plot_pie_charts(df)
     
     print(f"[SUCCESSO] Tutti i grafici sono stati salvati nella cartella: {PLOTS_DIR}")
