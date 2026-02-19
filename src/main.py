@@ -187,4 +187,6 @@ if __name__ == "__main__":
         app = GreenLeafGui(root)
         root.mainloop()
     except Exception as e:
-        print("Fallback testuale attivato.")
+        print(f"Fallback testuale attivato. L'ERRORE FATALE E': {e}")
+        import traceback
+        traceback.print_exc()

@@ -141,3 +141,8 @@ try:
     print(f">>> {OUTPUT_FILE}")
 except Exception as e:
     print(f"[ERRORE] Impossibile salvare: {e}")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Salviamo l'ontologia usando semplicemente la variabile 'onto' (senza self)
+onto.save(file=os.path.join(BASE_DIR, 'knowledge_base', 'Ontologia_Aggiornata.owl'), format="rdfxml")
