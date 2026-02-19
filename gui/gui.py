@@ -11,8 +11,14 @@ SRC_DIR = os.path.join(ROOT_DIR, "src")
 sys.path.insert(0, SRC_DIR)
 sys.path.insert(0, ROOT_DIR)
 
-# --- IMPORT BACKEND ---
+# --- IMPORT BACKEND E ROVER ---
 from main import SmartGardenSystem
+
+# Prova a importare la classe del Rover (assicurati che il file si chiami rover_tab.py e sia nella stessa cartella o in src)
+try:
+    from rover_tab import RoverTab
+except ImportError:
+    RoverTab = None
 
 # ══════════════════════════════════════════════════════════════════
 #  COSTANTI DI STILE
@@ -51,7 +57,7 @@ class GreenLeafGui:
         "Muffa_Bianca", "Foglie_Arricciate", "Marciume_Apicale", "Ragnatele"
     ]
 
-    # AGGIUNTO IL 5° TAB QUI
+    # I tuoi tab testuali standard
     TAB_INFO = [
         ("🤖  ML",      "Risultati Machine Learning (Random Forest, Rete Neurale, K-Means)"),
         ("🧠  Prolog",  "Motore Inferenziale — Trattamenti dalla Knowledge Base"),
@@ -63,11 +69,17 @@ class GreenLeafGui:
     def __init__(self, root: tk.Tk):
         self.root = root
         self.root.title("Green Leaf — Giardino Intelligente")
-        self.root.geometry("1050x750") # Leggermente allargata per la tabella grande
+        self.root.geometry("1050x700") # Leggermente più grande per contenere bene la griglia del Rover
         self.root.configure(bg=BG_DARK)
         self.root.resizable(True, True)
 
-        self.system: SmartGardenSystem | None = None
+        # Tenta di massimizzare la finestra all'avvio (funziona su Windows)
+        try:
+            self.root.state('zoomed')
+        except:
+            pass
+    
+        self.system = None
         self.status_var = tk.StringVar(value="⏳  Avvio sistema in corso…")
         self.result_texts: dict[str, tk.Text] = {}
 
@@ -134,6 +146,7 @@ class GreenLeafGui:
         notebook = ttk.Notebook(container, style="Green.TNotebook")
         notebook.pack(fill="both", expand=True)
 
+        # 1. CREA I TAB DI TESTO CLASSICI
         for tab_name, tab_desc in self.TAB_INFO:
             frame = tk.Frame(notebook, bg=BG_CARD)
             notebook.add(frame, text=tab_name)
@@ -156,9 +169,18 @@ class GreenLeafGui:
             txt.tag_configure("value",   foreground="#ffffff", font=("Courier", 10, "bold"))
 
             self.result_texts[tab_name] = txt
+            self._write_to_tab(tab_name, "In attesa di un'analisi…\n", "muted")
 
-        for name, txt in self.result_texts.items():
-            self._write_to_tab(name, "In attesa di un'analisi…\n", "muted")
+        # 2. INTEGRAZIONE DEL NUOVO TAB ROVER A*
+        tab_rover_frame = tk.Frame(notebook, bg=BG_DARK) # Sfondo scuro per matchare la dashboard
+        notebook.add(tab_rover_frame, text="🚜  Rover A*")
+        
+        if RoverTab:
+            # Passiamo il frame del tab direttamente alla classe del Rover
+            self.rover_app = RoverTab(tab_rover_frame)
+        else:
+            tk.Label(tab_rover_frame, text="⚠️ Modulo 'rover_tab.py' non trovato nella cartella.", 
+                     font=FONT_HEADING, bg=BG_DARK, fg=ERROR_COLOR).pack(pady=50)
 
     def _build_status_bar(self):
         bar = tk.Frame(self.root, bg="#010e01", pady=4)
@@ -205,7 +227,6 @@ class GreenLeafGui:
     def _parse_and_display(self, output: str, pianta: str, sintomo: str):
         lines = output.splitlines()
 
-        # AGGIUNTO "val" AI BLOCCHI
         blocks = {"ml": [], "prolog": [], "bayes": [], "csp": [], "val": []}
         current = None
 
@@ -218,14 +239,12 @@ class GreenLeafGui:
                 current = "bayes"
             elif "[4] CSP" in line:
                 current = "csp"
-            # AGGIUNTO RICONOSCIMENTO DEL 5° STEP
             elif "[5] VALIDAZIONE" in line:
                 current = "val"
 
             if current:
                 blocks[current].append(line)
 
-        # MAPPING DEI BLOCCHI AI TAB
         tab_map = {
             "ml":     "🤖  ML",
             "prolog": "🧠  Prolog",
@@ -254,7 +273,6 @@ class GreenLeafGui:
         elif line.strip().startswith("[") or line.strip().startswith("="):
             tag = "header"
         elif line.strip().startswith("->") or line.strip().startswith("*") or "|" in line:
-            # Aggiunto "|" in line per mantenere il colore bianco nella tabella
             tag = "value"
         else:
             tag = "ok"
