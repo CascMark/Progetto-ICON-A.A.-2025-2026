@@ -1,38 +1,105 @@
-from sklearn.cluster import KMeans
+import os
+import joblib
+import pandas as pd
 import numpy as np
 
-class UnsupervisedModels:
-    def __init__(self, n_clusters=3):
-        self.kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
-        self.centroids = None
-
-    def train(self, X_env):
-        """
-        X_env: Solo dati ambientali (Umidità, Temp, Luce)
-        """
-        self.kmeans.fit(X_env)
-        self.centroids = self.kmeans.cluster_centers_
+class GardenMLEngine:
+    def __init__(self, csv_path_ignored=None):
+        # Nota: csv_path_ignored è lì per compatibilità col tuo vecchio main, ma carichiamo i pkl.
         
-        # Analisi automatica dei cluster (per dare un nome sensato)
-        print(" [K-MEANS] Analisi dei Cluster generati:")
-        for i, center in enumerate(self.centroids):
-            # center[0]=Umidita, center[1]=Temp, center[2]=Luce
-            print(f"   - Cluster {i}: Umidità {center[0]:.2f}, Temp {center[1]:.1f}°C, Luce {center[2]:.1f}h")
-
-    def predict_cluster(self, input_env):
-        cluster_id = self.kmeans.predict(input_env)[0]
-        
-        # Logica semplice per dare un nome al cluster basato sul centroide
-        # (Nota: questo è un'euristica basata sui dati medi)
-        centroid = self.centroids[cluster_id]
-        umid_media = centroid[0]
-        
-        descrizione = f"Cluster {cluster_id}"
-        if umid_media < 0.4:
-            descrizione = "Ambiente Secco/Arido"
-        elif umid_media > 0.7:
-            descrizione = "Ambiente Umido/Tropicale"
+        # Percorsi
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        if os.path.basename(BASE_DIR) == "src":
+            ROOT_DIR = os.path.dirname(BASE_DIR)
         else:
-            descrizione = "Ambiente Temperato/Standard"
+            ROOT_DIR = BASE_DIR
             
-        return descrizione
+        MODEL_DIR = os.path.join(ROOT_DIR, "models")
+        
+        print(" [ML ENGINE] Caricamento modelli pre-addestrati...")
+        try:
+            self.rf = joblib.load(os.path.join(MODEL_DIR, "model_rf.pkl"))
+            self.nn = joblib.load(os.path.join(MODEL_DIR, "model_nn.pkl"))
+            self.kmeans = joblib.load(os.path.join(MODEL_DIR, "model_kmeans.pkl"))
+            
+            self.scaler = joblib.load(os.path.join(MODEL_DIR, "scaler.pkl"))
+            self.le_famiglia = joblib.load(os.path.join(MODEL_DIR, "le_famiglia.pkl"))
+            self.scaler_env = joblib.load(os.path.join(MODEL_DIR, "scaler_env.pkl"))
+            
+            self.models_loaded = True
+            print(" -> Modelli caricati: RF, NN, K-Means.")
+        except Exception as e:
+            print(f" [ERRORE] Impossibile caricare i modelli: {e}")
+            print(" -> Assicurati di aver eseguito 'python src/train_model.py'!")
+            self.models_loaded = False
+
+    def addestra(self):
+        # Metodo dummy per compatibilità col vecchio main.py che chiamava .addestra()
+        print(" [INFO] I modelli sono già pre-addestrati e caricati da file.")
+        pass
+
+    def predici_complesso(self, nome_pianta, nome_sintomo):
+        if not self.models_loaded:
+            return None
+
+        try:
+            # 1. Preparazione Input (Simulazione Dati Ambientali)
+            # In un'app reale, questi verrebbero da sensori. Qui usiamo medie realistiche.
+            
+            # Mapping Pianta -> Famiglia (Semplificato)
+            famiglia_map = {
+                "Basilico": "Lamiaceae", "Menta": "Lamiaceae",
+                "Pomodoro": "Solanaceae", "Peperone": "Solanaceae", "Melanzana": "Solanaceae",
+                "Zucchina": "Cucurbitaceae", "Cetriolo": "Cucurbitaceae",
+                "Rosa": "Rosaceae", "Fragola": "Rosaceae"
+            }
+            famiglia_str = famiglia_map.get(nome_pianta, "Solanaceae") # Default
+            
+            # Simuliamo condizioni ambientali per la predizione
+            luce = 8.0
+            umidita = 0.6
+            temp = 25.0
+            ph = 7.0
+
+            # 2. Encoding e Scaling
+            try:
+                fam_encoded = self.le_famiglia.transform([famiglia_str])[0]
+            except:
+                fam_encoded = 0 # Fallback se famiglia sconosciuta
+            
+            # Creazione DataFrame input
+            input_df = pd.DataFrame([[fam_encoded, luce, umidita, temp, ph]], 
+                                    columns=['Famiglia_Encoded', 'Ore_Luce', 'Umidita_Ottimale', 'Temperatura_Ottimale', 'PH_Suolo'])
+            
+            X_input = self.scaler.transform(input_df)
+
+            # 3. Predizione Supervisionata (RF e NN)
+            pred_rf = self.rf.predict(X_input)[0]
+            prob_rf = np.max(self.rf.predict_proba(X_input))
+            
+            pred_nn = self.nn.predict(X_input)[0]
+
+            # 4. Predizione Non Supervisionata (K-Means)
+            # Cluster basato solo su ambiente
+            input_env = pd.DataFrame([[luce, umidita, temp]], columns=['Ore_Luce', 'Umidita_Ottimale', 'Temperatura_Ottimale'])
+            X_env_scaled = self.scaler_env.transform(input_env)
+            cluster_id = self.kmeans.predict(X_env_scaled)[0]
+            
+            # Descrizione Cluster (Interpretazione)
+            descrizioni_cluster = {
+                0: "Clima A (Prob. Secco/Soleggiato)",
+                1: "Clima B (Prob. Umido/Ombroso)",
+                2: "Clima C (Prob. Temperato/Neutro)"
+            }
+            cluster_desc = descrizioni_cluster.get(cluster_id, f"Cluster {cluster_id}")
+
+            return {
+                "RF": pred_rf,
+                "RF_Conf": prob_rf,
+                "NN": pred_nn,
+                "Cluster": cluster_desc
+            }
+
+        except Exception as e:
+            print(f" [ERRORE PREDIZIONE] {e}")
+            return None

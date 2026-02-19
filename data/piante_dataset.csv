@@ -1,0 +1,501 @@
+ID_Pianta,Famiglia,Ore_Luce,Umidita_Ottimale,Temperatura_Ottimale,PH_Suolo,Sintomi_Visivi,Diagnosi_Reale
+Peperone_002,Solanaceae,8.24,0.46,27.5,7.3,Nessuno,Sano
+Pomodoro_003,Solanaceae,8.7,0.65,25.9,6.9,Nessuno,Sano
+Peperone_012,Solanaceae,7.54,0.57,25.2,6.8,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Peperone_015,Solanaceae,8.43,0.43,25.5,7.4,Nessuno,Sano
+Pomodoro_018,Solanaceae,9.96,0.54,25.6,7.5,Nessuno,Marciume_Apicale
+Pomodoro_019,Solanaceae,9.05,0.62,22.4,6.4,Nessuno,Sano
+Pomodoro_020,Solanaceae,9.66,0.63,22.6,6.6,Nessuno,Sano
+Peperone_021,Solanaceae,7.64,0.45,25.8,6.8,Nessuno,Sano
+Pomodoro_022,Solanaceae,8.63,0.51,27.4,6.5,Nessuno,Sano
+Pomodoro_025,Solanaceae,9.58,0.54,15.5,6.8,Nessuno,Sano
+Pomodoro_026,Solanaceae,9.22,0.66,15.4,7.2,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Pomodoro_028,Solanaceae,8.55,0.69,15.6,7.2,Nessuno,Sano
+Peperone_029,Solanaceae,8.05,0.58,18.1,6.7,Nessuno,Sano
+Peperone_036,Solanaceae,7.29,0.57,21.0,7.3,Nessuno,Sano
+Pomodoro_040,Solanaceae,9.72,0.56,19.2,6.4,Nessuno,Sano
+Peperone_058,Solanaceae,7.25,0.51,27.4,7.5,Nessuno,Sano
+Peperone_061,Solanaceae,8.37,0.41,29.6,6.6,Nessuno,Sano
+Peperone_066,Solanaceae,8.49,0.44,18.7,7.4,Nessuno,Sano
+Pomodoro_067,Solanaceae,8.87,0.68,16.6,7.2,Nessuno,Sano
+Peperone_068,Solanaceae,7.29,0.4,29.3,6.3,Nessuno,Sano
+Pomodoro_072,Solanaceae,8.62,0.58,15.6,6.5,Nessuno,Sano
+Pomodoro_073,Solanaceae,8.2,0.62,27.4,7.0,Nessuno,Marciume_Apicale
+Pomodoro_076,Solanaceae,9.13,0.51,22.4,6.6,Nessuno,Sano
+Peperone_077,Solanaceae,7.97,0.49,15.7,6.7,Nessuno,Sano
+Pomodoro_079,Solanaceae,9.3,0.54,25.1,6.4,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Pomodoro_083,Solanaceae,8.63,0.56,29.5,7.2,Nessuno,Sano
+Peperone_086,Solanaceae,7.15,0.42,17.8,7.0,Nessuno,Sano
+Peperone_097,Solanaceae,8.4,0.57,22.4,6.4,Nessuno,Sano
+Pomodoro_100,Solanaceae,9.07,0.65,19.7,6.8,Nessuno,Sano
+Peperone_101,Solanaceae,8.19,0.44,29.7,6.2,Muffa_Bianca,Oidio
+Peperone_105,Solanaceae,8.88,0.45,26.5,7.0,Nessuno,Sano
+Peperone_113,Solanaceae,7.69,0.45,27.5,7.2,Nessuno,Sano
+Pomodoro_114,Solanaceae,9.87,0.67,24.2,6.1,Nessuno,Sano
+Pomodoro_116,Solanaceae,8.16,0.64,16.8,7.3,Nessuno,Marciume_Apicale
+Peperone_122,Solanaceae,8.35,0.57,23.9,7.2,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Pomodoro_125,Solanaceae,10.0,0.52,23.4,7.1,Nessuno,Sano
+Pomodoro_126,Solanaceae,9.42,0.51,26.9,7.0,Nessuno,Marciume_Apicale
+Pomodoro_129,Solanaceae,9.67,0.67,20.0,6.4,Nessuno,Sano
+Pomodoro_137,Solanaceae,9.75,0.57,18.9,7.2,Nessuno,Marciume_Apicale
+Pomodoro_138,Solanaceae,8.49,0.64,19.3,7.2,Nessuno,Sano
+Pomodoro_139,Solanaceae,9.76,0.59,15.5,7.4,Nessuno,Sano
+Pomodoro_147,Solanaceae,9.49,0.56,29.0,7.3,Nessuno,Sano
+Peperone_148,Solanaceae,7.43,0.42,22.3,6.6,Muffa_Bianca,Oidio
+Pomodoro_154,Solanaceae,8.13,0.59,28.7,6.8,Nessuno,Marciume_Apicale
+Peperone_158,Solanaceae,8.38,0.58,27.7,7.5,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Pomodoro_159,Solanaceae,9.16,0.59,21.4,7.5,Nessuno,Marciume_Apicale
+Peperone_163,Solanaceae,8.85,0.51,28.0,7.4,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Pomodoro_168,Solanaceae,9.1,0.68,16.7,6.9,Nessuno,Sano
+Pomodoro_169,Solanaceae,8.23,0.55,15.6,7.1,Nessuno,Sano
+Pomodoro_175,Solanaceae,8.43,0.62,24.9,7.1,Nessuno,Sano
+Pomodoro_176,Solanaceae,8.76,0.58,21.8,7.4,Nessuno,Sano
+Peperone_181,Solanaceae,8.07,0.4,28.5,6.6,Nessuno,Sano
+Peperone_183,Solanaceae,7.67,0.5,18.4,6.7,Nessuno,Sano
+Pomodoro_186,Solanaceae,8.53,0.51,15.8,7.4,Nessuno,Sano
+Pomodoro_195,Solanaceae,9.87,0.69,16.1,7.5,Nessuno,Sano
+Peperone_198,Solanaceae,8.9,0.42,17.3,6.6,Nessuno,Sano
+Pomodoro_201,Solanaceae,9.03,0.61,22.4,6.7,Nessuno,Sano
+Pomodoro_203,Solanaceae,9.57,0.6,29.0,6.2,Nessuno,Sano
+Peperone_211,Solanaceae,8.69,0.46,23.6,6.9,Nessuno,Sano
+Pomodoro_212,Solanaceae,8.51,0.62,22.2,6.1,Nessuno,Sano
+Pomodoro_216,Solanaceae,8.48,0.55,16.6,7.0,Nessuno,Sano
+Pomodoro_217,Solanaceae,8.58,0.58,25.8,6.8,Nessuno,Sano
+Peperone_220,Solanaceae,7.77,0.59,15.2,6.3,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Pomodoro_228,Solanaceae,8.87,0.51,22.2,6.5,Nessuno,Sano
+Pomodoro_231,Solanaceae,8.3,0.67,23.8,7.1,Nessuno,Sano
+Pomodoro_239,Solanaceae,9.98,0.54,28.7,7.3,Nessuno,Sano
+Peperone_241,Solanaceae,8.91,0.47,21.9,7.3,Nessuno,Sano
+Pomodoro_242,Solanaceae,8.31,0.64,19.8,7.5,Nessuno,Sano
+Peperone_247,Solanaceae,8.87,0.56,27.4,6.5,Nessuno,Sano
+Peperone_252,Solanaceae,7.63,0.54,22.5,7.3,Muffa_Bianca,Oidio
+Peperone_258,Solanaceae,8.9,0.58,23.6,6.5,Muffa_Bianca,Oidio
+Peperone_260,Solanaceae,8.07,0.4,24.3,7.4,Nessuno,Sano
+Pomodoro_266,Solanaceae,9.0,0.51,22.2,6.4,Nessuno,Sano
+Peperone_270,Solanaceae,8.21,0.53,17.5,7.5,Nessuno,Sano
+Peperone_272,Solanaceae,8.42,0.55,15.4,6.4,Nessuno,Sano
+Peperone_281,Solanaceae,8.74,0.53,18.8,6.7,Nessuno,Sano
+Peperone_283,Solanaceae,8.7,0.55,23.5,7.3,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Pomodoro_285,Solanaceae,9.45,0.61,21.6,6.6,Nessuno,Sano
+Peperone_288,Solanaceae,7.98,0.46,17.0,6.7,Nessuno,Sano
+Pomodoro_292,Solanaceae,9.8,0.66,27.8,7.3,Nessuno,Sano
+Peperone_294,Solanaceae,7.97,0.56,21.1,7.3,Nessuno,Sano
+Peperone_297,Solanaceae,7.96,0.52,27.0,7.4,Muffa_Bianca,Oidio
+Pomodoro_309,Solanaceae,9.8,0.64,18.9,7.4,Nessuno,Sano
+Pomodoro_310,Solanaceae,9.08,0.56,25.8,7.2,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Pomodoro_313,Solanaceae,8.51,0.69,16.7,6.6,Nessuno,Marciume_Apicale
+Pomodoro_314,Solanaceae,8.03,0.53,26.4,6.3,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Pomodoro_317,Solanaceae,8.22,0.58,26.8,7.1,Nessuno,Marciume_Apicale
+Pomodoro_324,Solanaceae,8.13,0.59,19.2,7.0,Nessuno,Sano
+Pomodoro_325,Solanaceae,9.58,0.52,26.4,7.3,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Peperone_328,Solanaceae,7.21,0.41,26.1,7.1,Nessuno,Sano
+Peperone_329,Solanaceae,7.43,0.52,16.9,7.4,Nessuno,Sano
+Peperone_330,Solanaceae,8.86,0.48,20.5,7.0,Nessuno,Sano
+Peperone_332,Solanaceae,8.2,0.56,22.7,6.3,Nessuno,Sano
+Pomodoro_337,Solanaceae,8.39,0.56,15.7,7.3,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Pomodoro_338,Solanaceae,8.82,0.61,28.6,6.5,Nessuno,Sano
+Peperone_342,Solanaceae,8.99,0.56,22.5,7.1,Nessuno,Sano
+Pomodoro_343,Solanaceae,9.81,0.63,27.3,6.2,Nessuno,Sano
+Pomodoro_345,Solanaceae,9.3,0.63,18.5,6.1,Nessuno,Sano
+Peperone_347,Solanaceae,7.8,0.42,25.5,6.9,Nessuno,Sano
+Pomodoro_348,Solanaceae,8.17,0.68,21.1,6.8,Nessuno,Sano
+Peperone_349,Solanaceae,7.99,0.42,26.1,7.4,Nessuno,Sano
+Pomodoro_351,Solanaceae,8.46,0.66,19.0,6.6,Nessuno,Sano
+Pomodoro_352,Solanaceae,8.88,0.61,15.3,6.6,Nessuno,Sano
+Pomodoro_353,Solanaceae,9.32,0.56,19.4,6.9,Nessuno,Sano
+Peperone_366,Solanaceae,7.86,0.48,24.7,7.2,Nessuno,Sano
+Peperone_370,Solanaceae,8.09,0.58,15.6,7.0,Nessuno,Sano
+Pomodoro_391,Solanaceae,9.36,0.61,15.5,6.7,Nessuno,Sano
+Peperone_393,Solanaceae,8.6,0.48,19.0,6.8,Nessuno,Sano
+Peperone_396,Solanaceae,7.65,0.57,19.5,7.0,Muffa_Bianca,Oidio
+Pomodoro_398,Solanaceae,8.27,0.59,19.6,7.3,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Peperone_400,Solanaceae,8.09,0.53,22.7,7.1,Nessuno,Sano
+Peperone_402,Solanaceae,8.01,0.54,28.2,6.1,Nessuno,Sano
+Peperone_408,Solanaceae,8.7,0.49,27.1,7.0,Muffa_Bianca,Oidio
+Peperone_411,Solanaceae,8.47,0.48,29.2,6.8,Nessuno,Sano
+Peperone_415,Solanaceae,7.31,0.45,27.0,7.2,Nessuno,Sano
+Peperone_423,Solanaceae,7.7,0.51,23.1,7.2,Nessuno,Sano
+Peperone_431,Solanaceae,8.2,0.6,23.6,6.4,Nessuno,Sano
+Peperone_434,Solanaceae,7.24,0.59,26.7,6.3,Nessuno,Sano
+Peperone_436,Solanaceae,7.55,0.59,25.8,6.5,Nessuno,Sano
+Pomodoro_441,Solanaceae,8.93,0.62,26.5,6.2,Nessuno,Sano
+Peperone_444,Solanaceae,7.51,0.46,26.6,7.4,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Peperone_446,Solanaceae,7.77,0.46,22.0,6.7,Nessuno,Sano
+Peperone_447,Solanaceae,7.3,0.52,26.9,7.4,Nessuno,Sano
+Pomodoro_452,Solanaceae,8.06,0.65,16.6,6.6,Nessuno,Sano
+Pomodoro_453,Solanaceae,9.12,0.62,16.6,7.2,Nessuno,Sano
+Peperone_456,Solanaceae,7.42,0.54,29.9,6.8,Muffa_Bianca,Oidio
+Peperone_457,Solanaceae,7.88,0.5,24.0,7.4,Nessuno,Sano
+Peperone_458,Solanaceae,7.45,0.59,23.7,6.0,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Peperone_459,Solanaceae,8.21,0.55,29.4,7.2,Nessuno,Sano
+Peperone_462,Solanaceae,8.29,0.49,24.5,6.3,Nessuno,Sano
+Peperone_477,Solanaceae,7.96,0.52,22.5,7.5,Nessuno,Sano
+Pomodoro_478,Solanaceae,8.84,0.64,23.4,7.2,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Peperone_479,Solanaceae,8.87,0.43,27.7,6.7,Nessuno,Sano
+Peperone_481,Solanaceae,8.75,0.47,17.1,6.6,Nessuno,Sano
+Peperone_483,Solanaceae,8.34,0.56,23.4,7.3,Nessuno,Sano
+Peperone_484,Solanaceae,8.83,0.42,15.0,6.4,Nessuno,Sano
+Pomodoro_489,Solanaceae,9.44,0.53,22.9,6.8,Nessuno,Sano
+Pomodoro_493,Solanaceae,8.15,0.56,15.0,6.1,Nessuno,Sano
+Pomodoro_494,Solanaceae,8.43,0.57,23.6,6.8,Nessuno,Sano
+Pomodoro_498,Solanaceae,8.51,0.64,23.2,6.7,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Peperone_499,Solanaceae,7.49,0.5,22.6,7.0,Nessuno,Sano
+Zucchina_013,Cucurbitaceae,6.97,0.75,22.5,7.4,Nessuno,Sano
+Zucchina_023,Cucurbitaceae,7.83,0.77,15.3,6.9,Muffa_Bianca,Oidio
+Zucchina_038,Cucurbitaceae,8.12,0.64,15.1,6.8,Nessuno,Sano
+Zucchina_046,Cucurbitaceae,6.27,0.71,20.2,6.8,Nessuno,Sano
+Zucchina_048,Cucurbitaceae,8.25,0.66,18.1,6.1,Nessuno,Sano
+Zucchina_054,Cucurbitaceae,7.77,0.76,22.8,6.3,Nessuno,Muffa_Bianca
+Zucchina_056,Cucurbitaceae,7.27,0.62,22.4,7.5,Nessuno,Muffa_Bianca
+Zucchina_063,Cucurbitaceae,6.8,0.74,28.2,6.7,Nessuno,Muffa_Bianca
+Zucchina_075,Cucurbitaceae,8.92,0.75,28.6,6.2,Nessuno,Sano
+Zucchina_084,Cucurbitaceae,8.48,0.61,17.4,6.8,Nessuno,Sano
+Zucchina_085,Cucurbitaceae,8.53,0.74,29.4,7.1,Nessuno,Sano
+Zucchina_094,Cucurbitaceae,7.72,0.67,22.4,6.3,Nessuno,Sano
+Zucchina_108,Cucurbitaceae,7.6,0.62,22.9,7.0,Nessuno,Muffa_Bianca
+Zucchina_118,Cucurbitaceae,7.88,0.65,15.9,7.2,Nessuno,Sano
+Zucchina_127,Cucurbitaceae,7.82,0.76,20.0,7.5,Nessuno,Sano
+Zucchina_128,Cucurbitaceae,6.55,0.68,15.0,6.7,Nessuno,Muffa_Bianca
+Zucchina_131,Cucurbitaceae,8.5,0.78,29.5,7.0,Nessuno,Muffa_Bianca
+Zucchina_140,Cucurbitaceae,6.61,0.77,26.9,6.3,Nessuno,Sano
+Zucchina_142,Cucurbitaceae,7.09,0.76,20.2,7.1,Nessuno,Muffa_Bianca
+Zucchina_146,Cucurbitaceae,7.91,0.75,25.2,6.7,Muffa_Bianca,Oidio
+Zucchina_155,Cucurbitaceae,7.0,0.72,25.2,7.0,Nessuno,Sano
+Zucchina_156,Cucurbitaceae,8.63,0.63,19.5,6.1,Nessuno,Muffa_Bianca
+Zucchina_161,Cucurbitaceae,6.19,0.64,19.3,7.2,Muffa_Bianca,Oidio
+Zucchina_165,Cucurbitaceae,6.5,0.66,23.0,6.1,Nessuno,Sano
+Zucchina_166,Cucurbitaceae,6.17,0.64,25.8,6.7,Nessuno,Sano
+Zucchina_167,Cucurbitaceae,6.81,0.64,15.1,7.5,Nessuno,Sano
+Zucchina_170,Cucurbitaceae,8.99,0.77,18.4,7.0,Nessuno,Muffa_Bianca
+Zucchina_172,Cucurbitaceae,7.4,0.8,20.0,6.4,Nessuno,Sano
+Zucchina_173,Cucurbitaceae,7.04,0.62,29.7,6.6,Nessuno,Sano
+Zucchina_177,Cucurbitaceae,7.6,0.73,17.0,7.2,Nessuno,Sano
+Zucchina_180,Cucurbitaceae,6.44,0.63,15.8,6.1,Nessuno,Sano
+Zucchina_185,Cucurbitaceae,7.4,0.79,19.1,6.8,Muffa_Bianca,Oidio
+Zucchina_196,Cucurbitaceae,6.18,0.61,21.2,7.4,Muffa_Bianca,Oidio
+Zucchina_197,Cucurbitaceae,6.78,0.77,28.9,6.6,Nessuno,Sano
+Zucchina_202,Cucurbitaceae,7.58,0.77,18.3,6.1,Nessuno,Sano
+Zucchina_210,Cucurbitaceae,8.14,0.7,26.3,6.7,Nessuno,Sano
+Zucchina_219,Cucurbitaceae,6.03,0.64,27.6,6.5,Muffa_Bianca,Oidio
+Zucchina_233,Cucurbitaceae,6.58,0.63,28.8,6.3,Muffa_Bianca,Oidio
+Zucchina_240,Cucurbitaceae,7.26,0.66,21.4,6.8,Nessuno,Sano
+Zucchina_246,Cucurbitaceae,7.84,0.6,21.3,7.2,Nessuno,Sano
+Zucchina_251,Cucurbitaceae,6.71,0.78,22.8,6.8,Nessuno,Sano
+Zucchina_268,Cucurbitaceae,6.89,0.69,30.0,6.2,Nessuno,Sano
+Zucchina_273,Cucurbitaceae,6.43,0.74,29.6,7.1,Muffa_Bianca,Oidio
+Zucchina_275,Cucurbitaceae,7.29,0.69,24.3,7.3,Nessuno,Sano
+Zucchina_286,Cucurbitaceae,6.81,0.77,18.9,6.9,Nessuno,Sano
+Zucchina_287,Cucurbitaceae,7.68,0.7,17.7,6.5,Nessuno,Sano
+Zucchina_290,Cucurbitaceae,6.36,0.73,25.9,6.2,Nessuno,Sano
+Zucchina_307,Cucurbitaceae,6.44,0.79,22.1,6.7,Nessuno,Sano
+Zucchina_318,Cucurbitaceae,8.96,0.67,15.7,7.4,Nessuno,Sano
+Zucchina_320,Cucurbitaceae,6.37,0.77,22.4,6.8,Nessuno,Sano
+Zucchina_322,Cucurbitaceae,7.99,0.66,22.4,7.5,Nessuno,Sano
+Zucchina_346,Cucurbitaceae,7.28,0.6,26.5,6.2,Nessuno,Sano
+Zucchina_359,Cucurbitaceae,7.22,0.67,23.5,6.8,Nessuno,Sano
+Zucchina_360,Cucurbitaceae,6.6,0.79,24.8,7.4,Nessuno,Sano
+Zucchina_367,Cucurbitaceae,7.14,0.67,25.3,7.2,Nessuno,Muffa_Bianca
+Zucchina_395,Cucurbitaceae,6.19,0.72,29.8,7.1,Nessuno,Sano
+Zucchina_397,Cucurbitaceae,6.0,0.78,26.1,6.3,Nessuno,Sano
+Zucchina_403,Cucurbitaceae,7.93,0.72,22.0,6.5,Muffa_Bianca,Oidio
+Zucchina_406,Cucurbitaceae,7.3,0.68,22.1,6.6,Nessuno,Sano
+Zucchina_410,Cucurbitaceae,8.13,0.74,16.5,6.7,Nessuno,Sano
+Zucchina_414,Cucurbitaceae,7.52,0.63,24.9,6.8,Nessuno,Sano
+Zucchina_422,Cucurbitaceae,6.64,0.79,27.2,6.1,Nessuno,Sano
+Zucchina_428,Cucurbitaceae,8.02,0.61,26.4,6.2,Nessuno,Sano
+Zucchina_430,Cucurbitaceae,6.99,0.71,18.3,7.0,Nessuno,Sano
+Zucchina_440,Cucurbitaceae,6.22,0.71,28.5,7.3,Muffa_Bianca,Oidio
+Zucchina_443,Cucurbitaceae,7.67,0.65,20.1,6.8,Nessuno,Sano
+Zucchina_455,Cucurbitaceae,8.96,0.78,17.4,6.4,Muffa_Bianca,Oidio
+Zucchina_471,Cucurbitaceae,6.61,0.62,24.5,7.1,Nessuno,Muffa_Bianca
+Zucchina_480,Cucurbitaceae,7.91,0.61,15.2,7.2,Nessuno,Sano
+Zucchina_482,Cucurbitaceae,8.03,0.75,22.8,7.0,Nessuno,Sano
+Basilico_000,Lamiaceae,6.23,0.68,20.5,6.8,Nessuno,Sano
+Menta_001,Lamiaceae,4.29,0.72,19.9,6.2,Nessuno,Sano
+Basilico_005,Lamiaceae,6.86,0.5,29.7,7.3,Nessuno,Sano
+Menta_006,Lamiaceae,4.68,0.88,16.1,7.4,Nessuno,Sano
+Basilico_007,Lamiaceae,7.84,0.51,15.1,7.3,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Basilico_016,Lamiaceae,6.5,0.65,21.7,6.0,Foglie_Secche,Stress_Idrico
+Basilico_027,Lamiaceae,5.31,0.5,28.9,6.1,Nessuno,Sano
+Basilico_031,Lamiaceae,6.97,0.58,23.6,6.3,Nessuno,Sano
+Menta_032,Lamiaceae,4.06,0.9,18.9,6.2,Nessuno,Sano
+Menta_034,Lamiaceae,4.86,0.79,23.0,6.8,Nessuno,Sano
+Basilico_037,Lamiaceae,6.91,0.61,23.6,6.2,Nessuno,Sano
+Menta_043,Lamiaceae,4.35,0.87,20.4,6.2,Nessuno,Sano
+Basilico_044,Lamiaceae,7.12,0.63,26.8,6.8,Nessuno,Sano
+Menta_045,Lamiaceae,5.56,0.85,27.8,6.8,Nessuno,Sano
+Menta_047,Lamiaceae,4.97,0.73,22.5,6.9,Ragnatele,Ragnetto_Rosso
+Basilico_049,Lamiaceae,7.92,0.62,19.2,6.2,Nessuno,Sano
+Basilico_050,Lamiaceae,6.96,0.51,19.6,7.4,Nessuno,Sano
+Basilico_051,Lamiaceae,5.89,0.59,24.9,6.7,Nessuno,Sano
+Basilico_052,Lamiaceae,5.62,0.55,19.9,6.1,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Menta_053,Lamiaceae,4.26,0.74,16.8,7.3,Nessuno,Sano
+Menta_055,Lamiaceae,4.7,0.89,28.3,7.4,Nessuno,Sano
+Basilico_060,Lamiaceae,5.35,0.67,17.9,7.5,Foglie_Secche,Stress_Idrico
+Menta_062,Lamiaceae,4.05,0.84,23.0,7.4,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Menta_064,Lamiaceae,5.21,0.74,29.8,6.2,Nessuno,Sano
+Menta_071,Lamiaceae,5.06,0.81,15.2,6.3,Nessuno,Sano
+Basilico_074,Lamiaceae,6.59,0.66,18.0,7.1,Nessuno,Sano
+Menta_078,Lamiaceae,4.36,0.73,24.2,6.0,Nessuno,Sano
+Basilico_082,Lamiaceae,5.78,0.55,22.8,7.4,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Menta_087,Lamiaceae,4.66,0.89,18.9,7.1,Nessuno,Sano
+Basilico_088,Lamiaceae,7.39,0.6,21.5,6.9,Nessuno,Sano
+Menta_091,Lamiaceae,5.51,0.71,29.4,6.7,Nessuno,Sano
+Menta_095,Lamiaceae,5.2,0.82,20.9,6.6,Nessuno,Sano
+Menta_098,Lamiaceae,5.78,0.79,28.8,6.0,Nessuno,Sano
+Menta_099,Lamiaceae,4.81,0.85,21.0,6.2,Nessuno,Sano
+Menta_102,Lamiaceae,5.92,0.7,27.2,6.8,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Menta_103,Lamiaceae,5.1,0.76,16.8,6.3,Nessuno,Sano
+Menta_104,Lamiaceae,4.44,0.85,28.9,6.1,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Basilico_107,Lamiaceae,6.39,0.55,28.8,7.1,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Menta_119,Lamiaceae,5.48,0.74,20.0,7.2,Nessuno,Sano
+Menta_120,Lamiaceae,5.78,0.74,22.8,6.1,Nessuno,Sano
+Basilico_123,Lamiaceae,5.56,0.52,27.7,7.0,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Menta_124,Lamiaceae,4.83,0.79,27.0,7.5,Ragnatele,Ragnetto_Rosso
+Menta_130,Lamiaceae,5.03,0.86,21.0,6.5,Nessuno,Sano
+Menta_132,Lamiaceae,5.89,0.81,26.7,6.6,Nessuno,Sano
+Basilico_141,Lamiaceae,7.83,0.7,27.2,6.5,Nessuno,Sano
+Menta_144,Lamiaceae,5.41,0.8,29.6,6.6,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Menta_150,Lamiaceae,5.02,0.77,17.5,6.8,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Menta_151,Lamiaceae,4.9,0.72,20.9,7.3,Nessuno,Sano
+Menta_160,Lamiaceae,5.76,0.84,17.6,7.0,Nessuno,Sano
+Basilico_164,Lamiaceae,5.73,0.68,15.1,6.6,Nessuno,Sano
+Menta_174,Lamiaceae,5.81,0.89,28.8,6.3,Nessuno,Sano
+Menta_179,Lamiaceae,4.39,0.81,15.5,6.4,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Basilico_187,Lamiaceae,7.1,0.56,26.9,7.0,Nessuno,Sano
+Menta_190,Lamiaceae,4.78,0.71,26.1,7.3,Ragnatele,Ragnetto_Rosso
+Basilico_191,Lamiaceae,7.36,0.6,27.5,7.4,Foglie_Secche,Stress_Idrico
+Basilico_193,Lamiaceae,6.36,0.62,19.8,6.1,Nessuno,Sano
+Basilico_194,Lamiaceae,6.65,0.5,29.7,6.3,Foglie_Secche,Stress_Idrico
+Menta_199,Lamiaceae,5.6,0.74,17.1,6.7,Nessuno,Sano
+Basilico_200,Lamiaceae,5.98,0.53,16.6,6.1,Nessuno,Sano
+Menta_204,Lamiaceae,5.71,0.87,27.2,6.2,Nessuno,Sano
+Menta_206,Lamiaceae,5.46,0.85,24.2,7.2,Ragnatele,Ragnetto_Rosso
+Basilico_207,Lamiaceae,5.53,0.67,22.5,6.8,Nessuno,Sano
+Basilico_209,Lamiaceae,6.5,0.59,23.6,7.4,Foglie_Secche,Stress_Idrico
+Menta_215,Lamiaceae,5.61,0.75,21.0,6.1,Nessuno,Sano
+Menta_218,Lamiaceae,4.95,0.8,27.2,6.4,Ragnatele,Ragnetto_Rosso
+Menta_221,Lamiaceae,5.67,0.74,19.9,6.3,Ragnatele,Ragnetto_Rosso
+Basilico_226,Lamiaceae,7.84,0.52,16.7,6.5,Foglie_Secche,Stress_Idrico
+Basilico_232,Lamiaceae,6.61,0.55,21.1,7.2,Nessuno,Sano
+Menta_234,Lamiaceae,5.3,0.77,28.8,6.1,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Basilico_236,Lamiaceae,7.93,0.65,27.2,6.9,Foglie_Secche,Stress_Idrico
+Basilico_238,Lamiaceae,7.82,0.67,15.5,6.6,Foglie_Secche,Stress_Idrico
+Menta_243,Lamiaceae,4.91,0.86,17.0,6.8,Nessuno,Sano
+Menta_248,Lamiaceae,4.39,0.9,20.7,6.2,Nessuno,Sano
+Basilico_253,Lamiaceae,7.7,0.58,17.4,6.4,Nessuno,Sano
+Menta_254,Lamiaceae,5.33,0.86,24.8,6.3,Nessuno,Sano
+Basilico_256,Lamiaceae,5.72,0.57,23.1,6.4,Foglie_Secche,Stress_Idrico
+Menta_257,Lamiaceae,5.35,0.84,15.8,7.1,Nessuno,Sano
+Menta_262,Lamiaceae,5.04,0.79,16.6,6.6,Nessuno,Sano
+Basilico_263,Lamiaceae,6.79,0.68,22.5,6.8,Nessuno,Sano
+Basilico_264,Lamiaceae,5.04,0.54,26.5,7.0,Nessuno,Sano
+Menta_271,Lamiaceae,5.95,0.84,17.4,6.4,Nessuno,Sano
+Basilico_276,Lamiaceae,7.98,0.61,27.8,7.3,Nessuno,Sano
+Basilico_277,Lamiaceae,5.61,0.55,25.9,6.4,Nessuno,Sano
+Basilico_278,Lamiaceae,6.94,0.61,15.9,7.3,Nessuno,Sano
+Menta_284,Lamiaceae,4.97,0.88,16.3,7.1,Nessuno,Sano
+Basilico_293,Lamiaceae,5.6,0.57,29.7,6.1,Nessuno,Sano
+Menta_295,Lamiaceae,4.67,0.78,26.2,7.5,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Menta_296,Lamiaceae,4.79,0.89,28.1,7.1,Nessuno,Sano
+Basilico_298,Lamiaceae,6.38,0.69,17.7,6.4,Nessuno,Sano
+Basilico_300,Lamiaceae,6.71,0.68,22.1,7.5,Nessuno,Sano
+Basilico_301,Lamiaceae,7.86,0.65,25.8,7.2,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Basilico_304,Lamiaceae,6.03,0.53,25.5,6.5,Nessuno,Sano
+Basilico_305,Lamiaceae,7.11,0.58,25.5,7.4,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Menta_306,Lamiaceae,5.03,0.71,17.8,6.7,Nessuno,Sano
+Menta_315,Lamiaceae,5.41,0.81,24.5,7.4,Ragnatele,Ragnetto_Rosso
+Basilico_316,Lamiaceae,5.73,0.54,26.4,6.9,Nessuno,Sano
+Menta_319,Lamiaceae,5.08,0.87,18.2,6.3,Nessuno,Sano
+Basilico_321,Lamiaceae,5.32,0.57,27.3,7.2,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Basilico_323,Lamiaceae,6.78,0.54,20.7,7.4,Nessuno,Sano
+Basilico_333,Lamiaceae,5.78,0.51,28.4,7.2,Foglie_Secche,Stress_Idrico
+Basilico_336,Lamiaceae,6.21,0.53,29.3,7.4,Nessuno,Sano
+Menta_339,Lamiaceae,5.01,0.77,18.2,7.5,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Basilico_350,Lamiaceae,5.73,0.69,18.4,7.4,Foglie_Secche,Stress_Idrico
+Basilico_354,Lamiaceae,7.85,0.63,18.4,6.7,Nessuno,Sano
+Basilico_356,Lamiaceae,7.49,0.57,16.1,6.5,Nessuno,Sano
+Basilico_357,Lamiaceae,5.43,0.66,19.9,7.3,Nessuno,Sano
+Menta_361,Lamiaceae,4.71,0.85,18.3,6.5,Nessuno,Sano
+Menta_363,Lamiaceae,4.3,0.82,19.5,6.6,Nessuno,Sano
+Menta_364,Lamiaceae,5.83,0.73,22.8,7.0,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Menta_369,Lamiaceae,5.68,0.73,28.2,6.2,Ragnatele,Ragnetto_Rosso
+Menta_371,Lamiaceae,4.02,0.82,18.3,6.6,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Menta_376,Lamiaceae,4.72,0.89,22.6,6.9,Ragnatele,Ragnetto_Rosso
+Basilico_378,Lamiaceae,6.75,0.56,17.6,6.6,Foglie_Secche,Stress_Idrico
+Menta_379,Lamiaceae,4.2,0.8,15.2,7.4,Nessuno,Sano
+Basilico_384,Lamiaceae,7.27,0.57,15.4,7.4,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Menta_387,Lamiaceae,4.82,0.72,20.3,6.4,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Menta_388,Lamiaceae,5.11,0.85,22.3,6.8,Nessuno,Sano
+Menta_392,Lamiaceae,5.24,0.72,18.0,6.7,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Basilico_401,Lamiaceae,5.24,0.67,16.6,7.2,Nessuno,Sano
+Basilico_405,Lamiaceae,5.27,0.59,15.4,6.8,Nessuno,Sano
+Basilico_412,Lamiaceae,6.11,0.63,20.4,6.4,Nessuno,Sano
+Basilico_413,Lamiaceae,5.75,0.6,19.0,6.5,Nessuno,Sano
+Menta_418,Lamiaceae,4.71,0.81,29.9,7.0,Nessuno,Sano
+Menta_419,Lamiaceae,5.34,0.86,20.3,6.7,Ragnatele,Ragnetto_Rosso
+Basilico_420,Lamiaceae,6.93,0.55,15.8,7.4,Nessuno,Sano
+Menta_421,Lamiaceae,5.34,0.76,20.4,7.4,Nessuno,Sano
+Menta_424,Lamiaceae,4.34,0.8,15.9,7.1,Nessuno,Sano
+Basilico_425,Lamiaceae,6.2,0.65,29.5,6.3,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Menta_427,Lamiaceae,5.39,0.73,22.1,6.9,Nessuno,Sano
+Menta_429,Lamiaceae,4.58,0.87,26.8,6.4,Ragnatele,Ragnetto_Rosso
+Menta_432,Lamiaceae,5.99,0.78,20.2,6.4,Nessuno,Sano
+Menta_435,Lamiaceae,4.31,0.85,21.2,6.6,Ragnatele,Ragnetto_Rosso
+Menta_442,Lamiaceae,5.65,0.81,23.2,6.7,Nessuno,Sano
+Menta_448,Lamiaceae,5.22,0.87,27.5,6.3,Nessuno,Sano
+Basilico_449,Lamiaceae,5.52,0.62,15.0,6.7,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Basilico_450,Lamiaceae,6.86,0.67,23.1,6.4,Nessuno,Sano
+Menta_451,Lamiaceae,4.13,0.89,18.0,7.0,Nessuno,Sano
+Basilico_454,Lamiaceae,7.09,0.67,21.8,6.1,Nessuno,Sano
+Basilico_461,Lamiaceae,7.62,0.61,21.1,7.1,"Foglie_Secche, Macchie_Fogliari",Peronospora
+Basilico_465,Lamiaceae,5.0,0.61,18.0,6.8,Nessuno,Sano
+Basilico_469,Lamiaceae,5.06,0.54,25.5,6.4,Nessuno,Sano
+Basilico_470,Lamiaceae,7.52,0.68,29.2,6.3,Nessuno,Sano
+Menta_472,Lamiaceae,5.93,0.74,28.5,6.8,Ragnatele,Ragnetto_Rosso
+Basilico_473,Lamiaceae,7.03,0.58,18.6,7.3,Nessuno,Sano
+Menta_474,Lamiaceae,4.73,0.77,19.6,6.3,Nessuno,Sano
+Menta_475,Lamiaceae,5.8,0.89,26.4,7.3,Nessuno,Sano
+Basilico_485,Lamiaceae,7.96,0.56,19.7,6.1,Nessuno,Sano
+Menta_486,Lamiaceae,5.49,0.83,20.6,6.3,Nessuno,Sano
+Menta_487,Lamiaceae,5.41,0.88,24.2,6.7,"Foglie_Arricciate, Foglie_Gialle",Infestazione_Afidi
+Basilico_488,Lamiaceae,6.28,0.5,21.3,7.5,Nessuno,Sano
+Basilico_495,Lamiaceae,7.83,0.52,29.3,6.7,Nessuno,Sano
+Basilico_497,Lamiaceae,6.88,0.56,20.1,6.1,Foglie_Secche,Stress_Idrico
+Rosa_004,Rosaceae,7.25,0.43,28.3,7.3,Nessuno,Sano
+Rosa_008,Rosaceae,6.02,0.48,15.8,6.1,Nessuno,Sano
+Rosa_009,Rosaceae,6.46,0.49,15.3,7.2,Nessuno,Sano
+Fragola_010,Rosaceae,8.75,0.74,16.1,7.0,Nessuno,Sano
+Fragola_011,Rosaceae,8.03,0.76,15.3,7.0,Nessuno,Sano
+Rosa_014,Rosaceae,7.79,0.47,16.8,7.0,Ragnatele,Ragnetto_Rosso
+Fragola_017,Rosaceae,7.14,0.63,23.4,6.0,Nessuno,Sano
+Rosa_024,Rosaceae,6.44,0.59,24.6,6.3,Nessuno,Sano
+Fragola_030,Rosaceae,7.94,0.62,20.3,6.5,Nessuno,Sano
+Fragola_033,Rosaceae,7.35,0.73,19.6,6.3,Nessuno,Muffa_Bianca
+Fragola_035,Rosaceae,7.65,0.64,21.8,6.9,Nessuno,Sano
+Rosa_039,Rosaceae,6.07,0.52,18.9,6.6,Nessuno,Sano
+Fragola_041,Rosaceae,8.02,0.67,16.0,6.4,Nessuno,Sano
+Fragola_042,Rosaceae,8.49,0.75,22.4,7.0,Nessuno,Sano
+Fragola_057,Rosaceae,7.74,0.69,24.6,6.6,Nessuno,Sano
+Fragola_059,Rosaceae,8.75,0.76,22.9,7.3,Nessuno,Sano
+Fragola_065,Rosaceae,8.66,0.6,22.6,6.2,"Muffa_Bianca, Marciume_Apicale",Botrite
+Rosa_069,Rosaceae,7.28,0.4,16.7,7.3,Nessuno,Sano
+Fragola_070,Rosaceae,7.33,0.76,16.0,6.2,"Muffa_Bianca, Marciume_Apicale",Botrite
+Fragola_080,Rosaceae,7.58,0.63,26.3,6.8,Nessuno,Sano
+Rosa_081,Rosaceae,7.78,0.42,21.4,7.3,Nessuno,Sano
+Rosa_089,Rosaceae,7.68,0.42,16.2,6.9,Muffa_Bianca,Oidio
+Fragola_090,Rosaceae,7.47,0.66,18.9,6.7,Nessuno,Sano
+Rosa_092,Rosaceae,6.9,0.57,19.3,7.2,Nessuno,Sano
+Rosa_093,Rosaceae,7.17,0.5,26.0,7.4,Nessuno,Sano
+Rosa_096,Rosaceae,7.22,0.52,28.3,6.7,Nessuno,Sano
+Rosa_106,Rosaceae,6.74,0.53,24.0,6.9,Nessuno,Sano
+Rosa_109,Rosaceae,7.42,0.41,26.8,6.7,Muffa_Bianca,Oidio
+Rosa_110,Rosaceae,7.14,0.51,23.0,6.4,Nessuno,Sano
+Rosa_111,Rosaceae,7.73,0.47,27.2,7.4,Nessuno,Sano
+Fragola_112,Rosaceae,7.4,0.66,19.6,7.4,Nessuno,Sano
+Fragola_115,Rosaceae,7.88,0.76,16.3,7.0,"Muffa_Bianca, Marciume_Apicale",Botrite
+Fragola_117,Rosaceae,8.31,0.66,22.3,6.1,Nessuno,Muffa_Bianca
+Fragola_121,Rosaceae,8.19,0.62,20.9,6.0,Nessuno,Muffa_Bianca
+Fragola_133,Rosaceae,8.45,0.75,28.2,6.8,Nessuno,Sano
+Fragola_134,Rosaceae,7.91,0.7,27.2,7.3,Nessuno,Sano
+Fragola_135,Rosaceae,8.46,0.74,29.6,6.7,Nessuno,Muffa_Bianca
+Fragola_136,Rosaceae,8.31,0.69,25.5,6.9,Nessuno,Muffa_Bianca
+Fragola_143,Rosaceae,8.91,0.72,22.6,7.3,Nessuno,Muffa_Bianca
+Fragola_145,Rosaceae,7.01,0.71,24.7,6.4,Nessuno,Sano
+Rosa_149,Rosaceae,6.51,0.59,15.6,6.8,Nessuno,Sano
+Fragola_152,Rosaceae,8.78,0.65,24.8,7.4,"Muffa_Bianca, Marciume_Apicale",Botrite
+Rosa_153,Rosaceae,7.83,0.54,27.5,6.8,Nessuno,Sano
+Rosa_157,Rosaceae,7.35,0.41,28.8,7.3,Nessuno,Sano
+Fragola_162,Rosaceae,8.03,0.67,26.8,7.1,Nessuno,Sano
+Fragola_171,Rosaceae,7.39,0.77,26.0,7.2,"Muffa_Bianca, Marciume_Apicale",Botrite
+Rosa_178,Rosaceae,6.57,0.42,19.8,7.1,Nessuno,Sano
+Fragola_182,Rosaceae,8.83,0.61,21.6,7.4,Nessuno,Sano
+Rosa_184,Rosaceae,7.32,0.57,17.8,7.5,Nessuno,Sano
+Fragola_188,Rosaceae,8.86,0.63,20.1,6.3,Nessuno,Sano
+Fragola_189,Rosaceae,7.13,0.76,18.5,7.0,Nessuno,Sano
+Fragola_192,Rosaceae,7.93,0.61,28.1,6.9,"Muffa_Bianca, Marciume_Apicale",Botrite
+Fragola_205,Rosaceae,7.73,0.78,15.5,7.3,"Muffa_Bianca, Marciume_Apicale",Botrite
+Rosa_208,Rosaceae,6.34,0.53,27.1,7.0,Nessuno,Sano
+Fragola_213,Rosaceae,7.4,0.63,28.2,7.2,Nessuno,Sano
+Fragola_214,Rosaceae,7.59,0.76,24.0,7.2,Nessuno,Sano
+Fragola_222,Rosaceae,7.21,0.71,22.3,6.3,"Muffa_Bianca, Marciume_Apicale",Botrite
+Rosa_223,Rosaceae,6.9,0.57,27.9,6.1,Ragnatele,Ragnetto_Rosso
+Rosa_224,Rosaceae,6.68,0.47,25.2,7.0,Nessuno,Sano
+Fragola_225,Rosaceae,8.45,0.64,16.1,6.9,Nessuno,Sano
+Fragola_227,Rosaceae,8.39,0.66,28.2,7.5,Nessuno,Sano
+Rosa_229,Rosaceae,7.32,0.54,29.5,7.5,Nessuno,Sano
+Rosa_230,Rosaceae,6.15,0.5,27.0,6.8,Nessuno,Sano
+Rosa_235,Rosaceae,7.2,0.44,25.4,6.8,Nessuno,Sano
+Rosa_237,Rosaceae,7.91,0.55,22.6,7.4,Nessuno,Sano
+Rosa_244,Rosaceae,7.47,0.4,16.5,6.8,Ragnatele,Ragnetto_Rosso
+Rosa_245,Rosaceae,6.65,0.56,19.5,6.0,Nessuno,Sano
+Rosa_249,Rosaceae,7.21,0.56,27.1,7.3,Nessuno,Sano
+Fragola_250,Rosaceae,8.15,0.61,26.1,6.8,Nessuno,Muffa_Bianca
+Fragola_255,Rosaceae,8.63,0.71,26.6,6.3,Nessuno,Sano
+Rosa_259,Rosaceae,6.74,0.49,25.3,7.3,Ragnatele,Ragnetto_Rosso
+Rosa_261,Rosaceae,6.24,0.42,22.1,7.3,Nessuno,Sano
+Fragola_265,Rosaceae,8.2,0.69,24.9,6.3,Nessuno,Sano
+Fragola_267,Rosaceae,8.93,0.74,22.0,6.8,Nessuno,Sano
+Rosa_269,Rosaceae,7.71,0.51,21.3,7.0,Nessuno,Sano
+Fragola_274,Rosaceae,7.78,0.7,18.9,6.0,Nessuno,Sano
+Rosa_279,Rosaceae,6.72,0.6,24.2,7.3,Nessuno,Sano
+Rosa_280,Rosaceae,6.63,0.58,24.9,6.2,Nessuno,Sano
+Fragola_282,Rosaceae,8.69,0.62,26.9,6.9,Nessuno,Sano
+Fragola_289,Rosaceae,7.71,0.71,26.4,6.0,Nessuno,Sano
+Fragola_291,Rosaceae,8.98,0.76,15.4,7.3,Nessuno,Sano
+Fragola_299,Rosaceae,7.6,0.73,18.7,7.3,"Muffa_Bianca, Marciume_Apicale",Botrite
+Fragola_302,Rosaceae,8.25,0.63,22.2,6.7,"Muffa_Bianca, Marciume_Apicale",Botrite
+Fragola_303,Rosaceae,7.68,0.68,30.0,7.4,"Muffa_Bianca, Marciume_Apicale",Botrite
+Fragola_308,Rosaceae,7.96,0.72,18.8,6.9,Nessuno,Muffa_Bianca
+Rosa_311,Rosaceae,7.99,0.59,15.9,7.4,Nessuno,Sano
+Fragola_312,Rosaceae,8.35,0.62,28.1,7.5,Nessuno,Muffa_Bianca
+Fragola_326,Rosaceae,8.53,0.73,24.9,6.4,Nessuno,Sano
+Rosa_327,Rosaceae,6.75,0.54,15.9,6.6,Nessuno,Sano
+Rosa_331,Rosaceae,7.95,0.5,24.0,6.9,Nessuno,Sano
+Fragola_334,Rosaceae,8.76,0.69,28.7,6.9,Nessuno,Sano
+Rosa_335,Rosaceae,7.0,0.48,21.7,6.2,Nessuno,Sano
+Fragola_340,Rosaceae,7.01,0.73,28.3,6.2,Nessuno,Sano
+Fragola_341,Rosaceae,8.24,0.66,16.4,6.2,Nessuno,Sano
+Fragola_344,Rosaceae,7.69,0.68,23.9,6.4,Nessuno,Sano
+Fragola_355,Rosaceae,8.51,0.61,29.3,6.6,Nessuno,Sano
+Rosa_358,Rosaceae,6.73,0.41,23.7,7.2,Muffa_Bianca,Oidio
+Fragola_362,Rosaceae,7.7,0.61,17.2,6.1,Nessuno,Sano
+Fragola_365,Rosaceae,8.46,0.6,20.4,6.3,Nessuno,Sano
+Fragola_368,Rosaceae,7.94,0.75,26.2,6.2,Nessuno,Sano
+Fragola_372,Rosaceae,7.38,0.69,27.1,6.2,Nessuno,Muffa_Bianca
+Fragola_373,Rosaceae,8.99,0.73,23.3,7.1,Nessuno,Sano
+Rosa_374,Rosaceae,7.33,0.59,26.2,6.3,Nessuno,Sano
+Rosa_375,Rosaceae,7.68,0.41,22.4,6.4,Nessuno,Sano
+Rosa_377,Rosaceae,7.83,0.54,20.1,6.8,Nessuno,Sano
+Rosa_380,Rosaceae,6.36,0.54,19.8,6.1,Muffa_Bianca,Oidio
+Fragola_381,Rosaceae,8.46,0.6,29.4,6.6,Nessuno,Sano
+Fragola_382,Rosaceae,7.1,0.72,29.7,7.0,Nessuno,Sano
+Fragola_383,Rosaceae,8.76,0.69,27.5,6.1,Nessuno,Sano
+Rosa_385,Rosaceae,6.2,0.46,18.4,6.0,Ragnatele,Ragnetto_Rosso
+Fragola_386,Rosaceae,7.79,0.78,16.9,6.8,Nessuno,Sano
+Fragola_389,Rosaceae,8.27,0.77,24.3,6.3,"Muffa_Bianca, Marciume_Apicale",Botrite
+Fragola_390,Rosaceae,7.68,0.72,21.5,7.4,Nessuno,Muffa_Bianca
+Rosa_394,Rosaceae,6.71,0.59,16.2,7.3,Nessuno,Sano
+Fragola_399,Rosaceae,7.41,0.68,23.9,6.2,Nessuno,Sano
+Rosa_404,Rosaceae,7.29,0.56,22.9,6.6,Nessuno,Sano
+Fragola_407,Rosaceae,7.16,0.74,15.0,6.1,Nessuno,Muffa_Bianca
+Fragola_409,Rosaceae,8.97,0.74,29.8,6.8,Nessuno,Sano
+Rosa_416,Rosaceae,7.77,0.43,26.8,6.2,Muffa_Bianca,Oidio
+Rosa_417,Rosaceae,6.49,0.48,29.5,6.1,Nessuno,Sano
+Rosa_426,Rosaceae,6.48,0.58,20.5,6.5,Nessuno,Sano
+Rosa_433,Rosaceae,6.17,0.52,29.5,6.7,Muffa_Bianca,Oidio
+Fragola_437,Rosaceae,7.32,0.79,17.1,6.4,Nessuno,Muffa_Bianca
+Rosa_438,Rosaceae,6.96,0.5,19.4,7.4,Nessuno,Sano
+Rosa_439,Rosaceae,7.27,0.46,26.0,6.8,Muffa_Bianca,Oidio
+Rosa_445,Rosaceae,6.63,0.45,24.9,7.0,Ragnatele,Ragnetto_Rosso
+Fragola_460,Rosaceae,8.34,0.69,23.8,6.6,Nessuno,Sano
+Rosa_463,Rosaceae,6.75,0.45,18.3,7.5,Ragnatele,Ragnetto_Rosso
+Fragola_464,Rosaceae,8.3,0.7,16.0,6.3,Nessuno,Sano
+Fragola_466,Rosaceae,7.19,0.7,17.5,6.2,Nessuno,Sano
+Fragola_467,Rosaceae,8.19,0.67,18.3,6.4,Nessuno,Muffa_Bianca
+Fragola_468,Rosaceae,8.89,0.68,17.6,6.1,Nessuno,Sano
+Fragola_476,Rosaceae,8.02,0.79,24.4,7.5,Nessuno,Sano
+Fragola_490,Rosaceae,7.99,0.76,28.5,6.3,Nessuno,Sano
+Fragola_491,Rosaceae,7.25,0.61,28.9,6.3,Nessuno,Sano
+Fragola_492,Rosaceae,8.02,0.61,15.2,6.9,Nessuno,Sano
+Rosa_496,Rosaceae,6.28,0.44,23.8,6.2,Nessuno,Sano

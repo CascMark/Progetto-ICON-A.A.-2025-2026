@@ -1,86 +1,106 @@
-from pgmpy.models import DiscreteBayesianNetwork
+import sys
+
+# Gestione compatibilità versioni pgmpy
+try:
+    from pgmpy.models import DiscreteBayesianNetwork
+except ImportError:
+    try:
+        from pgmpy.models import BayesianNetwork as DiscreteBayesianNetwork
+    except ImportError:
+        from pgmpy.models import BayesianModel as DiscreteBayesianNetwork
+
 from pgmpy.factors.discrete import TabularCPD
-from pgmpy.inference import VariableElimination
 
 def crea_rete_diagnosi():
     """
-    Costruisce una Rete Bayesiana COMPLETA per il giardino.
-    Copre 4 scenari principali:
-    1. Giallo -> Carenza o Afidi
-    2. Macchie -> Peronospora o Ruggine
-    3. Secco -> Stress Idrico
-    4. Bianco -> Oidio (Muffa)
+    Costruisce la Rete Bayesiana per il calcolo delle probabilità.
+    Corretto per gestire la matrice delle probabilità trasposta.
     """
-    # 1. Definizione Struttura (Grafo)
+    
+    # 1. STRUTTURA: Malattia -> Sintomo
     model = DiscreteBayesianNetwork([
-        # Ramo Foglie Gialle
-        ('Carenza_Ferro', 'Foglie_Gialle'),
-        ('Afidi', 'Foglie_Gialle'),
-        
-        # Ramo Macchie
-        ('Peronospora', 'Macchie_Fogliari'),
-        ('Ruggine', 'Macchie_Fogliari'),
-        
-        # Ramo Secco
-        ('Stress_Idrico', 'Foglie_Secche'),
-        
-        # Ramo Muffa
-        ('Oidio', 'Muffa_Bianca')
+        ('Malattia', 'Sintomo')
     ])
 
-    # 2. Probabilità a Priori (Le cause esistono nel giardino?)
-    # Valori bassi (0.1/0.2) perché le malattie non sono sempre presenti
-    cpd_ferro = TabularCPD(variable='Carenza_Ferro', variable_card=2, values=[[0.8], [0.2]])
-    cpd_afidi = TabularCPD(variable='Afidi', variable_card=2, values=[[0.7], [0.3]])
-    
-    cpd_perono = TabularCPD(variable='Peronospora', variable_card=2, values=[[0.8], [0.2]])
-    cpd_ruggine = TabularCPD(variable='Ruggine', variable_card=2, values=[[0.9], [0.1]])
-    
-    cpd_stress = TabularCPD(variable='Stress_Idrico', variable_card=2, values=[[0.6], [0.4]]) # Più comune
-    
-    cpd_oidio = TabularCPD(variable='Oidio', variable_card=2, values=[[0.8], [0.2]])
+    # --- DEFINIZIONE STATI ---
+    malattie = [
+        'Afidi', 'Botrite', 'Carenza_Calcio', 'Carenza_Ferro', 'Oidio', 
+        'Peronospora', 'Ragnetto_Rosso', 'Ruggine', 'Sano', 'Stress_Idrico', 'Virosi'
+    ]
 
-    # 3. Probabilità Condizionate (Se ho la malattia, quanto è probabile il sintomo?)
+    sintomi = [
+        'Foglie_Arricciate', 'Foglie_Gialle', 'Foglie_Secche', 'Macchie_Fogliari', 
+        'Marciume_Apicale', 'Muffa_Bianca', 'Nessuna', 'Ragnatele'
+    ]
+
+    # --- 2. PROBABILITÀ A PRIORI (MALATTIA) ---
+    p_sano = 0.20
+    p_altre = (1.0 - p_sano) / 10  # 0.08
     
-    # Sintomo: Foglie_Gialle (Dipende da Ferro e Afidi)
-    cpd_giallo = TabularCPD(
-        variable='Foglie_Gialle', variable_card=2,
-        values=[
-            [0.99, 0.40, 0.30, 0.05], # False (Sintomo assente)
-            [0.01, 0.60, 0.70, 0.95]  # True (Sintomo presente)
-        ],
-        evidence=['Carenza_Ferro', 'Afidi'], evidence_card=[2, 2]
+    values_malattia = [
+        [p_altre], [p_altre], [p_altre], [p_altre], [p_altre], [p_altre], 
+        [p_altre], [p_altre], [p_sano], [p_altre], [p_altre]
+    ]
+
+    cpd_malattia = TabularCPD(
+        variable='Malattia', variable_card=len(malattie),
+        values=values_malattia,
+        state_names={'Malattia': malattie}
     )
 
-    # Sintomo: Macchie_Fogliari (Dipende da Peronospora e Ruggine)
-    cpd_macchie = TabularCPD(
-        variable='Macchie_Fogliari', variable_card=2,
-        values=[
-            [0.99, 0.30, 0.40, 0.05], 
-            [0.01, 0.70, 0.60, 0.95]  
-        ],
-        evidence=['Peronospora', 'Ruggine'], evidence_card=[2, 2]
-    )
-
-    # Sintomo: Foglie_Secche (Dipende da Stress_Idrico)
-    cpd_secche = TabularCPD(
-        variable='Foglie_Secche', variable_card=2,
-        values=[[0.95, 0.10], [0.05, 0.90]], # Se c'è stress, 90% foglie secche
-        evidence=['Stress_Idrico'], evidence_card=[2]
-    )
-
-    # Sintomo: Muffa_Bianca (Dipende da Oidio)
-    cpd_bianca = TabularCPD(
-        variable='Muffa_Bianca', variable_card=2,
-        values=[[0.99, 0.05], [0.01, 0.95]], # Oidio causa quasi sempre muffa bianca
-        evidence=['Oidio'], evidence_card=[2]
-    )
-
-    # 4. Aggiunta al modello
-    model.add_cpds(cpd_ferro, cpd_afidi, cpd_perono, cpd_ruggine, cpd_stress, cpd_oidio,
-                   cpd_giallo, cpd_macchie, cpd_secche, cpd_bianca)
+    # --- 3. PROBABILITÀ CONDIZIONATA (SINTOMO | MALATTIA) ---
+    # Qui inseriamo i dati COME LI HAI SCRITTI TU (per Malattia),
+    # perché è più leggibile per l'essere umano.
+    # Poi li trasponiamo via codice per pgmpy.
     
-    if model.check_model():
-        return VariableElimination(model)
-    else:
-        raise ValueError("Errore nella definizione della Rete Bayesiana Completa")
+    # Ordine Sintomi interno a ogni lista: 
+    # [Arricciate, Gialle, Secche, Macchie, Marciume, Muffa, Nessuna, Ragnatele]
+    
+    dati_per_malattia = [
+        # 1. Afidi
+        [0.60, 0.30, 0.00, 0.00, 0.00, 0.00, 0.10, 0.00], 
+        # 2. Botrite
+        [0.00, 0.00, 0.00, 0.05, 0.00, 0.90, 0.05, 0.00], 
+        # 3. Carenza_Calcio
+        [0.00, 0.00, 0.00, 0.00, 0.95, 0.00, 0.05, 0.00], 
+        # 4. Carenza_Ferro
+        [0.00, 0.95, 0.00, 0.00, 0.00, 0.00, 0.05, 0.00], 
+        # 5. Oidio
+        [0.00, 0.05, 0.00, 0.00, 0.00, 0.90, 0.05, 0.00], 
+        # 6. Peronospora
+        [0.00, 0.05, 0.00, 0.90, 0.00, 0.00, 0.05, 0.00], 
+        # 7. Ragnetto_Rosso
+        [0.00, 0.10, 0.00, 0.00, 0.00, 0.00, 0.05, 0.85], 
+        # 8. Ruggine
+        [0.00, 0.00, 0.00, 0.95, 0.00, 0.00, 0.05, 0.00], 
+        # 9. Sano
+        [0.01, 0.01, 0.01, 0.01, 0.00, 0.00, 0.96, 0.00], 
+        # 10. Stress_Idrico
+        [0.10, 0.00, 0.85, 0.00, 0.00, 0.00, 0.05, 0.00], 
+        # 11. Virosi
+        [0.70, 0.00, 0.00, 0.25, 0.00, 0.00, 0.05, 0.00], 
+    ]
+
+    # --- TRASPOSIZIONE AUTOMATICA ---
+    # La funzione zip(*lista) gira la matrice: le righe diventano colonne.
+    # Ora pgmpy riceverà: [[Tutte le prob di Arricciate], [Tutte le prob di Gialle], ...]
+    values_sintomi_transposed = list(map(list, zip(*dati_per_malattia)))
+
+    cpd_sintomo = TabularCPD(
+        variable='Sintomo', variable_card=len(sintomi),
+        values=values_sintomi_transposed, # Usiamo la matrice girata
+        evidence=['Malattia'],
+        evidence_card=[len(malattie)],
+        state_names={
+            'Malattia': malattie,
+            'Sintomo': sintomi
+        }
+    )
+
+    model.add_cpds(cpd_malattia, cpd_sintomo)
+    
+    # Verifica validità (ora la somma delle colonne farà 1.0 e non darà errore)
+    if not model.check_model():
+        raise ValueError("Errore modello: Le probabilità non sommano a 1.")
+        
+    return model
