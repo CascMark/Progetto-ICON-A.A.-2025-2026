@@ -58,8 +58,8 @@ Il KBS implementa cinque moduli specializzati che coprono i principali paradigmi
 | [6. Reti neurali](#6-reti-neurali)......................................................................................................................................................|13|     
 | [7. Classificazione](#7-classificazione)...............................................................................................................................................|14|
 | [8. CSP](#8-csp).....................................................................................................................................................................|16|
-| [9. Conclusioni](#8-conclusioni).....................................................................................................................................................|18  |
-| [10. Riferimenti bibliografici](#8-riferimenti-bibliografici)...........................................................................................................................| 18 |    
+| [9. Conclusioni](#9-conclusioni).....................................................................................................................................................|18  |
+| [10. Riferimenti bibliografici](#10-riferimenti-bibliografici)...........................................................................................................................| 18 |    
 
 ## **1. Creazione del dataset**
 
@@ -128,8 +128,6 @@ Gestione del Bilanciamento e Suddivisione: Per garantire che i modelli imparasse
   
   haSintomo (Domain: Pianta -> Range: Sintomo)
   causataDa (Domain: Malattia -> Range: FattoreClimatico) haValorePH, haOreLuce (Data Properties con restrizioni di dominio per modellare i fabbisogni specifici delle singole famiglie botaniche). Attraverso queste proprietà, l'ontologia non si limita a dichiarare che "il Basilico è una Pianta", ma stabilisce regole complesse del tipo: Una pianta appartenente alla famiglia delle Solanaceae, se esposta a umidità > 0.8 e che presenta il sintomo Macchie_Fogliari, ha un'alta probabilità di contrarre una malattia fungina.
-  
-  [Consiglio visivo: Inserisci qui un diagramma o uno screenshot che mostri una Object Property su Protégé (ad esempio il pannello "Object property hierarchy" o le "Restrictions" di una specifica classe)]
   
   Generazione del Dataset tramite Inferenza (Dataset Builder), l'ontologia è stata impiegata come Generatore (Dataset Builder).
   
