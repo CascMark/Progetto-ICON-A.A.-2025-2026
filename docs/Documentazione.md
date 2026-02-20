@@ -121,7 +121,7 @@ Prima di procedere con l'addestramento vero e proprio dei modelli, il dataset ge
 
 A livello implementativo, questa suddivisione è stata effettuata avvalendosi della funzione train_test_split messa a disposizione dalla libreria sklearn.model_selection:
 
-![alt text](image.png)
+![alt text](./img/image.png)
 
  La configurazione di questa funzione non è stata casuale, ma ha risposto a specifiche esigenze architetturali del dominio botanico in esame:
 - **test_size=0.25**: Definisce la proporzione del taglio (Hold-out), allocando esattamente un quarto delle piante virtuali alla fase di testing diagnostico visivo.
@@ -391,7 +391,7 @@ Il primo è un vincolo globale di unicità (AllDifferentConstraint), che impedis
 
 Il secondo è un vincolo unario biologico (check_bio), applicato individualmente a ciascuna pianta: un vaso è considerato compatibile se i suoi valori di luce e umidità rientrano entro una tolleranza di ±3 ore di luce e ±0.3 di umidità rispetto ai requisiti ottimali dell'individuo recuperati dall'ontologia.
 
-![alt text](image-5.png)
+![alt text](./img/image-5.png)
 
  La scelta di adottare una tolleranza invece di un vincolo rigido è motivata dalla necessità di garantire soluzioni ammissibili anche in contesti reali dove le condizioni ambientali non coincidono perfettamente con i valori ottimali di ogni specie.
 Un aspetto rilevante riguarda la gestione dei dati ontologici: le proprietà recuperate tramite owlready2 possono restituire un valore scalare o una lista a seconda della versione della libreria; il modulo gestisce entrambi i casi estraendo il primo elemento quando necessario, e applica valori di default (luce 5h, umidità 0.5) qualora la proprietà non sia definita per un individuo specifico. La ricerca dell'individuo da posizionare avviene interrogando l'ontologia tramite il nome della pianta fornito in input, selezionando un candidato rappresentativo tra quelli trovati.
