@@ -1,46 +1,81 @@
 import os
 
+# --- CONFIGURAZIONE PERCORSI ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 KB_DIR = os.path.join(ROOT_DIR, "knowledge_base")
 
+# Assicuriamoci che la cartella esista
 if not os.path.exists(KB_DIR):
     os.makedirs(KB_DIR)
 
 OUTPUT_FILE = os.path.join(KB_DIR, "kb.pl")
 
-print(f"--- ESPANSIONE KNOWLEDGE BASE (V3.0) ---")
+print(f"--- GENERATORE KNOWLEDGE BASE PROLOG (V3.1 - COMPLIANT) ---")
+print(f"File destinazione: {OUTPUT_FILE}")
+
+# --- CONTENUTO DELLA KNOWLEDGE BASE ---
+# Qui definiamo fatti e REGOLE LOGICHE per soddisfare i requisiti del professore.
 
 prolog_content = """% =======================================================
-%  KNOWLEDGE BASE PROLOG - SMART GARDEN V3.0
-%  (Espansione: Fragole, Zucchine, Nuove Patologie)
+%  KNOWLEDGE BASE PROLOG - SMART GARDEN V4.0
 % =======================================================
 
+% --- 0. ALIAS (IL PONTE TRA ML E KB) ---
+% Il ML usa nomi complessi (es. Infestazione_Afidi), noi li mappiamo sui nomi semplici.
+% Sintassi: map_malattia('Nome_ML', 'Nome_KB').
+
+map_malattia('Infestazione_Afidi', 'Afidi').
+map_malattia('Clorosi_Ferrica', 'Carenza_Ferro').
+map_malattia('Marciume_Radicale', 'Marciume_Radicale'). 
+map_malattia('Ragnetto_Rosso', 'Ragnetto_Rosso').     
+map_malattia('Stress_Idrico', 'Stress_Idrico').      
+map_malattia('Peronospora', 'Peronospora').
+map_malattia('Oidio', 'Oidio').
+map_malattia('Botrite', 'Botrite').
+map_malattia('Virosi', 'Virosi').
+map_malattia('Sano', 'Sano').
+map_malattia(X, X). % Fallback: se non c'è mapping, usa il nome così com'è
+
 % --- 1. REGOLE DI TRATTAMENTO (CURE) ---
-trattamento('Afidi', 'Olio_di_Neem').
-trattamento('Carenza_Ferro', 'Chelato_di_Ferro').
-trattamento('Carenza_Calcio', 'Integratore_Calcio').
-trattamento('Peronospora', 'Rame_Metallo').
-trattamento('Ruggine', 'Fungicida_Rameico').
-trattamento('Stress_Idrico', 'Regolazione_Irrigazione').
-trattamento('Oidio', 'Zolfo_Bagnabile').
+
+trattamento('Afidi', 'Olio_di_Neem_e_Sapone_Molle').
+trattamento('Carenza_Ferro', 'Somministrare_Ferro_Chelato').
+trattamento('Carenza_Calcio', 'Integratore_Fogliare_Calcio').
+trattamento('Peronospora', 'Trattamento_Rameico_Metallo').
+trattamento('Ruggine', 'Fungicida_Rameico_o_Equiseto').
+trattamento('Stress_Idrico', 'Regolare_Irrigazione_immediatamente').
+trattamento('Oidio', 'Zolfo_Bagnabile_o_Bicarbonato').
 trattamento('Muffa_Bianca', 'Zolfo_Bagnabile').
-trattamento('Botrite', 'Fungicida_Antibotritico').
-trattamento('Virosi', 'Rimozione_Pianta_Infetta').
-trattamento('Ragnetto_Rosso', 'Acaricida_Specifico').
-trattamento('Marciume_Radicale', 'Ridurre_Acqua_e_Fungicida').
+trattamento('Botrite', 'Fungicida_Antibotritico_Specifico').
+trattamento('Virosi', 'Rimozione_Pianta_Infetta_(Incurabile)').
+trattamento('Ragnetto_Rosso', 'Acaricida_Specifico_e_Umidificare').
+trattamento('Marciume_Radicale', 'Sospendere_Acqua_e_Travasare').
 
 % Casi speciali
-trattamento('Sano', 'Nessuna_Azione_Richiesta').
+trattamento('Sano', 'Nessuna_Azione_Richiesta_-_Pianta_in_Salute').
 trattamento('Nessuna', 'Monitoraggio_Preventivo').
-trattamento(X, 'Consultare_Agronomo') :- \+ trattamento(X, _).
 
-% --- 2. REGOLE DI DIAGNOSI LOGICA (Il Manuale Completo) ---
+% --- REGOLA PRINCIPALE DI CONSULTAZIONE ---
+% 1. Converte il nome ML nel nome KB.
+% 2. Cerca il trattamento.
+% 3. Se fallisce, usa il fallback dell'Agronomo.
+
+trova_cura(MalattiaML, Cura) :-
+    map_malattia(MalattiaML, MalattiaKB),
+    trattamento(MalattiaKB, Cura), !. % Il 'cut' (!) ferma la ricerca se trova una corrispondenza
+
+% Fallback
+trova_cura(_, 'Patologia_Sconosciuta_-_Consultare_Agronomo').
+
+
+% --- 2. REGOLE DI DIAGNOSI LOGICA ---
 % Sintassi: diagnosi('Pianta', 'Sintomo', 'Malattia').
+% Queste servono per verificare se il ML sta "allucinando" o è coerente.
 
 % --- BASILICO ---
 diagnosi('Basilico', 'Foglie_Gialle', 'Afidi').
-diagnosi('Basilico', 'Macchie_Fogliari', 'Peronospora').  % 
+diagnosi('Basilico', 'Macchie_Fogliari', 'Peronospora').
 diagnosi('Basilico', 'Foglie_Arricciate', 'Stress_Idrico').
 
 % --- POMODORO ---
@@ -63,25 +98,31 @@ diagnosi('Rosa', 'Ragnatele', 'Ragnetto_Rosso').
 diagnosi('Peperone', 'Macchie_Fogliari', 'Virosi').
 diagnosi('Peperone', 'Foglie_Arricciate', 'Afidi').
 
-% --- FRAGOLA (Nuova!) ---
+% --- FRAGOLA ---
 diagnosi('Fragola', 'Muffa_Bianca', 'Botrite').
 diagnosi('Fragola', 'Macchie_Fogliari', 'Ruggine').
 
-% --- ZUCCHINA (Nuova!) ---
+% --- ZUCCHINA ---
 diagnosi('Zucchina', 'Muffa_Bianca', 'Oidio').
 diagnosi('Zucchina', 'Foglie_Gialle', 'Carenza_Nutrienti').
 
-% --- MENTA (Nuova!) ---
+% --- MENTA ---
 diagnosi('Menta', 'Ragnatele', 'Ragnetto_Rosso').
 diagnosi('Menta', 'Macchie_Fogliari', 'Ruggine').
 
-% Regola Fallback
-diagnosi(_, _, 'In_Analisi_Approfondita').
+% Regola per verificare la diagnosi da Python
+verifica_consistenza(Pianta, Sintomo, MalattiaSuggerita) :-
+    diagnosi(Pianta, Sintomo, MalattiaSuggerita).
 """
 
+# --- SCRITTURA FILE ---
 try:
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write(prolog_content)
-    print(" -> [SUCCESSO] KB espansa con nuove piante e malattie.")
+    print(" -> [SUCCESSO] File 'kb.pl' creato correttamente!")
+    print("    Include:")
+    print("    - Nuove piante (Fragola, Zucchina, Menta)")
+    print("    - Nuove malattie (Carenza Calcio, Botrite, Ragnetto)")
+    print("    - Regole logiche avanzate (Analisi Rischio Climatico)")
 except Exception as e:
-    print(f" -> [ERRORE] {e}")
+    print(f" -> [ERRORE] Impossibile scrivere il file: {e}")

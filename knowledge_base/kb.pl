@@ -1,9 +1,9 @@
 % =======================================================
-%  KNOWLEDGE BASE PROLOG - SMART GARDEN V4.0 (Ibrida)
+%  KNOWLEDGE BASE PROLOG - SMART GARDEN V4.0
 % =======================================================
 
 % --- 0. ALIAS (IL PONTE TRA ML E KB) ---
-% Il ML usa nomi complessi (es. Infestazione_Afidi), noi li mappiamo sui tuoi nomi semplici.
+% Il ML usa nomi complessi (es. Infestazione_Afidi), noi li mappiamo sui nomi semplici.
 % Sintassi: map_malattia('Nome_ML', 'Nome_KB').
 
 map_malattia('Infestazione_Afidi', 'Afidi').
@@ -19,7 +19,6 @@ map_malattia('Sano', 'Sano').
 map_malattia(X, X). % Fallback: se non c'è mapping, usa il nome così com'è
 
 % --- 1. REGOLE DI TRATTAMENTO (CURE) ---
-% Qui c'è la tua logica originale che funziona benissimo.
 
 trattamento('Afidi', 'Olio_di_Neem_e_Sapone_Molle').
 trattamento('Carenza_Ferro', 'Somministrare_Ferro_Chelato').
@@ -34,12 +33,11 @@ trattamento('Virosi', 'Rimozione_Pianta_Infetta_(Incurabile)').
 trattamento('Ragnetto_Rosso', 'Acaricida_Specifico_e_Umidificare').
 trattamento('Marciume_Radicale', 'Sospendere_Acqua_e_Travasare').
 
-% Casi speciali (I tuoi preferiti)
+% Casi speciali
 trattamento('Sano', 'Nessuna_Azione_Richiesta_-_Pianta_in_Salute').
 trattamento('Nessuna', 'Monitoraggio_Preventivo').
 
 % --- REGOLA PRINCIPALE DI CONSULTAZIONE ---
-% Questa è la regola che Python chiamerà. 
 % 1. Converte il nome ML nel nome KB.
 % 2. Cerca il trattamento.
 % 3. Se fallisce, usa il fallback dell'Agronomo.
@@ -48,11 +46,11 @@ trova_cura(MalattiaML, Cura) :-
     map_malattia(MalattiaML, MalattiaKB),
     trattamento(MalattiaKB, Cura), !. % Il 'cut' (!) ferma la ricerca se trova una corrispondenza
 
-% Fallback (La tua regola di sicurezza)
+% Fallback
 trova_cura(_, 'Patologia_Sconosciuta_-_Consultare_Agronomo').
 
 
-% --- 2. REGOLE DI DIAGNOSI LOGICA (Il Tuo Manuale Completo) ---
+% --- 2. REGOLE DI DIAGNOSI LOGICA ---
 % Sintassi: diagnosi('Pianta', 'Sintomo', 'Malattia').
 % Queste servono per verificare se il ML sta "allucinando" o è coerente.
 
