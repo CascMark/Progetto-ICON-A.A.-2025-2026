@@ -51,15 +51,18 @@ Il KBS implementa cinque moduli specializzati che coprono i principali paradigmi
 | Sezione | Pagina |
 | :--- | ---: |
 | [1. Creazione del dataset](#1-creazione-del-dataset).................................................................................................................................|3|   
-| [2. Creazione dell'ontologia](#2-creazione-dellontologia)...........................................................................................................................|4| 
-| [3. Ragionamento logico e Prolog](#3-ragionamento-logico-e-prolog)..............................................................................................................|6|     
-| [4. Apprendimento non supervisionato](#4-apprendimento-non-supervisionato).....................................................................................................|6|   
-| [5. Apprendimento supervisionato](#5-apprendimento-supervisionato)..............................................................................................................|8| 
-| [6. Reti neurali](#6-reti-neurali)......................................................................................................................................................|13|     
-| [7. Classificazione](#7-classificazione)...............................................................................................................................................|14|
-| [8. CSP](#8-csp).....................................................................................................................................................................|16|
-| [9. Conclusioni](#9-conclusioni).....................................................................................................................................................|18  |
-| [10. Riferimenti bibliografici](#10-riferimenti-bibliografici)...........................................................................................................................| 18 |    
+| [2. Creazione dell'ontologia](#2-creazione-dellontologia)...........................................................................................................................|6| 
+| [3. Ragionamento logico e Prolog](#3-ragionamento-logico-e-prolog)..............................................................................................................|7|     
+| [4. Apprendimento non supervisionato](#4-apprendimento-non-supervisionato).....................................................................................................|8|   
+| [5. Apprendimento supervisionato](#5-apprendimento-supervisionato)..............................................................................................................|9| 
+| [6. Reti neurali](#6-reti-neurali)......................................................................................................................................................|14|     
+| [7. Classificazione](#7-classificazione)...............................................................................................................................................|15|
+| [8. CSP](#8-csp).....................................................................................................................................................................|17|
+| [9. Ricerca nello spazio di stati](#9-ricerca-nello-spazio-di-stati)......................................................................................................................|19|
+| [10. GUI](#10-gui)....................................................................................................................................................................|22|
+| [11. Conclusioni](#11-conclusioni)....................................................................................................................................................|22|
+| [12. Riferimenti bibliografici](#12-riferimenti-bibliografici)...........................................................................................................................| 23 |    
+
 
 ## **1. Creazione del dataset**
 
@@ -105,6 +108,39 @@ Encoding delle Variabili Categoriche: Gli algoritmi di apprendimento matematico 
 Standardizzazione (Scaling): Poiché le feature numeriche hanno scale molto diverse (il pH va da 0 a 14, l'umidità da 0 a 1), è stata applicata la tecnica della standardizzazione tramite StandardScaler. Questo passaggio porta tutte le variabili ad avere media 0 e deviazione standard 1, un requisito fondamentale per far convergere e performare correttamente modelli basati sulle distanze (come le Support Vector Machine e il K-Means) e le Reti Neurali.
 
 Gestione del Bilanciamento e Suddivisione: Per garantire che i modelli imparassero equamente tutte le patologie (anche quelle più rare generate dall'Ontologia), il dataset non è stato semplicemente tagliato. È stata utilizzata la tecnica della Stratified K-Fold Cross Validation (con K=10) abbinata a uno Stratified Train-Test Split, assicurando che la proporzione di ogni singola malattia rimanesse identica sia nei dati di addestramento che in quelli di validazione.
+
+Prima di procedere con l'addestramento vero e proprio dei modelli, il dataset generato dall'Ontologia è stato rigorosamente suddiviso in due sottoinsiemi distinti per evitare il fenomeno dell'overfitting e permettere una valutazione oggettiva:
+- Training set: una porzione maggioritaria dei dati (75%) utilizzata per addestrare i modelli e far loro apprendere le regole che legano le feature ambientali alle diagnosi.
+- Test set: la restante porzione (25%) mantenuta "nascosta" al modello durante l'addestramento e utilizzata esclusivamente per testarne le prestazioni predittive su dati mai visti prima.
+A livello implementativo, questa suddivisione è stata effettuata avvalendosi della funzione train_test_split messa a disposizione dalla libreria sklearn.model_selection:
+
+
+Suddivisione del dataset in train (75%) e test (25%) con stratificazione
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42, stratify=y)
+
+ La configurazione di questa funzione non è stata casuale, ma ha risposto a specifiche esigenze architetturali del dominio botanico in esame:
+- test_size=0.25: Definisce la proporzione del taglio (Hold-out), allocando esattamente un quarto delle piante virtuali alla fase di testing diagnostico visivo.
+- random_state=42: Imposta un "seed" fisso per il generatore di numeri pseudo-casuali. Questo garantisce la totale riproducibilità dell'esperimento scientifico; a ogni esecuzione del codice, la distribuzione casuale delle piante nei due insiemi rimarrà identica.
+- stratify=y (Bilanciamento Multi-classe): Questo è il parametro cruciale dell'operazione. Trattandosi di un problema di classificazione multi-classe basato su estrazioni stocastiche da una Knowledge Base, un taglio puramente casuale avrebbe rischiato di escludere del tutto dal test set le malattie più rare (sbilanciando la valutazione). Il parametro stratify forza l'algoritmo a mantenere nel test set la stessa identica distribuzione percentuale di classi (patologie) presente nel dataset originale.
+
+È fondamentale precisare che questo specifico split 75/25 (Hold-out) è stato utilizzato per l'estrazione grafica delle Matrici di Confusione e per il calcolo delle Curve ROC. Tuttavia, per garantire il massimo rigore statistico (Model Selection) e calcolare le metriche ufficiali presentate nell'interfaccia grafica del sistema (Accuratezza Media, Varianza, F1-Score), il modulo di Machine Learning principale utilizza una 10-Fold Stratified Cross-Validation, eliminando così qualsiasi "bias" derivante da un singolo taglio fortunato dei dati.
+
+Per comprendere a fondo la struttura del dataset generato dinamicamente dall'Ontologia e interpretare correttamente i risultati degli algoritmi di clustering e classificazione, è stata condotta un'analisi visiva delle distribuzioni tramite grafici a torta.
+
+![dtst](./img/dtst.png)
+
+Il grafico a sinistra illustra la ripartizione delle etichette diagnostiche all'interno della Knowledge Base. Emerge immediatamente una caratteristica fondamentale del dataset: il forte sbilanciamento fisiologico delle classi.
+- La classe maggioritaria: Oltre il 70% (70.4%) delle istanze generate appartiene alla classe Sano. Questo dato modella in modo estremamente realistico un contesto agricolo o botanico reale, in cui la condizione di normalità e salute è statisticamente predominante rispetto allo stato patologico.
+- Le classi minoritarie: Il restante 30% circa del dataset è frammentato in diverse patologie specifiche (Oidio, Muffa Bianca, Infestazione Afidi, ecc.), le cui incidenze variano dal 5.2% fino all'1.8% del Marciume Apicale.
+- Implicazioni progettuali: Aver evidenziato questa distribuzione giustifica rigorosamente le scelte metodologiche effettuate nelle fasi successive del progetto. Un dataset così sbilanciato rende l'Accuratezza (Accuracy) una metrica potenzialmente fuorviante. Ciò ha reso obbligatorio l'uso dell'F1-Score per la valutazione dei classificatori e l'impiego della tecnica di Stratified Cross-Validation (Split Stratificato) per garantire che le malattie più rare non venissero escluse durante il partizionamento tra set di addestramento e test.
+
+Il grafico a destra mostra il risultato dell'apprendimento non supervisionato, nello specifico il partizionamento dei dati climatici effettuato dall'algoritmo K-Means con $k=3$.
+A differenza della variabile target, i profili climatici risultano ben distribuiti:
+- Il Profilo Climatico 2 è il più frequente, coprendo il 43.2% dell'ambiente simulato.
+- Segue il Profilo Climatico 1 con il 37.4%.
+- Il Profilo Climatico 0 rappresenta una nicchia ambientale più ristretta, pari al 19.4%.
+
+Questa eterogeneità conferma che il "Dataset Builder" basato sull'Ontologia ha lavorato correttamente: non ha generato un ambiente piatto e monotono, ma ha simulato con successo tre macro-climi ben distinti. È proprio all'interno di questa ricca varietà ambientale che i modelli supervisionati (come la Random Forest e la SVM) hanno dovuto cercare le correlazioni nascoste per scovare quel 30% di piante malate.
 
 ## **2. Creazione dell'ontologia**
 
@@ -324,14 +360,80 @@ La valutazione del modulo CSP si concentra sulla correttezza delle soluzioni pro
 
 La complessità del problema cresce con il numero di piante e di vasi: per n piante e m vasi il numero di assegnazioni candidate è m^n, ridotto significativamente dalla propagazione dei vincoli. Nel contesto attuale, con un numero ridotto di piante e quattro vasi disponibili, lo spazio di ricerca è contenuto e la soluzione viene trovata in tempo trascurabile. Un limite del modulo nella configurazione corrente è che viene posizionata una sola pianta per sessione di diagnosi; l'architettura del CSP supporta tuttavia nativamente il posizionamento simultaneo di più piante, essendo le variabili e i vincoli definiti su liste arbitrarie, rendendo questa estensione immediata.
 
-## **9. Conclusioni**
+## **9. Ricerca nello spazio di stati**
+
+Dopo aver completato le fasi di percezione, diagnosi (tramite Machine Learning) e ragionamento inferenziale (tramite Rete Bayesiana e Prolog), il sistema "Green Leaf" è stato dotato di un modulo di Automated Planning e Navigazione Robotica. L'obiettivo è trasformare le decisioni diagnostiche in azioni fisiche nel mondo reale (o nella sua simulazione), inviando un agente autonomo (Rover) a somministrare le cure necessarie alle piante malate e a effettuare la manutenzione idrica su quelle sane.
+
+Questo problema si inquadra perfettamente nel dominio della Ricerca nello Spazio degli Stati (State Space Search), in cui un agente deve trovare una sequenza di azioni ottimale per transitare da uno stato iniziale a uno stato obiettivo, superando eventuali ostacoli fisici.
+
+L'ambiente operativo della serra è stato modellato come una griglia bidimensionale discreta (15x20), che rappresenta il nostro grafo di ricerca.
+Il problema di navigazione è formalizzato attraverso i seguenti elementi:
+- Spazio degli Stati (S): L'insieme di tutte le coordinate $(x, y)$ navigabili della griglia.
+- Stato Iniziale (s_0): La coordinata di partenza in cui si trova il Rover (es. la base di ricarica).
+- Stato Obiettivo (s_g): La coordinata in cui è posizionato il vaso della pianta target da trattare.
+- Azioni (A): I movimenti consentiti all'agente: Su, Giù, Sinistra, Destra. Non sono consentiti movimenti diagonali.
+- Costo del passo (c): Ogni movimento da una cella ad una adiacente ha un costo uniforme pari a 1.
+- Ostacoli: Un sottoinsieme di nodi non attraversabili (es. muri, attrezzature), che l'agente deve aggirare.
+
+Per garantire che il Rover trovi sempre il percorso più breve per raggiungere la pianta target senza sprecare energia (batteria), è stato implementato l'algoritmo di Ricerca Informata A*.
+
+A* è un algoritmo di ricerca Best-First completo e ottimale. A differenza degli algoritmi di ricerca cieca (come la Breadth-First Search), A* dirige l'esplorazione dei nodi in modo intelligente utilizzando una funzione di valutazione f(n):
+f(n) = g(n) + h(n)
+Dove:
+- g(n) è il costo esatto del cammino dal nodo di partenza al nodo corrente n.
+- h(n) è la funzione euristica, ovvero una stima del costo residuo dal nodo n al nodo obiettivo.
+
+Poiché il Rover può muoversi solo in 4 direzioni (orizzontale e verticale), la metrica ideale per stimare la distanza è la Distanza di Manhattan (o geometria del taxi), calcolata come:
+
+h(n) = |x_n - x_{goal}| + |y_n - y_{goal}|
+
+Questa scelta è cruciale a livello teorico: la Distanza di Manhattan in una griglia a 4 direzioni è un'euristica ammissibile (non sovrastima mai il costo reale per raggiungere l'obiettivo, poiché ignora gli ostacoli) ed è consistente. Grazie a queste due proprietà matematiche, l'algoritmo A* implementato garantisce rigorosamente il ritrovamento del percorso ottimale assoluto.
+
+Poiché l'agente deve operare su un'intera serra gestendo molteplici piante in una singola sessione operativa, il sistema deve risolvere un problema di "Task Allocation" affine al noto Problema del Commesso Viaggiatore (TSP - Traveling Salesperson Problem).
+
+Il Rover possiede una coda di task (piante da visitare). Per decidere in quale ordine processarli minimizzando il tragitto globale, il sistema adotta un approccio Greedy basato sull'euristica. Prima di ogni spostamento, il controllore logico calcola la Distanza di Manhattan tra la posizione attuale del robot e tutte le piante rimanenti, selezionando come prossimo target il vaso più vicino.
+
+Una volta raggiunto il target, il modulo esegue la diagnosi specifica (es. somministrazione di Olio di Neem o semplice Manutenzione Idrica). Se un ostacolo rende una pianta fisicamente irraggiungibile chiudendo ogni via d'accesso, l'algoritmo A* esaurisce lo spazio di ricerca (lista Open vuota) ed emette un'eccezione, permettendo all'agente di registrare il fallimento logistico e passare in modo resiliente al target successivo.
+
+L'aspetto più avanzato di questo modulo è la sua natura di Digital Twin (Gemello Digitale). La griglia di navigazione non è una semplice rappresentazione grafica scollegata, ma riflette in tempo reale la struttura dati sottostante del sistema (il dataset in formato CSV/Ontologico).
+
+Quando il Rover raggiunge le coordinate di una pianta e porta a compimento il "Protocollo Operativo", non si limita a un aggiornamento visivo: il sistema altera i dizionari in memoria mutando lo Stato_Attuale della pianta da malata a curata, e i Sintomi_Visivi in Risolti. 
+
+![astar](./img/astar.png)
+
+A differenza dei modelli di Machine Learning, la cui validazione si basa su metriche statistiche come l'Accuratezza e la Matrice di Confusione (soggette ad approssimazione logica e overfitting), la valutazione di un algoritmo di Ricerca nello Spazio degli Stati verte sull'efficienza computazionale. L'algoritmo A* è matematicamente garantito per trovare il percorso ottimale, pertanto la metrica di interesse non è la correttezza del risultato, bensì il consumo di risorse (Spazio e Tempo) impiegate per raggiungerlo.
+
+Per validare la scelta ingegneristica di A*, è stato condotto un test di Benchmarking simulato sulla griglia topologica della serra, ponendo l'algoritmo a confronto con la ricerca Dijkstra (nota anche come Uniform Cost Search). L'algoritmo di Dijkstra rappresenta una forma di "ricerca cieca": si espande a cerchi concentrici esplorando uniformemente l'ambiente in ogni direzione (h(n) = 0). Al contrario, A* utilizza la Distanza di Manhattan come funzione euristica informata, dirigendo l'esplorazione verso il target.
+
+Entrambi gli algoritmi sono stati sottoposti al medesimo ostacolo concavo (un muro a forma di "L" che blocca la linea di vista diretta). I risultati (visibili nel Grafico X) evidenziano che:
+- Ottimalità del Percorso: Entrambi gli algoritmi convergono sullo stesso identico percorso ottimale.
+- Space Complexity (Nodi Espansi): L'algoritmo di Dijkstra satura la memoria caricando nella coda di priorità (Frontiera) ed espandendo quasi la totalità dei nodi della mappa prima di aggirare l'ostacolo. A*, guidato dall'euristica, limita drasticamente l'espansione, mantenendo il Branching Factor effettivo estremamente basso e risparmiando un notevole quantitativo di allocazione in memoria.
+- Time Complexity: La drastica riduzione dello Spazio degli Stati esplorato da A* si riflette in un tempo di esecuzione in millisecondi nettamente inferiore, garantendo al Rover una reattività in tempo reale essenziale per un sistema di automazione embedded.
+
+![djik](./img/djik.png)
+
+Al fine di validare rigorosamente la scelta architetturale dell'algoritmo A* (Ricerca Informata) rispetto al classico algoritmo di Dijkstra (Ricerca Cieca o Uniform Cost Search), è stata condotta un'analisi di benchmarking basata su due scenari a complessità crescente.
+
+Entrambi gli algoritmi, per definizione teorica, sono completi e ottimali: a parità di ostacoli, convergeranno sempre sul medesimo percorso a costo minimo. La metrica di valutazione si concentra pertanto sulla Complessità Spaziale (numero di nodi espansi e mantenuti in memoria) e sulla Complessità Temporale (tempo di esecuzione).
+
+L'analisi dimostra che l'integrazione dell'algoritmo A* nel sistema "Green Leaf" non rappresenta solo una soluzione idonea per il prototipo attuale, ma garantisce la totale scalabilità del software. Se il sistema di navigazione autonomo venisse trasferito da un ambiente domestico a un'infrastruttura agricola commerciale di vaste dimensioni, l'agente manterrebbe una reattività di calcolo in tempo reale, confermando la solidità dell'architettura proposta.
+
+## **10. GUI**
+
+L'interfaccia grafica di Green Leaf è realizzata tramite la libreria Tkinter di Python, con un tema visivo scuro a toni verdi che richiama l'ambito botanico del sistema. La classe principale GreenLeafGui costruisce una finestra ridimensionabile (avviata in modalità massimizzata) articolata in quattro macro-componenti: un'intestazione con titolo e sottotitolo, una sezione di input, un'area dei risultati a schede e una barra di stato inferiore.
+
+La sezione di input permette all'utente di selezionare la pianta (tra otto varietà disponibili: Basilico, Pomodoro, Lattuga, ecc.) e il sintomo riscontrato (tra sette opzioni, come Foglie Gialle, Muffa Bianca, Ragnatele, ecc.) tramite due menu a tendina stilizzati con ttk.Combobox, completati da un pulsante "🔍 Analizza" che si abilita solo a sistema pienamente caricato. Il caricamento del backend avviene in un thread separato per non bloccare la UI, con aggiornamenti in tempo reale sulla barra di stato.
+
+L'area dei risultati è organizzata in un notebook a sei schede, ciascuna dedicata a un componente del sistema: Machine Learning (Random Forest, Rete Neurale, K-Means), motore inferenziale Prolog, Rete Bayesiana, CSP per il posizionamento ottimale nel giardino, validazione scientifica con 10-Fold Cross-Validation, e infine una scheda dedicata al Rover A* per la navigazione nel giardino. I testi vengono visualizzati con color-coding semantico tramite tag Tkinter: verde chiaro per esiti positivi, arancione per avvertenze, rosso per errori e bianco in grassetto per i valori salienti. L'intera pipeline di analisi viene eseguita in background su un thread daemon, catturando lo stdout del sistema tramite io.StringIO e smistando l'output testuale alle relative schede per sezione.
+
+## **11. Conclusioni**
 
 Il sistema Green Leaf dimostra come un approccio ibrido, che integra ragionamento simbolico e apprendimento automatico all'interno di un'architettura KBS, possa produrre diagnosi fitosanitarie accurate, interpretabili e contestualizzate. I risultati ottenuti dalla valutazione sperimentale sono complessivamente positivi: il Random Forest si afferma come il modello supervisionato più performante, con un'accuratezza media del 93% e un'AUC di 0.984 misurati tramite 10-Fold Cross-Validation Stratificata, confermando la sua idoneità come modello operativo del sistema. La Rete Neurale, con un'accuratezza del 89.6%, affianca il Random Forest nel meccanismo di consenso multi-modello, aumentando la robustezza diagnostica complessiva. Il modulo K-Means ha individuato tre cluster ambientali coerenti e ben separati, confermati concordemente dal Metodo del Gomito e dal Silhouette Score.
  Il modulo CSP ha dimostrato la capacità di integrare efficacemente la conoscenza ontologica nel processo decisionale, producendo posizionamenti biologicamente coerenti per tutte le specie supportate. Il modulo Prolog ha garantito la tracciabilità e la verificabilità delle diagnosi, offrendo un livello di spiegabilità che i soli modelli statistici non sarebbero in grado di fornire.
 
 Tra le problematiche non affrontate per questioni di tempo, si segnalano le seguenti possibili direzioni di sviluppo. Il dataset attuale è generato proceduralmente e non deriva da osservazioni agronomiche reali: una raccolta dati sul campo aumenterebbe significativamente la validità esterna del sistema. Il meccanismo di consenso multi-modello potrebbe essere esteso introducendo una strategia di voto pesato basata sulla confidenza di ciascun modello, piuttosto che un semplice confronto binario. Il modulo CSP potrebbe essere arricchito con vincoli aggiuntivi derivati dall'ontologia, come la compatibilità tra specie diverse nella convivenza o i vincoli stagionali. Infine, l'integrazione con sensori reali per il rilevamento automatico delle condizioni ambientali rappresenterebbe un'evoluzione naturale verso un sistema di monitoraggio continuo.
 
-## **10. Riferimenti bibliografici**
+## **12. Riferimenti bibliografici**
 
 [1] Pedregosa et al., Scikit-learn: Machine Learning in Python, Journal of Machine Learning Research, 12, pp. 2825–2830, 2011. Disponibile su: https://scikit-learn.org
 
