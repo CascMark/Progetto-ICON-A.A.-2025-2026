@@ -10,23 +10,24 @@ Repository Github: https://github.com/CascMark/Progetto-ICON-A.A.-2025-2026
 Progetto dell'esame di "Ingegneria della conoscenza" A.A. 2025-26
 
 ## **Introduzione**
-L'idea principale al centro di "Green Leaf" è progettare un sistema capace di classificare malattie che possono presentarsi all'interno di determinate specie di piante, supportando l'utente nella loro individuazione e suggerendo efficaci consigli per cure e rimedi, permettendo di poter costruire in totale salute e semplicità il proprio giardino.
+L'idea principale al centro di "Green Leaf" è progettare un sistema intelligente capace di classificare malattie che possono presentarsi all'interno di determinate specie di piante, supportando l'utente nella loro individuazione e suggerendo efficaci consigli per cure e rimedi, permettendo di poter costruire in totale salute e semplicità il proprio giardino, serra o terreno.
 
-### Requisiti funzionali
+### **Requisiti funzionali**
 - Linguaggio di programmazione del progetto: Python (3.11.9)
 - IDE: Visual Studio Code (VSC)
 
-### Librerie utilizzate
-- owlready2
-- pgmpy
-- pyswip
-- pandas
-- scikit-learn
-- numpy
-- python-constraint 
-- tkinter
+### **Librerie utilizzate**
+- **owlready2**: pacchetto Python dedicato all'accesso, alla manipolazione e al ragionamento semantico su ontologie in formato OWL (Web Ontology Language) 2.0.
+- **pgmpy**: per la creazione, l'apprendimento e l'inferenza su Modelli Grafici Probabilistici, in particolare Reti Bayesiane e Reti di Markov.
+- **pyswip**: ambiente di "bridge" (ponte) open-source che permette di interfacciare il linguaggio Python con il motore SWI-Prolog, consentendo query bidirezionali.
+- **pandas**: per l'importazione e gestione dei dataset in formato .csv, gestione dei dati tabulari.
+- **scikit-learn**: leader per il Machine Learning predittivo. Offre implementazioni altamente ottimizzate di algoritmi di classificazione, regressione e clustering.
+- **numpy**: fornisce supporto per array e matrici multidimensionali, oltre a una vasta gamma di funzioni matematiche di alto livello.
+- python-constraint: che offre un risolutore implementato interamente in Python per i classici Problemi a Soddisfacimento di Vincoli (CSP).
+- **tkinter**: toolkit grafico (GUI) standard di Python, utilizzato per lo sviluppo di applicazioni desktop stabili, reattive e native multipiattaforma.
+- **matplotlib**: per la visualizzazione dei grafici (curve di apprendimento, grafici a barre, ROC curve...).
 
-### Avvio
+### **Avvio**
 Il programma è avviabile mediante il file "GreenLeaf.bat" presente nella directory di progetto, oppure manualmente eseguendo all'interno di un IDE il file "main.py" presente nella directory /src. 
  
 ## **Sommario**
@@ -36,13 +37,17 @@ Il componente centrale del sistema è una Knowledge Base articolata su due livel
 
 Il KBS implementa cinque moduli specializzati che coprono i principali paradigmi dell'Intelligenza Artificiale:
 
-- Il modulo di apprendimento supervisionato addestra e confronta cinque algoritmi di classificazione — Random Forest, Rete Neurale (MLP), SVM con kernel RBF, Naive Bayes e Regressione Logistica — sul dataset delle osservazioni sintomatiche, valutandoli tramite 10-Fold Cross-Validation Stratificata. I modelli Random Forest e Rete Neurale vengono selezionati come modelli operativi per l'inferenza, e le loro predizioni vengono confrontate a runtime tramite un meccanismo di consenso multi-modello che segnala eventuali discordanze diagnostiche.
+Il modulo di apprendimento supervisionato statistico addestra e confronta diversi algoritmi di classificazione — dai modelli ad albero (Random Forest), a quelli geometrici (SVM con kernel RBF), fino ai classificatori probabilistici (Naive Bayes e Regressione Logistica) — sul dataset delle osservazioni sintomatiche, valutandoli tramite 10-Fold Cross-Validation Stratificata.
+
+- Il modulo di pianificazione e navigazione autonoma modella la planimetria del proprio spazio verde come uno Spazio degli Stati. Implementa l'algoritmo di ricerca informata A* (A-Star), supportato dall'euristica della Distanza di Manhattan e da un approccio logistico Greedy (Task Allocation). Questo modulo calcola il percorso a costo minimo per un agente robotico incaricato di raggiungere i vasi e somministrare le cure, aggiornando in tempo reale la struttura dati sottostante del Digital Twin.
 
 - Il modulo di apprendimento non supervisionato applica l'algoritmo K-Means per profilare la pianta nel suo contesto climatico sulla base delle condizioni ambientali rilevate, classificandola in categorie come "Clima Secco/Soleggiato", "Clima Umido/Ombroso" o "Clima Temperato/Neutro".
 
 - Il modulo probabilistico implementa una Rete Bayesiana con distribuzioni di probabilità condizionate (CPD), che permette di stimare la probabilità delle cause patologiche sottostanti dato un sintomo osservato.
 
 - Il modulo CSP (Constraint Satisfaction Problem) sfrutta i dati ontologici per determinare il posizionamento ottimale della pianta tra i vasi disponibili, soddisfacendo i vincoli biologici di luce e umidità propri di ciascuna specie.
+
+- Il modulo a Rete Neurale (Deep Learning) implementa un percettrone multistrato (MLP - Multi-Layer Perceptron) addestrato per mappare le relazioni non lineari ad alta dimensionalità tra i parametri della serra e le patologie. La rete neurale opera in parallelo al Random Forest: le predizioni di entrambi i modelli vengono valutate a runtime tramite un meccanismo di consenso multi-modello che valida la diagnosi in caso di unanimità, o segnala criticamente eventuali discordanze diagnostiche.
 
 - Il modulo di validazione genera report tabellari con le metriche di qualità dei modelli supervisionati, consultabili direttamente dall'utente tramite l'interfaccia grafica del sistema.
 
@@ -76,54 +81,52 @@ Il dataset contiene informazioni relative a diversi attributi biologici, climati
 Descrizione delle Features:
 Le variabili indipendenti (features) estratte e utilizzate per l'addestramento rappresentano l'ambiente di crescita e lo stato fenotipico della pianta:
 
-Features Categoriche (Biologiche e Sintomatologiche):
+**Features Categoriche (Biologiche e Sintomatologiche):**
 
-- Famiglia: La classificazione tassonomica della pianta (es. Solanaceae, Lamiaceae). Indica la predisposizione genetica a determinate patologie.
+- **Famiglia**: La classificazione tassonomica della pianta (es. Solanaceae, Lamiaceae). Indica la predisposizione genetica a determinate patologie.
 
-- Sintomi_Visivi: La manifestazione fisica e visibile del problema (es. Foglie_Gialle, Macchie_Fogliari, Nessuno). È il principale indicatore diagnostico primario.
+- **Sintomi_Visivi**: La manifestazione fisica e visibile del problema (es. Foglie_Gialle, Macchie_Fogliari, Nessuno). È il principale indicatore diagnostico primario.
 
-- Features Numeriche (Ambientali e Climatiche):
+**Features Numeriche (Ambientali e Climatiche):**
 
-- Ore_Luce: L'esposizione solare media giornaliera (misurata in ore) a cui la pianta è sottoposta.
+- **Ore_Luce**: L'esposizione solare media giornaliera (misurata in ore) a cui la pianta è sottoposta.
 
-- Umidita_Ottimale: Il fabbisogno idrico e l'umidità ambientale in cui la pianta si trova (valore continuo da 0.0 a 1.0).
+- **Umidita_Ottimale**: Il fabbisogno idrico e l'umidità ambientale in cui la pianta si trova (valore continuo da 0.0 a 1.0).
 
-- Temperatura_Ottimale: La temperatura media dell'ambiente di coltivazione (misurata in gradi Celsius).
+- **Temperatura_Ottimale**: La temperatura media dell'ambiente di coltivazione (misurata in gradi Celsius).
 
-- PH_Suolo: Il livello di acidità o basicità del terreno, fondamentale per l'assorbimento dei nutrienti (es. per evitare clorosi ferrica).
+- **PH_Suolo**: Il livello di acidità o basicità del terreno, fondamentale per l'assorbimento dei nutrienti (es. per evitare clorosi ferrica).
 
-Variabile Target:
+**Variabile Target:**
 
-- Diagnosi_Reale: È la variabile dipendente che il sistema deve imparare a predire. Si tratta di un problema di classificazione multi-classe, dove le etichette rappresentano le specifiche patologie (es. Infestazione_Afidi, Muffa_Bianca, Peronospora, Carenza_Ferro) oppure lo stato Sano.
+- **Diagnosi_Reale**: È la variabile dipendente che il sistema deve imparare a predire. Si tratta di un problema di classificazione multi-classe, dove le etichette rappresentano le specifiche patologie (es. Infestazione_Afidi, Muffa_Bianca, Peronospora, Carenza_Ferro) oppure lo stato Sano.
 
-Preprocessing del dataset
+**Preprocessing del dataset**
+
 Prima di fornire i dati in pasto agli algoritmi di Machine Learning, il dataset è stato sottoposto a una rigorosa pipeline di preprocessing all'interno del modulo train_model.py:
 
-Importazione e Pulizia dei Dati: Il file CSV è stato importato tramite la libreria Pandas. I valori mancanti (NaN) per i sintomi o le famiglie sono stati gestiti inserendo le stringhe di default "Sconosciuta" o "Nessuno", per garantire la robustezza del sistema.
+**1) Importazione e Pulizia dei Dati:** Il file CSV è stato importato tramite la libreria Pandas. I valori mancanti (NaN) per i sintomi o le famiglie sono stati gestiti inserendo le stringhe di default "Sconosciuta" o "Nessuno", per garantire la robustezza del sistema.
 
-Separazione delle Variabili: Le feature (X) sono state isolate dalla variabile target (y) per il successivo processo di modellazione.
+**2) Separazione delle Variabili:** Le feature (X) sono state isolate dalla variabile target (y) per il successivo processo di modellazione.
 
-Encoding delle Variabili Categoriche: Gli algoritmi di apprendimento matematico richiedono input numerici. Le colonne di testo Famiglia e Sintomi_Visivi sono state trasformate in numeri interi tramite il Label Encoding (generando le colonne Famiglia_Encoded e Sintomo_Encoded). L'encoder è stato salvato su disco (.pkl) per poter decodificare i dati futuri inseriti dall'utente nella GUI.
+**3) Encoding delle Variabili Categoriche:** Gli algoritmi di apprendimento matematico richiedono input numerici. Le colonne di testo Famiglia e Sintomi_Visivi sono state trasformate in numeri interi tramite il Label Encoding (generando le colonne Famiglia_Encoded e Sintomo_Encoded). L'encoder è stato salvato su disco (.pkl) per poter decodificare i dati futuri inseriti dall'utente nella GUI.
 
-Standardizzazione (Scaling): Poiché le feature numeriche hanno scale molto diverse (il pH va da 0 a 14, l'umidità da 0 a 1), è stata applicata la tecnica della standardizzazione tramite StandardScaler. Questo passaggio porta tutte le variabili ad avere media 0 e deviazione standard 1, un requisito fondamentale per far convergere e performare correttamente modelli basati sulle distanze (come le Support Vector Machine e il K-Means) e le Reti Neurali.
+**4) Standardizzazione (Scaling):** Poiché le feature numeriche hanno scale molto diverse (il pH va da 0 a 14, l'umidità da 0 a 1), è stata applicata la tecnica della standardizzazione tramite **StandardScaler**. Questo passaggio porta tutte le variabili ad avere media 0 e deviazione standard 1, un requisito fondamentale per far convergere e performare correttamente modelli basati sulle distanze (come le Support Vector Machine e il K-Means) e le Reti Neurali.
 
-Gestione del Bilanciamento e Suddivisione: Per garantire che i modelli imparassero equamente tutte le patologie (anche quelle più rare generate dall'Ontologia), il dataset non è stato semplicemente tagliato. È stata utilizzata la tecnica della Stratified K-Fold Cross Validation (con K=10) abbinata a uno Stratified Train-Test Split, assicurando che la proporzione di ogni singola malattia rimanesse identica sia nei dati di addestramento che in quelli di validazione.
+**5) Gestione del Bilanciamento e Suddivisione:** Per garantire che i modelli imparassero equamente tutte le patologie (anche quelle più rare generate dall'Ontologia), il dataset non è stato semplicemente tagliato. È stata utilizzata la tecnica della Stratified K-Fold Cross Validation (con K=10) abbinata a uno Stratified Train-Test Split, assicurando che la proporzione di ogni singola malattia rimanesse identica sia nei dati di addestramento che in quelli di validazione.
 
 Prima di procedere con l'addestramento vero e proprio dei modelli, il dataset generato dall'Ontologia è stato rigorosamente suddiviso in due sottoinsiemi distinti per evitare il fenomeno dell'overfitting e permettere una valutazione oggettiva:
-- Training set: una porzione maggioritaria dei dati (75%) utilizzata per addestrare i modelli e far loro apprendere le regole che legano le feature ambientali alle diagnosi.
-- Test set: la restante porzione (25%) mantenuta "nascosta" al modello durante l'addestramento e utilizzata esclusivamente per testarne le prestazioni predittive su dati mai visti prima.
+- **Training set:** una porzione maggioritaria dei dati (75%) utilizzata per addestrare i modelli e far loro apprendere le regole che legano le feature ambientali alle diagnosi.
+- **Test set:** la restante porzione (25%) mantenuta "nascosta" al modello durante l'addestramento e utilizzata esclusivamente per testarne le prestazioni predittive su dati mai visti prima.
+
 A livello implementativo, questa suddivisione è stata effettuata avvalendosi della funzione train_test_split messa a disposizione dalla libreria sklearn.model_selection:
 
-
-Suddivisione del dataset in train (75%) e test (25%) con stratificazione
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42, stratify=y)
+![alt text](image.png)
 
  La configurazione di questa funzione non è stata casuale, ma ha risposto a specifiche esigenze architetturali del dominio botanico in esame:
-- test_size=0.25: Definisce la proporzione del taglio (Hold-out), allocando esattamente un quarto delle piante virtuali alla fase di testing diagnostico visivo.
-- random_state=42: Imposta un "seed" fisso per il generatore di numeri pseudo-casuali. Questo garantisce la totale riproducibilità dell'esperimento scientifico; a ogni esecuzione del codice, la distribuzione casuale delle piante nei due insiemi rimarrà identica.
-- stratify=y (Bilanciamento Multi-classe): Questo è il parametro cruciale dell'operazione. Trattandosi di un problema di classificazione multi-classe basato su estrazioni stocastiche da una Knowledge Base, un taglio puramente casuale avrebbe rischiato di escludere del tutto dal test set le malattie più rare (sbilanciando la valutazione). Il parametro stratify forza l'algoritmo a mantenere nel test set la stessa identica distribuzione percentuale di classi (patologie) presente nel dataset originale.
-
-È fondamentale precisare che questo specifico split 75/25 (Hold-out) è stato utilizzato per l'estrazione grafica delle Matrici di Confusione e per il calcolo delle Curve ROC. Tuttavia, per garantire il massimo rigore statistico (Model Selection) e calcolare le metriche ufficiali presentate nell'interfaccia grafica del sistema (Accuratezza Media, Varianza, F1-Score), il modulo di Machine Learning principale utilizza una 10-Fold Stratified Cross-Validation, eliminando così qualsiasi "bias" derivante da un singolo taglio fortunato dei dati.
+- **test_size=0.25**: Definisce la proporzione del taglio (Hold-out), allocando esattamente un quarto delle piante virtuali alla fase di testing diagnostico visivo.
+- **random_state=42**: Imposta un "seed" fisso per il generatore di numeri pseudo-casuali. Questo garantisce la totale riproducibilità dell'esperimento scientifico; a ogni esecuzione del codice, la distribuzione casuale delle piante nei due insiemi rimarrà identica.
+- **stratify=y (Bilanciamento Multi-classe)**: Trattandosi di un problema di classificazione multi-classe basato su estrazioni stocastiche da una Knowledge Base, un taglio puramente casuale avrebbe rischiato di escludere del tutto dal test set le malattie più rare (sbilanciando la valutazione). Il parametro stratify forza l'algoritmo a mantenere nel test set la stessa identica distribuzione percentuale di classi (patologie) presente nel dataset originale.
 
 Per comprendere a fondo la struttura del dataset generato dinamicamente dall'Ontologia e interpretare correttamente i risultati degli algoritmi di clustering e classificazione, è stata condotta un'analisi visiva delle distribuzioni tramite grafici a torta.
 
@@ -144,30 +147,52 @@ Questa eterogeneità conferma che il "Dataset Builder" basato sull'Ontologia ha 
 
 ## **2. Creazione dell'ontologia**
 
- Rappresentazione della Conoscenza: Creazione dell'Ontologia OWLIl cuore logico e semantico del progetto "Green Leaf" è costituito da un'ontologia formalizzata in linguaggio OWL (Web Ontology Language). A differenza degli approcci standard che si affidano esclusivamente a dataset tabulari pre-compilati, questo sistema adotta il paradigma ML+OntoBK (Machine Learning integrato con Background Knowledge).
+ **Rappresentazione della Conoscenza: Creazione dell'Ontologia OWL**
  
- L'obiettivo dell'ontologia non è fungere da semplice database statico, ma fornire una Knowledge Base (KB) strutturata e inferenziale che descriva il dominio della botanica, della patologia vegetale e delle condizioni ambientali, permettendo al sistema di "ragionare" sulle relazioni di causa-effetto prima ancora di applicare l'apprendimento statistico.2.1 Strumenti di SviluppoL'ontologia (Ontologia_Completa.owx) è stata inizialmente progettata e modellata utilizzando l'editor Protégé, per garantire la correttezza formale della sintassi OWL e validare la consistenza logica tramite un Reasoner (es. HermiT).
+Il cuore logico e semantico del progetto "Green Leaf" è costituito da un'ontologia formalizzata in linguaggio OWL (Web Ontology Language). A differenza degli approcci standard che si affidano esclusivamente a dataset tabulari pre-compilati, questo sistema adotta il paradigma ML+OntoBK (Machine Learning integrato con Background Knowledge).
  
- Successivamente, per l'integrazione a livello software e la manipolazione dinamica all'interno della pipeline di Intelligenza Artificiale, è stata impiegata la libreria Python Owlready2. Questa libreria ha permesso di interrogare il grafo semantico e di generare dinamicamente il dataset per l'addestramento dei modelli.
+ L'obiettivo dell'ontologia non è fungere da semplice database statico, ma fornire una Knowledge Base (KB) strutturata e inferenziale che descriva il dominio della botanica, della patologia vegetale e delle condizioni ambientali, permettendo al sistema di "ragionare" sulle relazioni di causa-effetto prima ancora di applicare l'apprendimento statistico.
+
+ **Strumenti di Sviluppo**
+
+ L'ontologia (Ontologia_Completa.owx) è stata inizialmente progettata e modellata utilizzando l'editor Protégé, per garantire la correttezza formale della sintassi OWL e validare la consistenza logica tramite un Reasoner (es. HermiT).
+ 
+ Successivamente, per l'integrazione a livello software e la manipolazione dinamica all'interno della pipeline di Intelligenza Artificiale, è stata impiegata la libreria Python **Owlready2**. Questa libreria ha permesso di interrogare il grafo semantico e di generare dinamicamente il dataset per l'addestramento dei modelli.
  
 ![ontologia](./img/WhatsApp%20Image%202026-02-19%20at%2011.40.24.jpeg)
  
-  TBox: Terminologia e Tassonomia delle ClassiLa Terminological Box (TBox) definisce i concetti chiave del dominio. La tassonomia è stata strutturata in macro-classi gerarchiche per consentire il ragionamento sussuntivo (ereditarietà delle proprietà):
+  **TBox**: Terminologia e Tassonomia delle ClassiLa Terminological Box (TBox) definisce i concetti chiave del dominio. La tassonomia è stata strutturata in macro-classi gerarchiche per consentire il ragionamento sussuntivo (ereditarietà delle proprietà):
   
-  - Pianta: La classe radice per gli individui biologici. È stata ulteriormente specializzata in sottoclassi che rappresentano le famiglie botaniche (es. Solanaceae, Lamiaceae, Rosaceae), ciascuna con specifiche vulnerabilità intrinseche.
+  - **Pianta**: La classe radice per gli individui biologici. È stata ulteriormente specializzata in sottoclassi che rappresentano le famiglie botaniche (es. Solanaceae, Lamiaceae, Rosaceae), ciascuna con specifiche vulnerabilità intrinseche.
   
-  - Sintomo: Rappresenta le manifestazioni fisiche osservabili (es. Foglie_Gialle, Macchie_Fogliari, Marciume_Apicale).Malattia: Classifica le patologie e gli stress (es. Infestazione_Afidi, Peronospora, Carenza_Ferro). Questa classe rappresenta il target delle predizioni del sistema.
+  - **Sintomo**: Rappresenta le manifestazioni fisiche osservabili (es. Foglie_Gialle, Macchie_Fogliari, Marciume_Apicale). 
+
+  - **Malattia**: Classifica le patologie e gli stress (es. Infestazione_Afidi, Peronospora, Carenza_Ferro). Questa classe rappresenta il target delle predizioni del sistema.
   
-  - Ambiente / FattoreClimatico: Modella i parametri fisici quantitativi (Luce, Umidità, Temperatura, pH) che fungono da vincoli o concause per lo sviluppo delle malattie.2.3 ABox e Object/Data PropertiesPer superare i limiti del semplice "pattern matching" e dotare l'ontologia di vera ricchezza semantica, le classi sono state collegate tramite Object Properties (relazioni tra concetti) e Data Properties (attributi quantitativi).
+  - **Ambiente / FattoreClimatico**: Modella i parametri fisici quantitativi (Luce, Umidità, Temperatura, pH) che fungono da vincoli o concause per lo sviluppo delle malattie.2.3 ABox e Object/Data PropertiesPer superare i limiti del semplice "pattern matching" e dotare l'ontologia di vera ricchezza semantica, le classi sono state collegate tramite Object Properties (relazioni tra concetti) e Data Properties (attributi quantitativi).
   
   Alcune delle proprietà fondamentali definite includono:
   
-  haSintomo (Domain: Pianta -> Range: Sintomo)
-  causataDa (Domain: Malattia -> Range: FattoreClimatico) haValorePH, haOreLuce (Data Properties con restrizioni di dominio per modellare i fabbisogni specifici delle singole famiglie botaniche). Attraverso queste proprietà, l'ontologia non si limita a dichiarare che "il Basilico è una Pianta", ma stabilisce regole complesse del tipo: Una pianta appartenente alla famiglia delle Solanaceae, se esposta a umidità > 0.8 e che presenta il sintomo Macchie_Fogliari, ha un'alta probabilità di contrarre una malattia fungina.
+  **Object Properties**
+
+  - **affettoDa (Domain: Pianta -> Range: Malattia)**: È stata definita come proprietà funzionale (Functional Property), il che impone una restrizione logica severa: in un dato istante temporale, un singolo individuo-pianta può avere un solo stato patologico primario assegnato.
+  - **presenta (Domain: Pianta -> Range: Sintomo)**: differenza della precedente, non è funzionale; ciò consente al motore di ragionamento di associare la stessa pianta a una molteplicità di sintomi concorrenti.
+  - **compatibileCon (Domain: Pianta -> Range: Pianta)**: è stata dichiarata matematicamente come Proprietà Simmetrica (Symmetric Property): se la pianta A è compatibile con la pianta B, il risolutore inferirà automaticamente che B è compatibile con A, ponendo le basi per future regole di consociazione agraria.
+
+**Data Properties**
+
+- **richiedeOreLuce**: Il fabbisogno fotoperiodico ottimale.
+- **haLivelloUmiditaOttimale**: La tolleranza igrometrica (espressa in scala percentuale/decimale).
+- **haTemperaturaOttimale**: Il range termico ideale in gradi Celsius.
+- **haPHOttimale**: Il grado di acidità/basicità tollerato dal substrato del vaso.
   
-  Generazione del Dataset tramite Inferenza (Dataset Builder), l'ontologia è stata impiegata come Generatore (Dataset Builder).
+ Attraverso queste proprietà, l'ontologia non si limita a dichiarare che "il Basilico è una Pianta", ma stabilisce regole complesse del tipo: Una pianta appartenente alla famiglia delle Solanaceae, se esposta a umidità > 0.8 e che presenta il sintomo Macchie_Fogliari, ha un'alta probabilità di contrarre una malattia fungina.
   
-  Invece di compilare manualmente i dati storici, il modulo Python ha utilizzato l'ontologia per instanziare centinaia di individui (ABox) in base alle regole logiche definite.
+  **Generazione del Dataset tramite Inferenza (Dataset Builder)**
+
+  L'ontologia è stata impiegata come Generatore (Dataset Builder).
+  
+  Invece di compilare manualmente i dati storici, il modulo Python ha utilizzato l'ontologia per instanziare centinaia di individui **(ABox)** in base alle regole logiche definite.
   
   Ad ogni individuo sono stati assegnati valori stocastici di luce, temperatura e sintomi, rispettando però i vincoli biologici imposti dalle gerarchie OWL.
   
@@ -177,42 +202,48 @@ Questa eterogeneità conferma che il "Dataset Builder" basato sull'Ontologia ha 
 
 ## **3. Ragionamento logico e Prolog**
 
-Il livello logico-dichiarativo del sistema è implementato tramite la Knowledge Base Prolog (kb.pl), consultata a runtime attraverso il bridge pyswip, che consente di lanciare query Prolog direttamente dal codice Python tramite la classe GardenLogic.
+Il livello logico-dichiarativo del sistema è implementato tramite la Knowledge Base Prolog (kb.pl), consultata a runtime attraverso il "bridge" pyswip, che consente di lanciare query Prolog direttamente dal codice Python tramite la classe GardenLogic in "prolog_module.py".
 
-La KB si articola in tre strati di conoscenza. Il primo è un insieme di fatti di mapping (map_malattia/2), che svolgono la funzione di ponte tra il vocabolario prodotto dai modelli ML e i nomi interni della base di conoscenza: ad esempio, l'etichetta 'Infestazione_Afidi' restituita dal classificatore viene ricondotta al termine 'Afidi' usato nelle regole di trattamento. Un predicato di fallback garantisce che qualsiasi etichetta non mappata esplicitamente venga comunque accettata invariata.
+La KB si articola in tre strati di conoscenza:
 
-Il secondo strato è composto dai fatti di trattamento (trattamento/2), che associano a ciascuna patologia riconosciuta la terapia agronomica raccomandata, dalla somministrazione di specifici antiparassitari o fungicidi fino alla rimozione della pianta in caso di virosi incurabile. La regola principale trova_cura/2 orchestra l'intero processo: riceve la diagnosi prodotta dal modulo ML, applica il mapping, recupera il trattamento corrispondente e, qualora non venga trovata alcuna corrispondenza, restituisce un'indicazione di fallback che invita a consultare un agronomo.
+Il primo è un insieme di fatti di **mapping**, che svolgono la funzione di ponte tra il vocabolario prodotto dai modelli ML e i nomi interni della base di conoscenza: ad esempio, l'etichetta 'Infestazione_Afidi' restituita dal classificatore viene ricondotta al termine 'Afidi' usato nelle regole di trattamento. Un predicato di fallback garantisce che qualsiasi etichetta non mappata esplicitamente venga comunque accettata invariata.
 
-Il terzo strato è costituito dalle regole di diagnosi logica (diagnosi/3), che codificano la conoscenza agronomica di dominio sotto forma di fatti dichiarativi, associando a ciascuna coppia pianta-sintomo la patologia attesa (es. diagnosi('Rosa', 'Muffa_Bianca', 'Oidio')). Questo strato viene interrogato dalla regola verifica_consistenza/3 per effettuare un cross-check tra la diagnosi suggerita dal modulo ML e quella derivabile dalla KB simbolica, permettendo al sistema di rilevare eventuali incoerenze tra i due livelli di ragionamento.
+Il secondo strato è composto dai fatti di **trattamento**, che associano a ciascuna patologia riconosciuta la terapia agronomica raccomandata, dalla somministrazione di specifici antiparassitari o fungicidi fino alla rimozione della pianta in caso di virosi incurabile. La regola principale "trova_cura" orchestra l'intero processo: riceve la diagnosi prodotta dal modulo ML, applica il mapping, recupera il trattamento corrispondente e, qualora non venga trovata alcuna corrispondenza, restituisce un'indicazione di fallback che invita a consultare un agronomo.
+
+Il terzo strato è costituito dalle regole di **diagnosi logica**, che codificano la conoscenza agronomica di dominio sotto forma di fatti dichiarativi, associando a ciascuna coppia pianta-sintomo la patologia attesa (es. diagnosi('Rosa', 'Muffa_Bianca', 'Oidio')). Questo strato viene interrogato dalla regola "verifica_consistenza" per effettuare un cross-check tra la diagnosi suggerita dal modulo ML e quella derivabile dalla KB simbolica, permettendo al sistema di rilevare eventuali incoerenze tra i due livelli di ragionamento.
+
+
 
 ## **4. Apprendimento non supervisionato**
 
-Il modulo di apprendimento non supervisionato ha il compito di profilare le osservazioni in base alle sole condizioni ambientali rilevate, prescindendo dall'etichetta diagnostica. A differenza del modulo supervisionato, che risponde alla domanda "di quale malattia soffre la pianta?", il clustering risponde alla domanda "in quale contesto climatico si trova la pianta?", producendo un'informazione complementare e contestuale alla diagnosi. I cluster individuati vengono interpretati semanticamente come categorie climatiche — Clima Secco/Soleggiato, Clima Umido/Ombroso e Clima Temperato/Neutro — e contribuiscono a fornire al sistema una visione più articolata dello stato della pianta, utile anche per orientare i consigli di cura.
+Il modulo di apprendimento non supervisionato ha il compito di profilare le osservazioni in base alle sole condizioni ambientali rilevate, prescindendo dall'etichetta diagnostica. A differenza del modulo supervisionato, che risponde alla domanda "di quale malattia soffre la pianta?", il clustering risponde alla domanda "in quale contesto climatico si trova la pianta?", producendo un'informazione complementare e contestuale alla diagnosi. 
 
-Il modulo è implementato tramite la classe KMeans della libreria scikit-learn [1]. Il modello addestrato, insieme al relativo scaler ambientale, viene serializzato tramite joblib e ricaricato a runtime dal motore di inferenza GardenMLEngine.
+I cluster individuati vengono interpretati semanticamente come categorie climatiche — Clima Secco/Soleggiato, Clima Umido/Ombroso e Clima Temperato/Neutro — e contribuiscono a fornire al sistema una visione più articolata dello stato della pianta, utile anche per orientare i consigli di cura.
+
+Il modulo è implementato tramite la classe **KMeans** della libreria "scikit-learn". Il modello addestrato, insieme al relativo scaler ambientale, viene serializzato tramite joblib e ricaricato a runtime dal motore di inferenza GardenMLEngine.
 
 Le feature utilizzate per il clustering sono esclusivamente quelle ambientali: ore di luce, umidità ottimale e temperatura ottimale. La scelta di escludere le feature diagnostiche (famiglia botanica, sintomi, pH) è motivata dall'obiettivo di far emergere una struttura latente legata al contesto climatico, non alla patologia, evitando che il clustering replichi semplicemente le etichette già note al modulo supervisionato.
 
-Un aspetto critico riguarda il preprocessing: per il clustering è stato adottato uno StandardScaler dedicato e completamente separato da quello utilizzato per i modelli supervisionati. Questa scelta è necessaria perché i due pipeline operano su insiemi di feature differenti (3 vs 6 colonne): condividere il medesimo scaler avrebbe prodotto trasformazioni errate e risultati non interpretabili.
+Un aspetto critico riguarda il preprocessing: per il clustering è stato adottato uno "StandardScaler" dedicato e completamente separato da quello utilizzato per i modelli supervisionati. Questa scelta è necessaria perché i due pipeline operano su insiemi di feature differenti (3 vs 6 colonne): condividere il medesimo scaler avrebbe prodotto trasformazioni errate e risultati non interpretabili.
 
-Il numero di cluster è stato fissato a 3, una scelta motivata sia dalla valutazione del metodo del gomito (Elbow Method) — visibile nel plot 01_kmeans_evaluation.png generato dallo script generate_plots.py — sia dalla coerenza semantica: tre categorie climatiche risultano sufficientemente espressive per il dominio in esame senza introdurre una granularità eccessiva difficile da interpretare agronomicamente.
+Il numero di cluster è stato fissato a 3, una scelta motivata sia dalla valutazione del metodo del gomito (Elbow Method) sia dalla coerenza semantica: tre categorie climatiche risultano sufficientemente espressive per il dominio in esame senza introdurre una granularità eccessiva difficile da interpretare agronomicamente.
 
-La scelta di k=3 è stata supportata da due metriche complementari, calcolate per valori di k compresi tra 2 e 10 e visualizzate nel plot 01_kmeans_evaluation.png generato dallo script generate_plots.py.
+La scelta di k=3 è stata supportata da due metriche complementari, calcolate per valori di k compresi tra 2 e 10
 
-La prima è la curva dell'inerzia intra-cluster (Metodo del Gomito): all'aumentare di k, l'inerzia decresce progressivamente, ma la riduzione diventa via via meno significativa. Il punto di inflessione più marcato si osserva in corrispondenza di k=3, oltre il quale l'aggiunta di nuovi cluster produce benefici marginali, suggerendo che tre gruppi rappresentino un buon equilibrio tra compattezza e semplicità del modello.
+La prima è la **curva dell'inerzia** intra-cluster **(Metodo del Gomito)**: all'aumentare di k, l'inerzia decresce progressivamente, ma la riduzione diventa via via meno significativa. Il punto di inflessione più marcato si osserva in corrispondenza di k=3, oltre il quale l'aggiunta di nuovi cluster produce benefici marginali, suggerendo che tre gruppi rappresentino un buon equilibrio tra compattezza e semplicità del modello.
 
-La seconda è il Silhouette Score, che misura per ciascun punto quanto esso sia simile agli altri elementi del proprio cluster rispetto a quelli del cluster più vicino; valori prossimi a 1 indicano una separazione netta tra i cluster, valori prossimi a 0 segnalano sovrapposizione. L'andamento del Silhouette Score al variare di k ha confermato k=3 come scelta solida, mostrando un valore elevato e stabile rispetto alle alternative, a indicare che i tre cluster individuati sono internamente coesi e sufficientemente separati tra loro. Le due metriche, concordando sulla stessa scelta, hanno rafforzato la robustezza della decisione progettuale.
+La seconda è il **Silhouette Score**, che misura per ciascun punto quanto esso sia simile agli altri elementi del proprio cluster rispetto a quelli del cluster più vicino; valori prossimi a 1 indicano una separazione netta tra i cluster, valori prossimi a 0 segnalano sovrapposizione. L'andamento del Silhouette Score al variare di k ha confermato k=3 come scelta solida, mostrando un valore elevato e stabile rispetto alle alternative, a indicare che i tre cluster individuati sono internamente coesi e sufficientemente separati tra loro. Le due metriche, concordando sulla stessa scelta, hanno rafforzato la robustezza della decisione progettuale.
 
 ![kmeans](./img/01_kmeans_evaluation.png)
 
 ## **5. Apprendimento supervisionato**
 
-Il modulo di apprendimento supervisionato ha il compito di classificare lo stato fitosanitario di una pianta a partire dalle sue osservazioni sintomatiche e ambientali. Il problema è trattato come un task di classificazione multiclasse su 9 etichette diagnostiche (Sano, Infestazione_Afidi, Oidio, Peronospora, Botrite, Muffa_Bianca, Ragnetto_Rosso, Marciume_Apicale, Stress_Idrico). Sono stati addestrati e confrontati quattro modelli — Random Forest, SVM con kernel RBF, Naive Bayes e Regressione Logistica — con l'obiettivo di individuare quello più adatto a essere impiegato come modello operativo nel sistema, affiancato alla Rete Neurale trattata separatamente.
+Il modulo di apprendimento supervisionato ha il compito di classificare lo stato fitosanitario di una pianta a partire dalle sue osservazioni sintomatiche e ambientali. Il problema è trattato come un task di classificazione multiclasse su 9 etichette diagnostiche (Sano, Infestazione_Afidi, Oidio, Peronospora, Botrite, Muffa_Bianca, Ragnetto_Rosso, Marciume_Apicale, Stress_Idrico). Sono stati addestrati e confrontati quattro modelli — **Random Forest**, **SVM con kernel RBF**, **Naive Bayes** e **Regressione Logistica** — con l'obiettivo di individuare quello più adatto a essere impiegato come modello operativo nel sistema, affiancato alla **Rete Neurale** trattata separatamente.
 
-I modelli sono implementati tramite le classi RandomForestClassifier, SVC, GaussianNB e LogisticRegression della libreria scikit-learn. La validazione è condotta tramite StratifiedKFold e cross_validate, mentre il calcolo dell'AUC multi-classe è effettuato tramite roc_auc_score con strategia One-vs-One. Il preprocessing delle feature categoriche (famiglia botanica e sintomi visivi) è affidato a LabelEncoder, mentre la normalizzazione dell'intero vettore di input è gestita da StandardScaler.
+I modelli sono implementati tramite le classi RandomForestClassifier, SVC, GaussianNB e LogisticRegression della libreria "scikit-learn". La validazione è condotta tramite "StratifiedKFold" e "cross_validate", mentre il calcolo dell'AUC multi-classe è effettuato tramite "roc_auc_score" con strategia One-vs-One. Il preprocessing delle feature categoriche (famiglia botanica e sintomi visivi) è affidato a "LabelEncoder", mentre la normalizzazione dell'intero vettore di input è gestita da "StandardScaler".
 
 Le feature di input sono sei: famiglia botanica codificata, sintomi visivi codificati, ore di luce, umidità ottimale, temperatura ottimale e pH del suolo. Le prime due sono variabili categoriche trasformate tramite label encoding; le restanti quattro sono variabili numeriche continue. L'intero vettore viene standardizzato con StandardScaler prima di essere fornito ai modelli, scelta necessaria in particolare per SVM e Regressione Logistica, che sono sensibili alla scala delle feature.
-La validazione è stata condotta tramite 10-Fold Cross-Validation Stratificata, che preserva in ciascun fold la distribuzione originale delle classi. Il Random Forest, una volta selezionato come modello operativo, viene addestrato sull'intero dataset e serializzato tramite joblib insieme allo scaler e agli encoder, per essere ricaricato a runtime dal motore di inferenza GardenMLEngine.
+La validazione è stata condotta tramite **10-Fold Cross-Validation Stratificata**, che preserva in ciascun fold la distribuzione originale delle classi. Il Random Forest, una volta selezionato come modello operativo, viene addestrato sull'intero dataset e serializzato tramite joblib insieme allo scaler e agli encoder, per essere ricaricato a runtime dal motore di inferenza GardenMLEngine.
 
 Per ciascun modello sono riportate le metriche mediate sui 10 fold: accuratezza, varianza e deviazione standard dell'accuratezza, F1-score pesato, precisione media pesata e AUC (One-vs-One). La varianza e la deviazione standard forniscono un'indicazione sulla stabilità del modello al variare della partizione di training e test.
 
@@ -225,17 +256,18 @@ Per ciascun modello sono riportate le metriche mediate sui 10 fold: accuratezza,
 | Logistic Regression | 0.848 | 0.00074 | 0.027 | 0.793 | 0.756 | 0.949 |
 
 ### Random Forest
-Il Random Forest è un metodo ensemble che costruisce un insieme di alberi decisionali addestrati su sottocampioni casuali del dataset e delle feature, aggregando le predizioni tramite voto di maggioranza. È stato configurato con n_estimators=100, valore che garantisce stabilità delle predizioni senza introdurre un costo computazionale eccessivo. Si afferma come il modello più performante dell'intera valutazione, con un'accuratezza di 0.930 e un'AUC di 0.984, abbinati alla varianza più bassa (0.00026), a indicare un comportamento stabile e consistente attraverso tutti i fold. Grazie a questi risultati, il Random Forest è stato selezionato come modello operativo del sistema.
+Il **Random Forest** è un metodo ensemble che costruisce un insieme di alberi decisionali addestrati su sottocampioni casuali del dataset e delle feature, aggregando le predizioni tramite voto di maggioranza. È stato configurato con n_estimators=100, valore che garantisce stabilità delle predizioni senza introdurre un costo computazionale eccessivo. Si afferma come il modello più performante dell'intera valutazione, con un'accuratezza di 0.930 e un'AUC di 0.984, abbinati alla varianza più bassa (0.00026), a indicare un comportamento stabile e consistente attraverso tutti i fold. Grazie a questi risultati, il Random Forest è stato selezionato come modello operativo del sistema.
 
 ![random_forest](./img/03_random%20forest_eval.png)
 
-La matrice evidenzia un comportamento complessivamente molto solido. La classe dominante, Sano, viene classificata correttamente in 87 casi su 88, con un solo errore verso Oidio. Tutte le classi patologiche minori — Infestazione_Afidi (6/6), Ragnetto_Rosso (5/5), Peronospora (5/5), Stress_Idrico (3/3), Botrite (3/3) — vengono riconosciute senza alcun errore. L'unica criticità riguarda Marciume_Apicale, classificato correttamente solo 0 volte su 2, con entrambi i campioni erroneamente assegnati alla classe Sano, e Oidio, che genera una confusione con Peronospora in un caso. Questo comportamento è riconducibile alla bassa numerosità di queste classi nel test set, che rende il modello meno capace di distinguerle in fase di predizione.
+La matrice evidenzia un comportamento complessivamente molto solido. La classe dominante, Sano, viene classificata correttamente in 87 casi su 88, con un solo errore verso Muffa_Bianca. 
+L'unica criticità riguarda Marciume_Apicale, classificato correttamente solo 0 volte su 2, con entrambi i campioni erroneamente assegnati alla classe Sano. Questo comportamento è riconducibile alla bassa numerosità di queste classi nel test set, che rende il modello meno capace di distinguerle in fase di predizione.
 
 La curva ROC mostra un'AUC di 0.99, con un profilo che si avvicina quasi immediatamente all'angolo superiore sinistro del grafico, indicando un'ottima capacità discriminativa tra le classi. Il modello raggiunge un TPR molto elevato già a valori di FPR prossimi a zero, confermando che le probabilità di classe stimate sono ben calibrate e separano efficacemente le diagnosi corrette da quelle errate.
 
 ### SVM con Kernel RBF
 
-La Support Vector Machine con kernel RBF (Radial Basis Function) proietta implicitamente i dati in uno spazio di feature ad alta dimensionalità, cercando l'iperpiano di separazione a margine massimo tra le classi. Il kernel RBF è stato scelto per la sua capacità di gestire relazioni non lineari tra le feature, caratteristica rilevante in un dominio dove la combinazione di sintomi e condizioni ambientali non produce confini di decisione lineari. Il parametro probability=True è stato abilitato per consentire il calcolo delle probabilità di classe necessarie alla stima dell'AUC. Il modello raggiunge un'accuratezza di 0.870 e un'AUC di 0.947, posizionandosi al secondo posto nella valutazione complessiva, con una varianza contenuta (0.00090).
+La **Support Vector Machine con kernel RBF (Radial Basis Function)** proietta implicitamente i dati in uno spazio di feature ad alta dimensionalità, cercando l'iperpiano di separazione a margine massimo tra le classi. Il kernel RBF è stato scelto per la sua capacità di gestire relazioni non lineari tra le feature, caratteristica rilevante in un dominio dove la combinazione di sintomi e condizioni ambientali non produce confini di decisione lineari. Il parametro probability=True è stato abilitato per consentire il calcolo delle probabilità di classe necessarie alla stima dell'AUC. Il modello raggiunge un'accuratezza di 0.870 e un'AUC di 0.947, posizionandosi al secondo posto nella valutazione complessiva, con una varianza contenuta (0.00090).
 
 ![svm](./img/03_svm_eval.png)
 
@@ -243,7 +275,7 @@ L'analisi e la spiegazione avviene nel capitolo 7.
 
 ### Naive Bayes
 
-Il Naive Bayes Gaussiano è un classificatore probabilistico che stima la probabilità di ciascuna classe assumendo l'indipendenza condizionale tra le feature e modellando le distribuzioni di probabilità come gaussiane. È il modello più semplice tra quelli valutati e non richiede alcun parametro di configurazione specifico. Presenta l'accuratezza più bassa (0.742) e la varianza più alta (0.00156), riflettendo la limitatezza dell'ipotesi di indipendenza in un contesto in cui le feature ambientali sono tra loro correlate. Tuttavia, registra un'AUC sorprendentemente elevata (0.989), la più alta dell'intera valutazione, suggerendo che il modello stima in modo affidabile le probabilità di appartenenza alle classi, pur commettendo più errori nella classificazione diretta.
+Il **Naive Bayes Gaussiano** è un classificatore probabilistico che stima la probabilità di ciascuna classe assumendo l'indipendenza condizionale tra le feature e modellando le distribuzioni di probabilità come gaussiane. È il modello più semplice tra quelli valutati e non richiede alcun parametro di configurazione specifico. Presenta l'accuratezza più bassa (0.742) e la varianza più alta (0.00156), riflettendo la limitatezza dell'ipotesi di indipendenza in un contesto in cui le feature ambientali sono tra loro correlate. Tuttavia, registra un'AUC sorprendentemente elevata (0.989), la più alta dell'intera valutazione, suggerendo che il modello stima in modo affidabile le probabilità di appartenenza alle classi, pur commettendo più errori nella classificazione diretta.
 
 ![naive](./img/03_naive_bayes_eval.png)
 
@@ -251,12 +283,14 @@ L'analisi e la spiegazione avviene nel capitolo 7.
 
 ### Regressione logistica
 
-La Regressione Logistica è un modello lineare generalizzato che stima la probabilità di appartenenza a ciascuna classe tramite una funzione sigmoide, estesa al caso multiclasse tramite la strategia One-vs-Rest. È configurata con max_iter=1000 per garantire la convergenza su un problema con nove etichette. Raggiunge un'accuratezza di 0.848 e un'AUC di 0.949, risultando competitiva rispetto alla SVM nonostante la sua natura lineare, il che suggerisce che una parte rilevante della struttura del problema sia linearmente separabile nello spazio delle feature normalizzate. La deviazione standard contenuta (0.027) conferma una buona stabilità tra i fold.
+La **Regressione Logistica** è un modello lineare generalizzato che stima la probabilità di appartenenza a ciascuna classe tramite una funzione sigmoide, estesa al caso multiclasse tramite la strategia One-vs-Rest. È configurata con max_iter=1000 per garantire la convergenza su un problema con nove etichette. Raggiunge un'accuratezza di 0.848 e un'AUC di 0.949, risultando competitiva rispetto alla SVM nonostante la sua natura lineare, il che suggerisce che una parte rilevante della struttura del problema sia linearmente separabile nello spazio delle feature normalizzate. La deviazione standard contenuta (0.027) conferma una buona stabilità tra i fold.
 
 ![regressione](./img/03_logistic_regression_eval.png)
 
 
-La Regressione Logistica mostra un comportamento simile alla SVM, con qualche debolezza aggiuntiva sulle classi minori. Sano viene classificato correttamente in tutti gli 88 casi. Infestazione_Afidi (6/6) e Muffa_Bianca (6/6) sono riconosciute perfettamente. Oidio genera una confusione con Peronospora in un caso (6/7), mentre Peronospora presenta lo stesso errore speculare (4/5). Botrite non viene mai classificata correttamente, con tutti e 3 i campioni assegnati a Sano, e Marciume_Apicale registra anch'essa 0 predizioni corrette con i 2 campioni assegnati a Sano. Questi errori riflettono i limiti di un modello lineare nel separare classi con distribuzioni di feature sovrapposte, in particolare quelle con numerosità ridotta nel test set.
+La Regressione Logistica mostra un comportamento simile alla SVM, con qualche debolezza aggiuntiva sulle classi minori. Sano viene classificato correttamente in tutti gli 88 casi. Infestazione_Afidi (6/6) è riconosciuta perfettamente. Oidio genera una confusione con Peronospora in un caso (6/7), mentre Peronospora presenta lo stesso errore speculare (4/5). Botrite non viene mai classificata correttamente, con tutti e 3 i campioni assegnati a Sano, e Marciume_Apicale registra anch'essa 0 predizioni corrette con i 2 campioni assegnati a Sano. Il caso peggiore è quello di Muffa_Bianca che registra 6/6 errori su Sano. 
+
+Questi errori riflettono i limiti di un modello lineare nel separare classi con distribuzioni di feature sovrapposte, in particolare quelle con numerosità ridotta nel test set.
 
 La curva ROC mostra un'AUC di 0.99, in linea con Random Forest e SVM. Come già osservato per il Naive Bayes, l'AUC elevata indica che la stima probabilistica del modello è buona, anche nei casi in cui la classificazione diretta fallisce. Il profilo della curva è tuttavia leggermente meno ripido nelle fasi iniziali rispetto al Random Forest, coerente con la minore accuratezza media osservata in cross-validation.
 
@@ -296,7 +330,7 @@ Validation Score (Linea Continua): Anche la curva di validazione subisce lo stes
 
 La Rete Neurale impiegata nel sistema è un Percettrone Multistrato (Multi-Layer Perceptron, MLP), un modello di apprendimento supervisionato che apprende una rappresentazione non lineare dei dati attraverso una serie di strati di neuroni connessi. Nel contesto del sistema, la rete neurale affianca il Random Forest come secondo modello operativo: entrambi producono una predizione indipendente per ogni osservazione, e le due diagnosi vengono confrontate a runtime dal modulo ValidationReporter tramite un meccanismo di consenso multi-modello, che segnala eventuali discordanze tra i due classificatori.
 
-Il modello è implementato tramite la classe MLPClassifier della libreria scikit-learn. Come per gli altri modelli supervisionati, le feature di input vengono preprocessate tramite LabelEncoder per le variabili categoriche e normalizzate con StandardScaler. Il modello addestrato viene serializzato tramite joblib e ricaricato a runtime dal motore di inferenza GardenMLEngine.
+Il modello è implementato tramite la classe "MLPClassifier" della libreria "scikit-learn". Come per gli altri modelli supervisionati, le feature di input vengono preprocessate tramite LabelEncoder per le variabili categoriche e normalizzate con StandardScaler. Il modello addestrato viene serializzato tramite joblib e ricaricato a runtime dal motore di inferenza GardenMLEngine.
 
 L'architettura della rete è composta da due strati nascosti, rispettivamente di 64 e 32 neuroni (hidden_layer_sizes=(64, 32)), con funzione di attivazione ReLU applicata di default da scikit-learn. La scelta di due strati nascosti con dimensione decrescente riflette un approccio a imbuto: il primo strato apprende rappresentazioni più generali delle feature di input, mentre il secondo le raffina verso le 9 classi diagnostiche target. Il numero massimo di iterazioni è stato fissato a max_iter=1000 per garantire la convergenza su un problema multiclasse con un numero di epoche sufficiente, evitando i warning di convergenza prematura che si manifestavano con valori inferiori. La validazione è condotta, coerentemente con gli altri modelli, tramite 10-Fold Cross-Validation Stratificata.
 
@@ -313,7 +347,7 @@ La presente sezione fornisce un confronto approfondito tra i due modelli, eviden
 
 Entrambi i modelli sono stati testati sul medesimo dataset di addestramento. Per una comparazione visiva e statistica, sono state analizzate le Matrici di Confusione, le Curve ROC (con i relativi AUC) e le Curve di Apprendimento.
 
-SUPPORT VECTOR MACHINE (SVM):
+**SUPPORT VECTOR MACHINE (SVM):**
 
 ![svm](./img/03_svm_eval.png)
 
@@ -321,7 +355,7 @@ SUPPORT VECTOR MACHINE (SVM):
 
 - Matrice di Confusione: Il modello presenta una diagonale principale densamente popolata. Sebbene le performance siano eccellenti, si registra una lieve debolezza specifica (Falsi Negativi): la tendenza a confondere alcuni casi di Muffa_Bianca con la classe Sano, dovuta alla sovrapposizione intrinseca dei dati climatici iniziali di queste due condizioni.
 
-NAIVE BAYES:
+**NAIVE BAYES:**
 
 ![nb](./img/03_naive_bayes_eval.png)
 
@@ -339,7 +373,7 @@ Support Vector Machine (SVM):
 - Convergenza: Le curve convergono a un valore molto alto (> 0.85), indicando che il modello SVM non soffre di overfitting e si adatta perfettamente alla complessità non-lineare dei dati botanici.
 
 Naive Bayes:
-A differenza della SVM, il Naive Bayes mostra un comportamento anomalo e affascinante:
+A differenza della SVM, il Naive Bayes mostra un comportamento anomalo e particolare:
 - Il Crollo (Underfitting acuto): La curva del training score inizia alta con pochi dati, ma subisce un crollo drastico intorno ai 150 campioni. L'introduzione di patologie complesse con sintomi sovrapposti "rompe" la logica del classificatore, che non riesce più a trovare regole matematiche valide, sbagliando anche sui dati di addestramento.
 - Il Ribilanciamento: Superati i 200 campioni, la legge dei grandi numeri permette al modello di ricostruire nuove probabilità generali. Le curve di training e validation tornano a salire e convergono, ma si stabilizzano su un'accuratezza nettamente inferiore a quella della SVM (~0.73). Questo dimostra matematicamente i limiti dei modelli probabilistici puri in domini con features fortemente correlate.
 
@@ -347,18 +381,24 @@ A differenza della SVM, il Naive Bayes mostra un comportamento anomalo e affasci
 
 Il modulo CSP si occupa del problema del posizionamento ottimale delle piante all'interno dei vasi disponibili sul balcone o in giardino. Il problema viene formalizzato come un Constraint Satisfaction Problem: dato un insieme di piante da collocare e un insieme di vasi con caratteristiche ambientali note, il sistema deve trovare un'assegnazione pianta-vaso che soddisfi simultaneamente tutti i vincoli biologici di ciascuna specie. L'integrazione con l'ontologia OWL è il tratto distintivo di questo modulo: i requisiti biologici di luce e umidità non sono codificati staticamente nel codice, ma vengono interrogati dinamicamente dall'ontologia per ciascuna istanza di pianta, rendendo il modulo estensibile a qualsiasi nuova specie aggiunta alla base di conoscenza.
 
-Il modulo è implementato tramite la libreria python-constraint, che fornisce la classe Problem per la definizione di variabili, domini e vincoli, e il constraint AllDifferentConstraint per imporre l'unicità dell'assegnazione. L'accesso alle proprietà biologiche delle piante è mediato dalla libreria owlready2, tramite cui vengono interrogate le data property richiedeOreLuce e haLivelloUmiditaOttimale degli individui presenti nell'ontologia.
+Il modulo è implementato tramite la libreria "python-constraint", che fornisce la classe Problem per la definizione di variabili, domini e vincoli, e il constraint AllDifferentConstraint per imporre l'unicità dell'assegnazione. L'accesso alle proprietà biologiche delle piante è mediato dalla libreria owlready2, tramite cui vengono interrogate le data property richiedeOreLuce e haLivelloUmiditaOttimale degli individui presenti nell'ontologia.
 
 Le variabili del problema CSP sono le piante da posizionare, mentre il dominio di ciascuna variabile è l'insieme dei vasi disponibili. Nel sistema sono definiti quattro vasi con profili ambientali distinti: Vaso_Sole (luce 9.5h, umidità 0.4), Vaso_Ombra (luce 4.0h, umidità 0.8), Vaso_Interno (luce 7.0h, umidità 0.6) e Vaso_Serra (luce 8.0h, umidità 0.9), coprono uno spettro ampio di condizioni ambientali, consentendo al sistema di trovare una soluzione per la maggior parte delle specie supportate.
 
-Sono stati definiti due vincoli. Il primo è un vincolo globale di unicità (AllDifferentConstraint), che impedisce a due piante di essere assegnate allo stesso vaso. Il secondo è un vincolo unario biologico (check_bio), applicato individualmente a ciascuna pianta: un vaso è considerato compatibile se i suoi valori di luce e umidità rientrano entro una tolleranza di ±3 ore di luce e ±0.3 di umidità rispetto ai requisiti ottimali dell'individuo recuperati dall'ontologia.
+Sono stati definiti due vincoli. 
+
+Il primo è un vincolo globale di unicità (AllDifferentConstraint), che impedisce a due piante di essere assegnate allo stesso vaso. 
+
+Il secondo è un vincolo unario biologico (check_bio), applicato individualmente a ciascuna pianta: un vaso è considerato compatibile se i suoi valori di luce e umidità rientrano entro una tolleranza di ±3 ore di luce e ±0.3 di umidità rispetto ai requisiti ottimali dell'individuo recuperati dall'ontologia.
+
+![alt text](image-5.png)
 
  La scelta di adottare una tolleranza invece di un vincolo rigido è motivata dalla necessità di garantire soluzioni ammissibili anche in contesti reali dove le condizioni ambientali non coincidono perfettamente con i valori ottimali di ogni specie.
 Un aspetto rilevante riguarda la gestione dei dati ontologici: le proprietà recuperate tramite owlready2 possono restituire un valore scalare o una lista a seconda della versione della libreria; il modulo gestisce entrambi i casi estraendo il primo elemento quando necessario, e applica valori di default (luce 5h, umidità 0.5) qualora la proprietà non sia definita per un individuo specifico. La ricerca dell'individuo da posizionare avviene interrogando l'ontologia tramite il nome della pianta fornito in input, selezionando un candidato rappresentativo tra quelli trovati.
 
 La valutazione del modulo CSP si concentra sulla correttezza delle soluzioni prodotte e sulla completezza della copertura. Il solver restituisce la prima soluzione valida trovata tramite getSolution(), che garantisce che tutti i vincoli definiti siano soddisfatti. La correttezza è quindi garantita per costruzione dalla libreria python-constraint, che effettua il backtracking automatico nel caso in cui un'assegnazione parziale violi uno dei vincoli.
 
-La complessità del problema cresce con il numero di piante e di vasi: per n piante e m vasi il numero di assegnazioni candidate è m^n, ridotto significativamente dalla propagazione dei vincoli. Nel contesto attuale, con un numero ridotto di piante e quattro vasi disponibili, lo spazio di ricerca è contenuto e la soluzione viene trovata in tempo trascurabile. Un limite del modulo nella configurazione corrente è che viene posizionata una sola pianta per sessione di diagnosi; l'architettura del CSP supporta tuttavia nativamente il posizionamento simultaneo di più piante, essendo le variabili e i vincoli definiti su liste arbitrarie, rendendo questa estensione immediata.
+La complessità del problema cresce con il numero di piante e di vasi: per N piante e M vasi il numero di assegnazioni candidate è **M^N**, ridotto significativamente dalla propagazione dei vincoli. Nel contesto attuale, con un numero ridotto di piante e quattro vasi disponibili, lo spazio di ricerca è contenuto e la soluzione viene trovata in tempo trascurabile. Un limite del modulo nella configurazione corrente è che viene posizionata una sola pianta per sessione di diagnosi; l'architettura del CSP supporta tuttavia nativamente il posizionamento simultaneo di più piante, essendo le variabili e i vincoli definiti su liste arbitrarie, rendendo questa estensione immediata.
 
 ## **9. Ricerca nello spazio di stati**
 
@@ -368,7 +408,7 @@ Questo problema si inquadra perfettamente nel dominio della Ricerca nello Spazio
 
 L'ambiente operativo della serra è stato modellato come una griglia bidimensionale discreta (15x20), che rappresenta il nostro grafo di ricerca.
 Il problema di navigazione è formalizzato attraverso i seguenti elementi:
-- Spazio degli Stati (S): L'insieme di tutte le coordinate $(x, y)$ navigabili della griglia.
+- Spazio degli Stati (S): L'insieme di tutte le coordinate (x, y) navigabili della griglia.
 - Stato Iniziale (s_0): La coordinata di partenza in cui si trova il Rover (es. la base di ricarica).
 - Stato Obiettivo (s_g): La coordinata in cui è posizionato il vaso della pianta target da trattare.
 - Azioni (A): I movimenti consentiti all'agente: Su, Giù, Sinistra, Destra. Non sono consentiti movimenti diagonali.
@@ -378,14 +418,16 @@ Il problema di navigazione è formalizzato attraverso i seguenti elementi:
 Per garantire che il Rover trovi sempre il percorso più breve per raggiungere la pianta target senza sprecare energia (batteria), è stato implementato l'algoritmo di Ricerca Informata A*.
 
 A* è un algoritmo di ricerca Best-First completo e ottimale. A differenza degli algoritmi di ricerca cieca (come la Breadth-First Search), A* dirige l'esplorazione dei nodi in modo intelligente utilizzando una funzione di valutazione f(n):
-f(n) = g(n) + h(n)
+
+**f(n) = g(n) + h(n)**
+
 Dove:
-- g(n) è il costo esatto del cammino dal nodo di partenza al nodo corrente n.
-- h(n) è la funzione euristica, ovvero una stima del costo residuo dal nodo n al nodo obiettivo.
+- **g(n)** è il costo esatto del cammino dal nodo di partenza al nodo corrente n.
+- **h(n)** è la funzione euristica, ovvero una stima del costo residuo dal nodo n al nodo obiettivo.
 
 Poiché il Rover può muoversi solo in 4 direzioni (orizzontale e verticale), la metrica ideale per stimare la distanza è la Distanza di Manhattan (o geometria del taxi), calcolata come:
 
-h(n) = |x_n - x_{goal}| + |y_n - y_{goal}|
+**h(n) = |x_n - x_{goal}| + |y_n - y_{goal}|**
 
 Questa scelta è cruciale a livello teorico: la Distanza di Manhattan in una griglia a 4 direzioni è un'euristica ammissibile (non sovrastima mai il costo reale per raggiungere l'obiettivo, poiché ignora gli ostacoli) ed è consistente. Grazie a queste due proprietà matematiche, l'algoritmo A* implementato garantisce rigorosamente il ritrovamento del percorso ottimale assoluto.
 
@@ -395,7 +437,7 @@ Il Rover possiede una coda di task (piante da visitare). Per decidere in quale o
 
 Una volta raggiunto il target, il modulo esegue la diagnosi specifica (es. somministrazione di Olio di Neem o semplice Manutenzione Idrica). Se un ostacolo rende una pianta fisicamente irraggiungibile chiudendo ogni via d'accesso, l'algoritmo A* esaurisce lo spazio di ricerca (lista Open vuota) ed emette un'eccezione, permettendo all'agente di registrare il fallimento logistico e passare in modo resiliente al target successivo.
 
-L'aspetto più avanzato di questo modulo è la sua natura di Digital Twin (Gemello Digitale). La griglia di navigazione non è una semplice rappresentazione grafica scollegata, ma riflette in tempo reale la struttura dati sottostante del sistema (il dataset in formato CSV/Ontologico).
+L'aspetto più avanzato di questo modulo è la sua natura di **Digital Twin** (Gemello Digitale). La griglia di navigazione non è una semplice rappresentazione grafica scollegata, ma riflette in tempo reale la struttura dati sottostante del sistema (il dataset in formato CSV/Ontologico).
 
 Quando il Rover raggiunge le coordinate di una pianta e porta a compimento il "Protocollo Operativo", non si limita a un aggiornamento visivo: il sistema altera i dizionari in memoria mutando lo Stato_Attuale della pianta da malata a curata, e i Sintomi_Visivi in Risolti. 
 

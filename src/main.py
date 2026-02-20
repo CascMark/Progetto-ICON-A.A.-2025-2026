@@ -114,7 +114,21 @@ class SmartGardenSystem:
                 else:
                     print("    (Esito: Discrepanza rilevata. Si consiglia prevalenza al modello RF)")
                 
-                print(f" -> K-Means:   {cluster}")
+                mappa_climi = {
+                    0: "Clima Umido/Ombroso 🌧️",
+                    1: "Clima Secco/Soleggiato ☀️",
+                    2: "Clima Temperato/Neutro ⛅" # Mettiamo questo sul 2 visto che esce spesso
+                }
+                
+                import re
+                match = re.search(r'\d+', str(cluster))
+                if match:
+                    id_cluster = int(match.group())
+                    nome_clima = mappa_climi.get(id_cluster, f"Clima Ignoto ({id_cluster})")
+                else:
+                    nome_clima = str(cluster)
+
+                print(f" -> Profilazione Ambientale (K-Means): {nome_clima}")
 
         print(f"\n[2] PROLOG (Motore Inferenziale Reale)")
         if self.logic_engine:
