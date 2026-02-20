@@ -1,6 +1,5 @@
 import sys
 
-# Gestione compatibilità versioni pgmpy
 try:
     from pgmpy.models import DiscreteBayesianNetwork
 except ImportError:
@@ -49,13 +48,7 @@ def crea_rete_diagnosi():
     )
 
     # --- 3. PROBABILITÀ CONDIZIONATA (SINTOMO | MALATTIA) ---
-    # Qui inseriamo i dati COME LI HAI SCRITTI TU (per Malattia),
-    # perché è più leggibile per l'essere umano.
-    # Poi li trasponiamo via codice per pgmpy.
-    
-    # Ordine Sintomi interno a ogni lista: 
-    # [Arricciate, Gialle, Secche, Macchie, Marciume, Muffa, Nessuna, Ragnatele]
-    
+
     dati_per_malattia = [
         # 1. Afidi
         [0.60, 0.30, 0.00, 0.00, 0.00, 0.00, 0.10, 0.00], 
@@ -82,13 +75,11 @@ def crea_rete_diagnosi():
     ]
 
     # --- TRASPOSIZIONE AUTOMATICA ---
-    # La funzione zip(*lista) gira la matrice: le righe diventano colonne.
-    # Ora pgmpy riceverà: [[Tutte le prob di Arricciate], [Tutte le prob di Gialle], ...]
     values_sintomi_transposed = list(map(list, zip(*dati_per_malattia)))
 
     cpd_sintomo = TabularCPD(
         variable='Sintomo', variable_card=len(sintomi),
-        values=values_sintomi_transposed, # Usiamo la matrice girata
+        values=values_sintomi_transposed,
         evidence=['Malattia'],
         evidence_card=[len(malattie)],
         state_names={
@@ -99,7 +90,6 @@ def crea_rete_diagnosi():
 
     model.add_cpds(cpd_malattia, cpd_sintomo)
     
-    # Verifica validità (ora la somma delle colonne farà 1.0 e non darà errore)
     if not model.check_model():
         raise ValueError("Errore modello: Le probabilità non sommano a 1.")
         

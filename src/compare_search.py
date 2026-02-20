@@ -9,7 +9,6 @@ COLONNE = 20
 START = (1, 1)
 GOAL = (13, 18)
 
-# Creiamo un ostacolo complesso (Muro a forma di L) per mettere alla prova gli algoritmi
 OSTACOLI = set()
 for r in range(4, 13):
     OSTACOLI.add((r, 10))
@@ -35,12 +34,11 @@ def esegui_ricerca(usa_euristica=True):
         current = heapq.heappop(open_set)[1]
         
         if current == GOAL:
-            # Ricostruisci percorso per contarne la lunghezza
             path_len = 0
             while current in came_from:
                 current = came_from[current]
                 path_len += 1
-            exec_time = (time.perf_counter() - start_time) * 1000 # in millisecondi
+            exec_time = (time.perf_counter() - start_time) * 1000 
             return nodi_espansi, path_len, exec_time
 
         if current != START:
@@ -56,7 +54,6 @@ def esegui_ricerca(usa_euristica=True):
                     came_from[vicino] = current
                     g_score[vicino] = tentativo_g_score
                     
-                    # Se usa_euristica è False, h(n) = 0 (Equivale a Dijkstra)
                     h_score = euristica_manhattan(vicino, GOAL) if usa_euristica else 0
                     f_score = tentativo_g_score + h_score
                     
@@ -74,7 +71,7 @@ nodi_astar, path_astar, time_astar = esegui_ricerca(usa_euristica=True)
 
 # --- GENERAZIONE GRAFICO ---
 labels = ['Nodi Espansi (Memoria)', 'Tempo di Esecuzione (ms)']
-dijkstra_stats = [nodi_dijkstra, time_dijkstra * 10] # Moltiplicato per visibilità sul grafico
+dijkstra_stats = [nodi_dijkstra, time_dijkstra * 10] 
 astar_stats = [nodi_astar, time_astar * 10]
 
 x = range(len(labels))
@@ -90,7 +87,7 @@ ax.set_xticks(x)
 ax.set_xticklabels(labels)
 ax.legend()
 
-# Salva nella cartella data del repository
+
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 save_path = os.path.join(base_dir, 'plots', 'confronto_astar_dijkstra.png')
 os.makedirs(os.path.dirname(save_path), exist_ok=True)

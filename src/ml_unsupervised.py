@@ -5,9 +5,6 @@ import numpy as np
 
 class GardenMLEngine:
     def __init__(self, csv_path_ignored=None):
-        # Nota: csv_path_ignored è lì per compatibilità col tuo vecchio main, ma carichiamo i pkl.
-        
-        # Percorsi
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         if os.path.basename(BASE_DIR) == "src":
             ROOT_DIR = os.path.dirname(BASE_DIR)
@@ -34,7 +31,6 @@ class GardenMLEngine:
             self.models_loaded = False
 
     def addestra(self):
-        # Metodo dummy per compatibilità col vecchio main.py che chiamava .addestra()
         print(" [INFO] I modelli sono già pre-addestrati e caricati da file.")
         pass
 
@@ -43,10 +39,6 @@ class GardenMLEngine:
             return None
 
         try:
-            # 1. Preparazione Input (Simulazione Dati Ambientali)
-            # In un'app reale, questi verrebbero da sensori. Qui usiamo medie realistiche.
-            
-            # Mapping Pianta -> Famiglia (Semplificato)
             famiglia_map = {
                 "Basilico": "Lamiaceae", "Menta": "Lamiaceae",
                 "Pomodoro": "Solanaceae", "Peperone": "Solanaceae", "Melanzana": "Solanaceae",
@@ -54,38 +46,31 @@ class GardenMLEngine:
                 "Rosa": "Rosaceae", "Fragola": "Rosaceae"
             }
             famiglia_str = famiglia_map.get(nome_pianta, "Solanaceae") # Default
-            
-            # Simuliamo condizioni ambientali per la predizione
+
             luce = 8.0
             umidita = 0.6
             temp = 25.0
             ph = 7.0
 
-            # 2. Encoding e Scaling
             try:
                 fam_encoded = self.le_famiglia.transform([famiglia_str])[0]
             except:
-                fam_encoded = 0 # Fallback se famiglia sconosciuta
+                fam_encoded = 0 
             
-            # Creazione DataFrame input
             input_df = pd.DataFrame([[fam_encoded, luce, umidita, temp, ph]], 
                                     columns=['Famiglia_Encoded', 'Ore_Luce', 'Umidita_Ottimale', 'Temperatura_Ottimale', 'PH_Suolo'])
             
             X_input = self.scaler.transform(input_df)
 
-            # 3. Predizione Supervisionata (RF e NN)
             pred_rf = self.rf.predict(X_input)[0]
             prob_rf = np.max(self.rf.predict_proba(X_input))
             
             pred_nn = self.nn.predict(X_input)[0]
 
-            # 4. Predizione Non Supervisionata (K-Means)
-            # Cluster basato solo su ambiente
             input_env = pd.DataFrame([[luce, umidita, temp]], columns=['Ore_Luce', 'Umidita_Ottimale', 'Temperatura_Ottimale'])
             X_env_scaled = self.scaler_env.transform(input_env)
             cluster_id = self.kmeans.predict(X_env_scaled)[0]
             
-            # Descrizione Cluster (Interpretazione)
             descrizioni_cluster = {
                 0: "Clima A (Prob. Secco/Soleggiato)",
                 1: "Clima B (Prob. Umido/Ombroso)",

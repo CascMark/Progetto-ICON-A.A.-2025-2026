@@ -6,7 +6,6 @@ import os
 import pandas as pd
 from datetime import datetime
 
-# --- CONFIGURAZIONI GRIGLIA E DESIGN ---
 RIGHE = 15
 COLONNE = 20
 DIM_CELLA = 28 
@@ -38,12 +37,11 @@ DIAGNOSI_CURE = {
 
 class RoverTab:
     def __init__(self, parent):
-        self.parent = parent # Il Frame genitore (il Tab del Notebook)
+        self.parent = parent
         self.parent.configure(bg=BG_MAIN)
         
         self.dataset = self.carica_dataset()
         
-        # --- LAYOUT PRINCIPALE ---
         self.sidebar = tk.Frame(self.parent, bg=BG_SIDEBAR, width=280)
         self.sidebar.pack(side=tk.LEFT, fill=tk.Y)
         self.sidebar.pack_propagate(False) 
@@ -74,62 +72,51 @@ class RoverTab:
         self.canvas.bind("<B3-Motion>", self.rimuovi_ostacolo)
 
     def costruisci_sidebar(self):
-        # Titolo più compatto
         tk.Label(self.sidebar, text="🤖 ROVER A*", font=("Segoe UI", 18, "bold"), bg=BG_SIDEBAR, fg="#f1c40f", pady=10).pack(fill=tk.X)
         tk.Label(self.sidebar, text="Automated Planning", font=("Segoe UI", 9, "italic"), bg=BG_SIDEBAR, fg="#bdc3c7").pack(fill=tk.X)
         
         tk.Frame(self.sidebar, bg="#34495e", height=2).pack(fill=tk.X, padx=20, pady=10)
         
-        # Pulsanti
         self.crea_pulsante(self.sidebar, "🚀 AVVIA MISSIONE", "#e67e22", self.avvia_missione)
         self.crea_pulsante(self.sidebar, "🔄 RIGENERA SERRA", "#27ae60", self.rigenera_piante)
         
         tk.Frame(self.sidebar, bg="#34495e", height=2).pack(fill=tk.X, padx=20, pady=10)
         
-        # Controlli sintetizzati
         tk.Label(self.sidebar, text="CONTROLLI:", font=("Segoe UI", 10, "bold"), bg=BG_SIDEBAR, fg="white", anchor="w").pack(fill=tk.X, padx=20, pady=(0,5))
         istruzioni = "• Tasto SX: Muri\n• Tasto DX: Cancella\n• Click Pianta: Scheda"
         tk.Label(self.sidebar, text=istruzioni, font=("Segoe UI", 9), bg=BG_SIDEBAR, fg="#bdc3c7", justify="left", anchor="w").pack(fill=tk.X, padx=20)
         
         tk.Frame(self.sidebar, bg="#34495e", height=2).pack(fill=tk.X, padx=20, pady=10)
         
-        # Legenda a Griglia 2x2 (Il trucco salvaspazio!)
         tk.Label(self.sidebar, text="LEGENDA:", font=("Segoe UI", 10, "bold"), bg=BG_SIDEBAR, fg="white", anchor="w").pack(fill=tk.X, padx=20, pady=(0,5))
         
         frame_legenda = tk.Frame(self.sidebar, bg=BG_SIDEBAR)
         frame_legenda.pack(fill=tk.X, padx=20)
         
-        # Usiamo il posizionamento a griglia per affiancarli
         self.add_legenda_grid(frame_legenda, "🥀 Malata", COLOR_MALATA, 0, 0)
         self.add_legenda_grid(frame_legenda, "🌱 Sana", COLOR_SANA, 0, 1)
         self.add_legenda_grid(frame_legenda, "🤖 Rover", COLOR_ROBOT, 1, 0)
         self.add_legenda_grid(frame_legenda, "⬛ Muro", COLOR_WALL, 1, 1)
 
     def crea_pulsante(self, parent, text, bg_color, command):
-        # Spaziature interne (pady=4) ed esterne ridotte
         btn = tk.Button(parent, text=text, bg=bg_color, fg="white", font=("Segoe UI", 10, "bold"),
                         relief=tk.FLAT, activebackground="#34495e", activeforeground="white",
                         command=command, cursor="hand2", pady=4)
         btn.pack(fill=tk.X, padx=20, pady=5)
 
     def add_legenda_grid(self, parent, text, color, r, c):
-        # Nuova funzione per gestire la legenda a griglia invece che in lista verticale
         frame = tk.Frame(parent, bg=BG_SIDEBAR)
         frame.grid(row=r, column=c, sticky="w", padx=(0, 10), pady=4)
         tk.Canvas(frame, width=12, height=12, bg=color, highlightthickness=0).pack(side=tk.LEFT)
         tk.Label(frame, text=text, bg=BG_SIDEBAR, fg="#ecf0f1", font=("Segoe UI", 9)).pack(side=tk.LEFT, padx=5)
 
     def costruisci_main_area(self):
-        # --- COLONNA CENTRALE: Mappa della Serra ---
         frame_canvas = tk.Frame(self.main_area, bg=BG_MAIN, padx=10, pady=5)
-        # Usiamo side=tk.LEFT per affiancare gli elementi in orizzontale!
         frame_canvas.pack(side=tk.LEFT, anchor="n") 
         
         self.canvas = tk.Canvas(frame_canvas, width=COLONNE*DIM_CELLA, height=RIGHE*DIM_CELLA, bg=BG_GRID, highlightthickness=1, highlightbackground=COLOR_LINE)
         self.canvas.pack()
         
-        # --- COLONNA DESTRA: Terminale Verticale ---
-        # Senza altezza fissa, si espanderà per riempire tutto lo spazio verticale
         frame_console = tk.Frame(self.main_area, bg="#1e1e1e")
         frame_console.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 20), pady=20)
         
@@ -154,7 +141,6 @@ class RoverTab:
         self.terminal.config(state=tk.DISABLED)
 
     def carica_dataset(self):
-        # Percorso adattabile a seconda di dove includi il file
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         csv_path = os.path.join(base_dir, "data", "piante_dataset.csv")
         if os.path.exists(csv_path):

@@ -2,8 +2,6 @@ import os
 import sys
 import ctypes
 
-# --- 1. CONFIGURAZIONE SISTEMA (DLL PROLOG) ---
-# Percorso tipico su Windows. Se hai installato altrove, verifica questo path.
 PROLOG_PATH = r"C:\Program Files\swipl\bin"
 
 def configura_prolog():
@@ -11,19 +9,15 @@ def configura_prolog():
     Carica manualmente la DLL di Prolog per evitare crash su Windows.
     """
     if not os.path.exists(PROLOG_PATH):
-        # Tentativo di fallback se il percorso standard non esiste
         print(f" [PROLOG SYSTEM] Attenzione: {PROLOG_PATH} non trovato.")
         return False
 
-    # Aggiungiamo al PATH
     os.environ['PATH'] += ';' + PROLOG_PATH
 
     try:
-        # Caricamento esplicito della DLL
         dll_path = os.path.join(PROLOG_PATH, "libswipl.dll")
         if os.path.exists(dll_path):
             ctypes.CDLL(dll_path)
-            # print(" [PROLOG SYSTEM] Libreria 'libswipl.dll' agganciata.") # Decommenta per debug
             return True
         else:
             print(f" [PROLOG SYSTEM] DLL non trovata in: {dll_path}")
@@ -32,7 +26,6 @@ def configura_prolog():
         print(f" [PROLOG SYSTEM] Errore caricamento DLL: {e}")
         return False
 
-# Eseguiamo la configurazione PRIMA di importare pyswip
 if not configura_prolog():
     print(" [PROLOG SYSTEM] Tentativo di avvio standard (sperando nel PATH di sistema)...")
 
@@ -43,13 +36,11 @@ except ImportError:
     sys.exit(1)
 
 
-# --- 2. CLASSE LOGICA (INTERFACCIA AI-PROLOG) ---
 class GardenLogic:
     def __init__(self, kb_path):
         self.prolog = Prolog()
         self.attivo = False
         
-        # Gestione path Windows/GitBash (i backslash rompono Prolog)
         self.kb_path = kb_path.replace('\\', '/')
         
         if not os.path.exists(self.kb_path):
@@ -57,7 +48,6 @@ class GardenLogic:
             return
 
         try:
-            # Consultiamo il file .pl
             self.prolog.consult(self.kb_path)
             self.attivo = True
             print(f" [PROLOG] Knowledge Base V4.0 caricata: {os.path.basename(self.kb_path)}")
@@ -84,24 +74,19 @@ class GardenLogic:
         """
         if not self.attivo: return ["Modulo Prolog non attivo"]
         
-        # Formattiamo l'input (es. 'Infestazione_Afidi')
         malattia_atom = self._formatta_per_prolog(diagnosi_ml)
         
         try:
-            # Query alla regola ponte
             query_str = f"trova_cura({malattia_atom}, X)"
             risultati = list(self.prolog.query(query_str))
             
             cure = []
             for res in risultati:
-                # Estraiamo la variabile X
                 valore = res["X"]
                 
-                # Decodifica se bytes (succede con alcune versioni di pyswip)
                 if isinstance(valore, bytes):
                     valore = valore.decode('utf-8')
                 
-                # Pulizia per la GUI (rimuove underscore)
                 valore_leggibile = str(valore).replace("_", " ")
                 cure.append(valore_leggibile)
             
@@ -126,7 +111,6 @@ class GardenLogic:
         
         suggerimenti = []
         try:
-            # Usiamo la tua regola classica diagnosi/3
             query_str = f"diagnosi({p_atom}, {s_atom}, Malattia)"
             risultati = list(self.prolog.query(query_str))
             
@@ -136,6 +120,6 @@ class GardenLogic:
                 suggerimenti.append(str(mal))
                 
         except Exception:
-            pass # Se fallisce, restituisce lista vuota senza rompere l'app
+            pass
             
         return suggerimenti

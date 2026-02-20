@@ -9,10 +9,9 @@ COLONNE = 100
 START = (10, 10)
 GOAL = (90, 90)
 
-# Creiamo un gigantesco muro verticale che blocca il passaggio diretto
 OSTACOLI = set()
-for r in range(0, 80):      # Muro lungo 80 caselle
-    OSTACOLI.add((r, 50))   # Posizionato esattamente a metà strada
+for r in range(0, 80):      
+    OSTACOLI.add((r, 50))   
 
 # --- MOTORE DI RICERCA ---
 def euristica_manhattan(a, b):
@@ -37,7 +36,7 @@ def esegui_ricerca(usa_euristica=True):
             while current in came_from:
                 current = came_from[current]
                 path_len += 1
-            exec_time = (time.perf_counter() - start_time) * 1000 # millisecondi
+            exec_time = (time.perf_counter() - start_time) * 1000 
             return nodi_espansi, path_len, exec_time
 
         if current != START:
@@ -71,7 +70,6 @@ nodi_astar, path_astar, time_astar = esegui_ricerca(usa_euristica=True)
 # --- GENERAZIONE GRAFICO ---
 labels = ['Nodi Espansi (Spazio)', 'Tempo di Esecuzione (ms)']
 
-# Non c'è più bisogno di moltiplicare, i numeri sono grandi!
 dijkstra_stats = [nodi_dijkstra, time_dijkstra]
 astar_stats = [nodi_astar, time_astar]
 
@@ -89,7 +87,6 @@ ax.set_xticks(x)
 ax.set_xticklabels(labels, fontsize=12)
 ax.legend(fontsize=12)
 
-# Aggiungiamo i valori esatti sopra le barre
 for bar in rects1 + rects2:
     height = bar.get_height()
     ax.annotate(f'{height:.1f}',

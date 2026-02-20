@@ -2,11 +2,8 @@ import os
 import random
 from owlready2 import *
 
-# --- 1. CONFIGURAZIONE PERCORSI (FIX UNIVERSALE) ---
-# Otteniamo la posizione esatta di questo file script
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Logica intelligente: se siamo in 'src', saliamo di uno. Se siamo già in root, restiamo lì.
 if os.path.basename(SCRIPT_DIR) == "src":
     ROOT_DIR = os.path.dirname(SCRIPT_DIR)
 else:
@@ -14,24 +11,21 @@ else:
 
 KB_DIR = os.path.join(ROOT_DIR, "knowledge_base")
 
-# Creiamo la cartella se non esiste
 if not os.path.exists(KB_DIR):
     os.makedirs(KB_DIR)
 
 OUTPUT_FILE = os.path.join(KB_DIR, "Ontologia_Completa.owx")
 IRI_BASE = "http://www.semanticweb.org/smartgarden/ontologia#"
-NUM_ISTANZE = 500  # Generiamo 500 piante per avere un dataset serio
+NUM_ISTANZE = 500  
 
 print(f"--- CREAZIONE ONTOLOGIA (V4.1 - FIX PERCORSI) ---")
 print(f"1. Script eseguito da: {SCRIPT_DIR}")
 print(f"2. Root Progetto rilevata: {ROOT_DIR}")
 print(f"3. File Output: {OUTPUT_FILE}")
 
-# Creazione Ontologia
 onto = get_ontology(IRI_BASE)
 
 with onto:
-    # --- 2. GERARCHIA DELLE CLASSI (TASSONOMIA ESTESA) ---
     class Pianta(Thing): pass
     
     class Solanaceae(Pianta): pass   # Pomodoro, Peperone, Melanzana
@@ -72,7 +66,6 @@ with onto:
         domain = [Pianta]
         range = [Pianta]
 
-    # --- 5. POPOLAMENTO T-BOX (Concetti Base) ---
     giallo = Sintomo("Foglie_Gialle")
     macchie = Sintomo("Macchie_Fogliari")
     secco = Sintomo("Foglie_Secche")
@@ -89,7 +82,6 @@ with onto:
     ragnetto = Malattia("Ragnetto_Rosso")
     stress = Malattia("Stress_Idrico")
 
-    # --- 6. GENERATORE PROCEDURALE DI DATASET (A-BOX) ---
     templates = [
         (Solanaceae, "Pomodoro", 8.0, 10.0, 0.5, 0.7, [peronospora, afidi, marciume]),
         (Solanaceae, "Peperone", 7.0, 9.0, 0.4, 0.6, [afidi, oidio]),

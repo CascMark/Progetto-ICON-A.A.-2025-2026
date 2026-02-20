@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
 
-# Silenzia i warning
 from sklearn.exceptions import ConvergenceWarning
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
@@ -67,14 +66,12 @@ def plot_kmeans_evaluation(df):
         
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
     
-    # Curva del Gomito
     ax1.plot(K_range, inertias, marker='o', color='navy')
     ax1.set_title('Metodo del Gomito per K-Means')
     ax1.set_xlabel('Numero di Cluster (k)')
     ax1.set_ylabel('Inertia')
     ax1.grid(True)
     
-    # Silhouette Score
     ax2.plot(K_range, silhouettes, marker='o', color='green')
     ax2.set_title('Silhouette Score per K-Means')
     ax2.set_xlabel('Numero di Cluster (k)')
@@ -88,7 +85,6 @@ def plot_learning_curves(X, y):
     """Genera le Learning Curves per 4 Modelli (inclusa Logistic Regression)"""
     print("Generazione Learning Curves...")
     
-    # AGGIUNTA LA LOGISTIC REGRESSION AL DIZIONARIO
     models = {
         "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
         "SVM (Kernel RBF)": SVC(kernel='rbf', random_state=42),
@@ -98,7 +94,6 @@ def plot_learning_curves(X, y):
     
     plt.figure(figsize=(14, 8))
     
-    # AGGIUNTO IL COLORE 'PURPLE' PER IL NUOVO MODELLO
     colors = ['blue', 'green', 'red', 'purple']
     
     for (name, model), color in zip(models.items(), colors):
@@ -125,7 +120,6 @@ def plot_confusion_and_roc(X, y, classes):
     """Genera Matrici di Confusione e Curve ROC multi-classe per 4 Modelli"""
     print("Generazione Matrici di Confusione e Curve ROC...")
     
-    # AGGIUNTA LA LOGISTIC REGRESSION AL DIZIONARIO
     models = {
         "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
         "SVM": SVC(kernel='rbf', probability=True, random_state=42),
@@ -147,7 +141,7 @@ def plot_confusion_and_roc(X, y, classes):
         cm = confusion_matrix(y_test, y_pred)
         sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax1, 
                     xticklabels=classes, yticklabels=classes)
-        # Formattazione per la stampa (sostituisce l'underscore con spazio)
+
         display_name = name.replace('_', ' ')
         ax1.set_title(f'Matrice di Confusione: {display_name}')
         ax1.set_ylabel('Classe Reale')
@@ -167,7 +161,7 @@ def plot_confusion_and_roc(X, y, classes):
         ax2.legend(loc="lower right")
         ax2.grid(True)
         
-        # Nome file pulito
+     
         filename = f'03_{name.lower()}_eval.png'
         plt.savefig(os.path.join(PLOTS_DIR, filename), bbox_inches='tight')
         plt.close()

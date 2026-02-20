@@ -41,7 +41,6 @@ class GardenMLEngine:
 
         try:
             # 1. Preparazione Dati
-            # Mapping Famiglia
             famiglia_map = {
                 "Basilico": "Lamiaceae", "Menta": "Lamiaceae",
                 "Pomodoro": "Solanaceae", "Peperone": "Solanaceae", "Melanzana": "Solanaceae",
@@ -50,7 +49,6 @@ class GardenMLEngine:
             }
             famiglia_str = famiglia_map.get(nome_pianta, "Solanaceae")
             
-            # Simuliamo condizioni ambientali (o le prenderemmo dai sensori)
             luce = 8.0
             umidita = 0.6
             temp = 25.0
@@ -63,18 +61,10 @@ class GardenMLEngine:
                 fam_encoded = 0
             
             # --- FIX: ENCODING SINTOMO ---
-            # Se l'utente seleziona "Foglie_Gialle", dobbiamo dire all'IA il codice corrispondente.
             try:
-                # Nota: Il dataset generato usa spazi o underscore? 
-                # Il generatore faceva join con ", ". 
-                # Se la GUI passa "Foglie_Gialle", proviamo a passarlo direttamente.
-                # Se l'encoder non lo conosce (magari nel training era "Foglie_Gialle, Altro"), usiamo fallback.
-                
-                # Cerchiamo un match parziale se quello esatto fallisce
                 if nome_sintomo in self.le_sintomo.classes_:
                      sintomo_encoded = self.le_sintomo.transform([nome_sintomo])[0]
                 else:
-                    # Fallback intelligente: cerchiamo la classe che contiene la stringa
                     possibili = [c for c in self.le_sintomo.classes_ if nome_sintomo in str(c)]
                     if possibili:
                         sintomo_encoded = self.le_sintomo.transform([possibili[0]])[0]
@@ -84,8 +74,6 @@ class GardenMLEngine:
                 sintomo_encoded = 0
 
             # 3. Creazione Vettore Input
-            # L'ordine DEVE essere identico a quello in train_model.py
-            # ['Famiglia_Encoded', 'Sintomo_Encoded', 'Ore_Luce', 'Umidita_Ottimale', 'Temperatura_Ottimale', 'PH_Suolo']
             input_df = pd.DataFrame([[fam_encoded, sintomo_encoded, luce, umidita, temp, ph]], 
                                     columns=['Famiglia_Encoded', 'Sintomo_Encoded', 'Ore_Luce', 'Umidita_Ottimale', 'Temperatura_Ottimale', 'PH_Suolo'])
             
@@ -96,7 +84,6 @@ class GardenMLEngine:
             prob_rf = np.max(self.rf.predict_proba(X_input))
             pred_nn = self.nn.predict(X_input)[0]
 
-            # Clustering
             input_env = pd.DataFrame([[luce, umidita, temp]], columns=['Ore_Luce', 'Umidita_Ottimale', 'Temperatura_Ottimale'])
             X_env_scaled = self.scaler_env.transform(input_env)
             cluster_id = self.kmeans.predict(X_env_scaled)[0]
