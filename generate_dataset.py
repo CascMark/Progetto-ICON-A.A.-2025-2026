@@ -2,21 +2,15 @@ import os
 import pandas as pd
 from owlready2 import *
 
-# --- 1. CONFIGURAZIONE PERCORSI INTELLIGENTE ---
-# (Copia esatta della logica usata in create_ontology per non sbagliare mai)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Se lo script è dentro 'src', la root è un livello sopra.
-# Se lo script è già nella root, la root è qui.
 if os.path.basename(SCRIPT_DIR) == "src":
     ROOT_DIR = os.path.dirname(SCRIPT_DIR)
 else:
     ROOT_DIR = SCRIPT_DIR
 
-# Percorso Ontologia (dove l'hai salvata con create_ontology.py)
 ONTO_PATH = os.path.join(ROOT_DIR, "knowledge_base", "Ontologia_Completa.owx")
 
-# Percorso Output Dataset (Cartella 'data')
 OUTPUT_DIR = os.path.join(ROOT_DIR, "data")
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "piante_dataset.csv")
 
@@ -38,11 +32,8 @@ def genera_dataset_da_ontologia():
         print(f"Verifica che il percorso sia: {ONTO_PATH}")
         return
 
-    # 2. Caricamento con RELOAD=TRUE
-    # Fondamentale: reload=True costringe a rileggere il file aggiornato dal disco
-    # invece di usare la versione vecchia che potrebbe essere in memoria.
     try:
-        default_world.ontologies.clear() # Pulisce la memoria precedente
+        default_world.ontologies.clear() 
         onto = get_ontology(ONTO_PATH).load(reload=True)
         print("-> Ontologia caricata e aggiornata.")
     except Exception as e:
@@ -51,8 +42,6 @@ def genera_dataset_da_ontologia():
     
     data_rows = []
     
-    # 3. Ricerca
-    # Cerca tutte le istanze che sono di tipo Pianta (o sottoclassi come Solanaceae)
     piante = onto.search(type=onto.Pianta)
     print(f"-> Trovate {len(piante)} istanze di piante.")
     
@@ -63,24 +52,20 @@ def genera_dataset_da_ontologia():
     for p in piante:
         nome = p.name
         
-        # Estrazione Famiglia
         famiglia = "Sconosciuta"
         for cls in p.is_a:
             if hasattr(cls, "name") and cls.name not in ["Thing", "Pianta", "NamedIndividual"]:
                 famiglia = cls.name
                 break
         
-        # Estrazione Features
         luce = safe_get_property(p.richiedeOreLuce)
         umidita = safe_get_property(p.haLivelloUmiditaOttimale)
         temp = safe_get_property(p.haTemperaturaOttimale)
         ph = safe_get_property(p.haPHOttimale)
         
-        # Target
         malattia_obj = safe_get_property(p.affettaDa)
         malattia = malattia_obj.name if malattia_obj else "Sano"
         
-        # Sintomi
         sintomi_list = [s.name for s in p.presenta]
         sintomi_str = ", ".join(sintomi_list) if sintomi_list else "Nessuno"
 
@@ -95,7 +80,6 @@ def genera_dataset_da_ontologia():
             "Diagnosi_Reale": malattia 
         })
 
-    # 4. Salvataggio
     if data_rows:
         df = pd.DataFrame(data_rows)
         
@@ -107,7 +91,6 @@ def genera_dataset_da_ontologia():
         print(f"\n[SUCCESSO] Dataset generato: {len(df)} righe.")
         print(f"Salvato in: {OUTPUT_FILE}")
         
-        # Anteprima
         print("\nDistribuzione Famiglie:")
         print(df["Famiglia"].value_counts().head())
     else:

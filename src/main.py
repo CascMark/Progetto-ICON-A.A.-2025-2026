@@ -22,7 +22,6 @@ if os.path.exists(GUI_DIR):
 from garden_ml_engine import GardenMLEngine 
 from owlready2 import get_ontology, default_world
 
-# 1. IMPORTIAMO IL NUOVO REPORTER
 try:
     from validation_reporter import ValidationReporter
 except ImportError:
@@ -56,7 +55,6 @@ class SmartGardenSystem:
         self.onto_path = os.path.join(self.root_dir, 'knowledge_base', 'Ontologia_Completa.owx')
         self.csv_path = os.path.join(self.root_dir, 'data', 'piante_dataset.csv')
         
-        # Inizializziamo l'engine ML e il Reporter
         self.ml_engine = GardenMLEngine() 
         if ValidationReporter:
             self.reporter = ValidationReporter(self.model_dir)
@@ -96,9 +94,8 @@ class SmartGardenSystem:
         print(f"{'='*70}")
 
         malattia_predetta = "Nessuna"
-        risultati_ml = None # Variabile per salvare i risultati da passare al Reporter
+        risultati_ml = None
 
-        # --- STEP 1: ML ---
         print(f"\n[1] INTELLIGENZA ARTIFICIALE (Multi-Model Analysis)")
         if self.ml_engine and self.ml_engine.models_loaded:
             risultati_ml = self.ml_engine.predici_complesso(nome_pianta, nome_sintomo)
@@ -119,7 +116,6 @@ class SmartGardenSystem:
                 
                 print(f" -> K-Means:   {cluster}")
 
-        # --- STEP 2: PROLOG ---
         print(f"\n[2] PROLOG (Motore Inferenziale Reale)")
         if self.logic_engine:
             cure = self.logic_engine.ottieni_trattamento(malattia_predetta)
@@ -131,7 +127,6 @@ class SmartGardenSystem:
                     print(f" -> Controllo Consistenza KB: La letteratura suggerisce '{diagnosi_logica[0]}'")
             except: pass
 
-        # --- STEP 3: BAYES ---
         print(f"\n[3] RETE BAYESIANA (Analisi Probabilistica)")
         if self.bayes_infer:
             try:
@@ -141,7 +136,6 @@ class SmartGardenSystem:
                         print(f"    * Probabilità '{q.state_names['Malattia'][i]}': {val*100:.2f}%")
             except: pass
 
-        # --- STEP 4: CSP ---
         print(f"\n[4] CSP (Constraint Satisfaction Problem)")
         if self.onto and GardenCSP:
             ambiente_balcone = {
@@ -165,7 +159,6 @@ class SmartGardenSystem:
                     print(f"    (Dati ambientali: Luce {dati_vaso['luce']}h, Umidità {dati_vaso['umidita']})")
             except: pass
 
-        # --- STEP 5: VALIDAZIONE ---
         print(f"\n[5] VALIDAZIONE SCIENTIFICA")
         if self.reporter:
             # Passiamo i risultati ML (risultati_ml) per calcolare il consenso dinamico

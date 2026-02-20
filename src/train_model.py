@@ -5,12 +5,10 @@ import joblib
 import json
 import warnings
 
-# --- SILENZIAMENTO WARNINGS ---
 from sklearn.exceptions import ConvergenceWarning
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
-# --- IMPORT LIBRERIE AI ---
 from sklearn.model_selection import StratifiedKFold, cross_validate, train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
@@ -21,7 +19,6 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.cluster import KMeans
 from sklearn.metrics import roc_auc_score
 
-# --- CONFIGURAZIONE ---
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SCRIPT_DIR) if os.path.basename(SCRIPT_DIR) == "src" else SCRIPT_DIR
 DATASET_PATH = os.path.join(ROOT_DIR, "data", "piante_dataset.csv") 
@@ -40,7 +37,6 @@ def train_and_validate():
         return
     df = pd.read_csv(DATASET_PATH)
 
-    # Preprocessing
     le_fam = LabelEncoder()
     df['Famiglia_Encoded'] = le_fam.fit_transform(df['Famiglia'].fillna("Sconosciuta"))
     
@@ -50,11 +46,9 @@ def train_and_validate():
     X = df[['Famiglia_Encoded', 'Sintomo_Encoded', 'Ore_Luce', 'Umidita_Ottimale', 'Temperatura_Ottimale', 'PH_Suolo']]
     y = df['Diagnosi_Reale']
     
-    # SCALER PRINCIPALE (per i 6 dati)
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
-    # Modelli da valutare
     models = {
         "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
         "Neural Network": MLPClassifier(hidden_layer_sizes=(64, 32), max_iter=1000, random_state=42),
@@ -103,26 +97,22 @@ def train_and_validate():
         auc_str = f"{auc_val:.3f}" if auc_val >= 0 else "//"
         print(f"{name:<18} | {acc_mean:.3f} | {acc_var:.3f} | {acc_std:.3f} | {f1_mean:.3f} | {prec_mean:.3f} | {auc_str:<6}")
 
-    # --- Addestramento Finale ---
     rf = models["Random Forest"].fit(X_scaled, y)
     nn = models["Neural Network"].fit(X_scaled, y)
-    
-    # FIX APPLICATO QUI: Scaler separato per il clustering ambientale!
     scaler_env = StandardScaler()
     X_env = scaler_env.fit_transform(df[['Ore_Luce', 'Umidita_Ottimale', 'Temperatura_Ottimale']])
     kmeans = KMeans(n_clusters=3, random_state=42).fit(X_env)
 
-    # --- Salvataggio ---
     with open(METRICS_PATH, 'w') as f:
         json.dump(metrics_dict, f, indent=4)
         
     joblib.dump(rf, os.path.join(MODEL_DIR, "model_rf.pkl"))
     joblib.dump(nn, os.path.join(MODEL_DIR, "model_nn.pkl"))
     joblib.dump(kmeans, os.path.join(MODEL_DIR, "model_kmeans.pkl"))
-    joblib.dump(scaler, os.path.join(MODEL_DIR, "scaler.pkl")) # Ora salva quello giusto (a 6 colonne)
+    joblib.dump(scaler, os.path.join(MODEL_DIR, "scaler.pkl"))
     joblib.dump(le_fam, os.path.join(MODEL_DIR, "le_famiglia.pkl"))
     joblib.dump(le_sint, os.path.join(MODEL_DIR, "le_sintomo.pkl"))
-    joblib.dump(scaler_env, os.path.join(MODEL_DIR, "scaler_env.pkl")) # Salva quello ambientale a parte
+    joblib.dump(scaler_env, os.path.join(MODEL_DIR, "scaler_env.pkl"))
     
     print("\n[SUCCESSO] Modelli e Metriche Avanzate salvati correttamente!")
 

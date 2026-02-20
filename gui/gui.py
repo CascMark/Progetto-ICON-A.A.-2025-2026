@@ -5,16 +5,16 @@ import sys
 import threading
 import io
 
-# --- CONFIGURAZIONE PATH ---
+
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC_DIR = os.path.join(ROOT_DIR, "src")
 sys.path.insert(0, SRC_DIR)
 sys.path.insert(0, ROOT_DIR)
 
-# --- IMPORT BACKEND E ROVER ---
+
 from main import SmartGardenSystem
 
-# Prova a importare la classe del Rover (assicurati che il file si chiami rover_tab.py e sia nella stessa cartella o in src)
+
 try:
     from rover_tab import RoverTab
 except ImportError:
@@ -57,7 +57,6 @@ class GreenLeafGui:
         "Muffa_Bianca", "Foglie_Arricciate", "Marciume_Apicale", "Ragnatele"
     ]
 
-    # I tuoi tab testuali standard
     TAB_INFO = [
         ("🤖  ML",      "Risultati Machine Learning (Random Forest, Rete Neurale, K-Means)"),
         ("🧠  Prolog",  "Motore Inferenziale — Trattamenti dalla Knowledge Base"),
@@ -69,11 +68,11 @@ class GreenLeafGui:
     def __init__(self, root: tk.Tk):
         self.root = root
         self.root.title("Green Leaf — Giardino Intelligente")
-        self.root.geometry("1050x700") # Leggermente più grande per contenere bene la griglia del Rover
+        self.root.geometry("1050x700")
         self.root.configure(bg=BG_DARK)
         self.root.resizable(True, True)
 
-        # Tenta di massimizzare la finestra all'avvio (funziona su Windows)
+      
         try:
             self.root.state('zoomed')
         except:
@@ -146,7 +145,7 @@ class GreenLeafGui:
         notebook = ttk.Notebook(container, style="Green.TNotebook")
         notebook.pack(fill="both", expand=True)
 
-        # 1. CREA I TAB DI TESTO CLASSICI
+ 
         for tab_name, tab_desc in self.TAB_INFO:
             frame = tk.Frame(notebook, bg=BG_CARD)
             notebook.add(frame, text=tab_name)
@@ -171,12 +170,11 @@ class GreenLeafGui:
             self.result_texts[tab_name] = txt
             self._write_to_tab(tab_name, "In attesa di un'analisi…\n", "muted")
 
-        # 2. INTEGRAZIONE DEL NUOVO TAB ROVER A*
+
         tab_rover_frame = tk.Frame(notebook, bg=BG_DARK) # Sfondo scuro per matchare la dashboard
         notebook.add(tab_rover_frame, text="🚜  Rover A*")
         
         if RoverTab:
-            # Passiamo il frame del tab direttamente alla classe del Rover
             self.rover_app = RoverTab(tab_rover_frame)
         else:
             tk.Label(tab_rover_frame, text="⚠️ Modulo 'rover_tab.py' non trovato nella cartella.", 

@@ -5,8 +5,6 @@ from sklearn.metrics import accuracy_score
 class SupervisedModels:
     def __init__(self):
         self.rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
-        # Rete Neurale (Multi-Layer Perceptron)
-        # 2 strati nascosti da 10 neuroni ciascuno, max 500 iterazioni
         self.nn_model = MLPClassifier(hidden_layer_sizes=(10, 10), max_iter=500, random_state=42)
         
         self.rf_accuracy = 0.0

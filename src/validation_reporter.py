@@ -29,7 +29,7 @@ class ValidationReporter:
                 auc = m.get('AUC', -1.0)
                 
                 acc_str = f"{acc:.3f}"
-                var_str = f"{var:.5f}" if var > 0 else "0.00000" # Aumentati i decimali per mostrare il valore reale
+                var_str = f"{var:.5f}" if var > 0 else "0.00000" 
                 dev_str = f"{dev:.3f}"
                 f1_str  = f"{f1:.3f}" if f1 > 0 else "//"
                 avg_p_str = f"{avg_p:.3f}" if avg_p > 0 else "//"

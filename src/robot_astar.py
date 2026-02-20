@@ -10,9 +10,9 @@ from datetime import datetime
 # --- CONFIGURAZIONI GRIGLIA E DESIGN ---
 RIGHE = 15
 COLONNE = 20
-DIM_CELLA = 35 # Leggermente più grande per una grafica migliore
+DIM_CELLA = 35 
 
-# Palette Colori Flat UI (ModernAgritech)
+
 BG_SIDEBAR = "#2c3e50"    # Blu notte scuro
 BG_MAIN = "#ecf0f1"       # Grigio chiarissimo
 BG_GRID = "#ffffff"       # Bianco
@@ -48,11 +48,10 @@ class SmartRoverGUI:
         
         self.dataset = self.carica_dataset()
         
-        # --- LAYOUT PRINCIPALE ---
         # 1. Sidebar Sinistra
         self.sidebar = tk.Frame(root, bg=BG_SIDEBAR, width=280)
         self.sidebar.pack(side=tk.LEFT, fill=tk.Y)
-        self.sidebar.pack_propagate(False) # Impedisce alla sidebar di rimpicciolirsi
+        self.sidebar.pack_propagate(False)
         
         # 2. Area Principale Destra
         self.main_area = tk.Frame(root, bg=BG_MAIN)
@@ -121,13 +120,11 @@ class SmartRoverGUI:
         tk.Label(frame, text=text, bg=BG_SIDEBAR, fg="#ecf0f1", font=("Segoe UI", 10)).pack(side=tk.LEFT, padx=10)
 
     def costruisci_main_area(self):
-        # Griglia
         frame_canvas = tk.Frame(self.main_area, bg=BG_MAIN, padx=20, pady=20)
         frame_canvas.pack(fill=tk.BOTH, expand=True)
         self.canvas = tk.Canvas(frame_canvas, width=COLONNE*DIM_CELLA, height=RIGHE*DIM_CELLA, bg=BG_GRID, highlightthickness=1, highlightbackground=COLOR_LINE)
         self.canvas.pack()
         
-        # Terminale Log Console
         frame_console = tk.Frame(self.main_area, bg="#1e1e1e", height=150)
         frame_console.pack(fill=tk.X, padx=20, pady=(0, 20))
         frame_console.pack_propagate(False)
@@ -203,20 +200,17 @@ class SmartRoverGUI:
         self.icone_piante.clear()
         self.sfondi_piante.clear()
         
-        # Disegna reticolo
         for r in range(RIGHE):
             for c in range(COLONNE):
                 x1, y1 = c * DIM_CELLA, r * DIM_CELLA
                 x2, y2 = x1 + DIM_CELLA, y1 + DIM_CELLA
                 
-                # Sfondo base
                 rect = self.canvas.create_rectangle(x1, y1, x2, y2, fill=BG_GRID, outline=COLOR_LINE)
                 self.celle[(r, c)] = rect
                 
                 if (r, c) in self.ostacoli:
                     self.canvas.itemconfig(rect, fill=COLOR_WALL, outline=COLOR_WALL)
                 
-                # Disegna Vasi circolari per le piante (Grafica migliorata)
                 if (r, c) in self.piante_info:
                     stato = self.piante_info[(r, c)]['Stato_Attuale']
                     if stato == 'malata': color_vaso = COLOR_MALATA
@@ -224,7 +218,6 @@ class SmartRoverGUI:
                     elif stato == 'curata': color_vaso = COLOR_CURATA
                     else: color_vaso = COLOR_INNAFFIATA
                     
-                    # Un cerchio al centro della cella che fa da "vaso"
                     pad = 3
                     vaso = self.canvas.create_oval(x1+pad, y1+pad, x2-pad, y2-pad, fill=color_vaso, outline="")
                     self.sfondi_piante[(r, c)] = vaso
@@ -236,13 +229,11 @@ class SmartRoverGUI:
                     text_id = self.canvas.create_text(x1+DIM_CELLA/2, y1+DIM_CELLA/2, text=icona, font=("Segoe UI Emoji", 14))
                     self.icone_piante[(r, c)] = text_id
 
-        # Disegna Robot (Cerchio blu scuro)
         rx, ry = self.robot_pos[1] * DIM_CELLA, self.robot_pos[0] * DIM_CELLA
         pad = 2
         self.canvas.create_oval(rx+pad, ry+pad, rx+DIM_CELLA-pad, ry+DIM_CELLA-pad, fill=COLOR_ROBOT, outline="")
         self.robot_icon = self.canvas.create_text(rx+DIM_CELLA/2, ry+DIM_CELLA/2, text="🤖", font=("Segoe UI Emoji", 14))
 
-    # --- EVENTI MOUSE ---
     def click_sinistro(self, event):
         c, r = event.x // DIM_CELLA, event.y // DIM_CELLA
         if (r, c) in self.piante_info:
@@ -258,7 +249,7 @@ class SmartRoverGUI:
         popup = tk.Toplevel(self.root)
         popup.title(f"Scheda Botanica - Vaso [{r+1},{c+1}]")
         popup.configure(bg=BG_MAIN)
-        popup.transient(self.root) # Mantiene il popup sopra la finestra principale
+        popup.transient(self.root)
         
         bg_color = COLOR_MALATA if dati['Stato_Attuale'] == 'malata' else COLOR_SANA
         if dati['Stato_Attuale'] == 'curata': bg_color = COLOR_CURATA
@@ -299,7 +290,6 @@ class SmartRoverGUI:
     def euristica_manhattan(self, a, b):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
-    # --- IA LOGISTICA E A* ---
     def avvia_missione(self):
         if not self.piante_da_visitare:
             messagebox.showinfo("Missione", "Nessun task in coda.")
@@ -394,7 +384,6 @@ class SmartRoverGUI:
                 if nodo != goal and nodo not in self.piante_info:
                     self.canvas.itemconfig(self.celle[nodo], fill=COLOR_PERCORSO)
                 
-                # Anima lo spostamento dell'icona
                 x, y = nodo[1] * DIM_CELLA + DIM_CELLA/2, nodo[0] * DIM_CELLA + DIM_CELLA/2
                 self.canvas.coords(self.robot_icon, x, y)
                 self.robot_pos = nodo

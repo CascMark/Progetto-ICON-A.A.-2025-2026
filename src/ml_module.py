@@ -4,10 +4,8 @@ from sklearn.preprocessing import LabelEncoder
 
 class DiseasePredictorML:
     def __init__(self, csv_path):
-        # Carichiamo il dataset (che ora è già pulito e coerente!)
         self.data = pd.read_csv(csv_path)
         
-        # Colonne attese: Pianta, Sintomo_Visibile, Diagnosi_Lab
         self.model = RandomForestClassifier(n_estimators=100, random_state=42)
         self.le_pianta = LabelEncoder()
         self.le_sintomo = LabelEncoder()
@@ -16,7 +14,6 @@ class DiseasePredictorML:
         self._train_model()
 
     def _train_model(self):
-        # Encoding diretto, senza dizionari o 'if' complessi
         X = pd.DataFrame()
         X['Pianta'] = self.le_pianta.fit_transform(self.data['Pianta'])
         X['Sintomo'] = self.le_sintomo.fit_transform(self.data['Sintomo_Visibile'])
